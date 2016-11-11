@@ -128,8 +128,12 @@ class Users extends CI_Model
 	function create_user($data, $activated = TRUE)
 	{
 		$data['created'] = date('Y-m-d H:i:s');
-		$data['activated'] = $activated ? 1 : 0;
 
+		$data['activated'] = $activated ? 1 : 0;
+		//add a new "last login"
+		$data['last_login'] = date('Y-m-d H:i:s');
+
+var_dump($data);
 		if ($this->db->insert($this->table_name, $data)) {
 			$user_id = $this->db->insert_id();
 			if ($activated)	$this->create_profile($user_id);
