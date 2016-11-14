@@ -29,7 +29,7 @@ class Auth extends CI_Controller
 	 */
 	function login()
 	{
-		echo "string";
+	
 		if ($this->tank_auth->is_logged_in()) {									// logged in
 			redirect('');
 
