@@ -42,7 +42,7 @@ $captcha = array(
 </head>
 <body>
 <div class="container">
-	<form class="form-signin">
+	 <div class="form-signin">
 		<h2 class="form-signin-heading">Please sign in</h2>
 <div class="form-group">
   <?php
@@ -65,9 +65,12 @@ $captcha = array(
 		<?php echo anchor('/auth/forgot_password/', 'Mot de passe oublié', "class='btn btn-default'"); ?>
 		<?php echo '&nbsp'; ?>
 		<?php if ($this->config->item('allow_registration', 'tank_auth')) echo anchor('/auth/register/', 'S\'enregistrer', "class='btn btn-default'"); ?>
-		<?php echo '&nbsp'; ?>
-		<?php echo form_submit('submit', 'Se connecter', "class='btn btn-default'"); ?>
+	</div>
+
+<div class="form-group">
+	<?php echo form_submit('submit', 'Se connecter', "class='btn btn-lg btn-primary btn-block'"); ?>
 </div>
+
 
 <?php echo form_close(); ?>
 
@@ -126,6 +129,6 @@ $captcha = array(
 		</td>
 	</tr>
 </table> -->
-</form>
+</div>
 </div>
 </body>
