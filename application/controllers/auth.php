@@ -29,7 +29,7 @@ class Auth extends CI_Controller
 	 */
 	function login()
 	{
-	
+
 		if ($this->tank_auth->is_logged_in()) {									// logged in
 			redirect('');
 
@@ -340,7 +340,7 @@ class Auth extends CI_Controller
 	 */
 	function change_password()
 	{
-		if (!$this->tank_auth->is_logged_in()) {								// not logged in or not activated
+		if (!$this->tank_auth->is_logged_in()) {									// not logged in or not activated
 			redirect('/auth/login/');
 
 		} else {

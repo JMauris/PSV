@@ -9,8 +9,8 @@
      <div class="form-signin">
       <div class="form-group">
       	<?php echo form_submit('submit_Profil', 'Profil', "class='btn btn-lg btn-primary btn-block'"); ?>
-      	<?php echo form_submit('submit_', 'Prospret', "class='btn btn-lg btn-primary btn-block'"); ?>
-        <?php echo form_submit('submit', 'Aides et Conseils', "class='btn btn-lg btn-primary btn-block'"); ?>
+      	<?php echo anchor('/formulaire/prospret/', 'Prospret', "class='btn btn-lg btn-primary btn-block'"); ?>
+        <?php echo anchor('/formulaire/aideConseil/', 'Aides et Conseils', "class='btn btn-lg btn-primary btn-block'"); ?>
       </div>
     </div>
   </div>
