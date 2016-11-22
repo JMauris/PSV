@@ -10,49 +10,39 @@
 <br>
 
 <div class="form-group row">
-  <label for="example-text-input" class="col-xs-2 col-form-label">Nom</label>
+  <label for="example-text-input" class="col-xs-2 col-form-label">Préservatif homme</label>
   <div class="col-xs-10">
-    <input class="form-control" type="text" id="example-text-input">
+    <input class="form-control" type="number" id="example-text-input">
   </div>
 </div>
 <div class="form-group row">
-  <label for="example-date-input" class="col-xs-2 col-form-label">Date</label>
+  <label for="example-text-input" class="col-xs-2 col-form-label">Préservatif femme</label>
   <div class="col-xs-10">
-    <input class="form-control" type="date" id="example-date-input">
-  </div>
-</div>
-
-<div class="form-group row">
-  <label for="example-text-input" class="col-xs-2 col-form-label">Lieu</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="text" id="example-text-input">
+    <input class="form-control" type="number" id="example-text-input">
   </div>
 </div>
 <div class="form-group row">
-  <label for="example-time-input" class="col-xs-2 col-form-label">Time</label>
+  <label for="example-text-input" class="col-xs-2 col-form-label">Préservatif Gel</label>
   <div class="col-xs-10">
-    <input class="form-control" type="time" value="13:45:00" id="example-time-input">
+    <input class="form-control" type="number" id="example-text-input">
   </div>
 </div>
-
 <div class="form-group row">
-  <label for="example-number-input" class="col-xs-2 col-form-label">KM</label>
+  <label for="example-text-input" class="col-xs-2 col-form-label">Cartes Antennes</label>
   <div class="col-xs-10">
-    <input class="form-control" type="number"  id="example-number-input">
+    <input class="form-control" type="number" id="example-text-input">
   </div>
 </div>
-
 <div class="form-group row">
-  <label for="example-number-input" class="col-xs-2 col-form-label">note de frais</label>
+  <label for="example-text-input" class="col-xs-2 col-form-label">Brochures</label>
   <div class="col-xs-10">
-    <input class="form-control" type="number" id="example-number-input">
+    <input class="form-control" type="number" id="example-text-input">
   </div>
 </div>
-
 <div class="form-group row">
-  <label for="example-number-input" class="col-xs-2 col-form-label">Nombre d'entretain donnés</label>
+  <label for="example-text-input" class="col-xs-2 col-form-label">Flyers</label>
   <div class="col-xs-10">
-    <input class="form-control" type="number" id="example-number-input">
+    <input class="form-control" type="number" id="example-text-input">
   </div>
 </div>
 <div class="form-signin">

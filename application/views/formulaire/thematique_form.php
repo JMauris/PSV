@@ -10,51 +10,133 @@
 <br>
 
 <div class="form-group row">
-  <label for="example-text-input" class="col-xs-2 col-form-label">Nom</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="text" id="example-text-input">
-  </div>
-</div>
-<div class="form-group row">
-  <label for="example-date-input" class="col-xs-2 col-form-label">Date</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="date" id="example-date-input">
-  </div>
-</div>
+  <div class="col-xs-4">
+    	<label for="example-text-input">HIV</label>
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+          Safer Sex
+        </label>
 
-<div class="form-group row">
-  <label for="example-text-input" class="col-xs-2 col-form-label">Lieu</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="text" id="example-text-input">
   </div>
-</div>
-<div class="form-group row">
-  <label for="example-time-input" class="col-xs-2 col-form-label">Time</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="time" value="13:45:00" id="example-time-input">
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+          Risque
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+        Dépistage
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+        Traitement
+        </label>
+    </div>
   </div>
-</div>
 
-<div class="form-group row">
-  <label for="example-number-input" class="col-xs-2 col-form-label">KM</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="number"  id="example-number-input">
+  <div class="col-xs-4">
+      <label for="example-text-input">IST</label>
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+          Safer Sex
+        </label>
   </div>
-</div>
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+          Risque
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+        Dépistage
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+        Traitement
+        </label>
+    </div>
+  </div>
 
-<div class="form-group row">
-  <label for="example-number-input" class="col-xs-2 col-form-label">note de frais</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="number" id="example-number-input">
+  <div class="col-xs-4">
+      <label for="example-text-input">Vie</label>
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+          Social
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+          Professionnelle
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+        Affective
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" value="">
+        Famillale
+        </label>
+    </div>
   </div>
-</div>
 
-<div class="form-group row">
-  <label for="example-number-input" class="col-xs-2 col-form-label">Nombre d'entretain donnés</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="number" id="example-number-input">
+  <div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="col-xs-6">
+        <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Pr. juridiques
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Pr.financiers
+            </label>
+        </div>
+      </div>
+    <div class="col-xs-6">
+        <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+            Santé Physique
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+            Santé Psychiques
+            </label>
+        </div>
+
+        <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+            Addictions
+            </label>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+
+
+
 <div class="form-signin">
 <div class="form-group">
 		<?php echo anchor('/formulaire/lieu/', 'Suivant', "class='btn btn-lg btn-primary btn-block'"); ?>

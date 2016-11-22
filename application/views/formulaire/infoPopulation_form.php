@@ -6,54 +6,20 @@
 </head>
 <body>
 	<div class="container">
+  </br>
+    <div class="form-group row">
 
-<br>
-
-<div class="form-group row">
-  <label for="example-text-input" class="col-xs-2 col-form-label">Nom</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="text" id="example-text-input">
-  </div>
-</div>
-<div class="form-group row">
-  <label for="example-date-input" class="col-xs-2 col-form-label">Date</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="date" id="example-date-input">
-  </div>
-</div>
-
-<div class="form-group row">
-  <label for="example-text-input" class="col-xs-2 col-form-label">Lieu</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="text" id="example-text-input">
-  </div>
-</div>
-<div class="form-group row">
-  <label for="example-time-input" class="col-xs-2 col-form-label">Time</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="time" value="13:45:00" id="example-time-input">
-  </div>
-</div>
-
-<div class="form-group row">
-  <label for="example-number-input" class="col-xs-2 col-form-label">KM</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="number"  id="example-number-input">
-  </div>
-</div>
-
-<div class="form-group row">
-  <label for="example-number-input" class="col-xs-2 col-form-label">note de frais</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="number" id="example-number-input">
-  </div>
-</div>
-
-<div class="form-group row">
-  <label for="example-number-input" class="col-xs-2 col-form-label">Nombre d'entretain donnés</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="number" id="example-number-input">
-  </div>
+    	<div class="radio">
+      	<label><h4>Age moyen : </h4> </label>
+    		<label>
+    			<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> &lt 18 ans</label>
+    		<label>
+    			<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">18 - 35 ans</label>
+    		<label>
+    			<input type="radio" name="optionsRadios" id="optionsRadios3" value="option2">35 - 45 ans</label>
+    		<label>
+    			<input type="radio" name="optionsRadios" id="optionsRadios4" value="option2">	&gt 45 ans</label>
+    	</div>
 </div>
 <div class="form-signin">
 <div class="form-group">

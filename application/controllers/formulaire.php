@@ -18,7 +18,10 @@ class formulaire extends CI_Controller
 
   function prospret()
   {
-  $this->load->view('formulaire/module1_form');
+  $this->load->view('formulaire/module1_form0');
+
+    $this->load->view('formulaire/categorie_form');
+
   }
 
   function aideConseil()
