@@ -45,10 +45,7 @@
     <input class="form-control" type="number" id="example-text-input">
   </div>
 </div>
-<div class="form-signin">
-<div class="form-group">
-		<?php echo anchor('/formulaire/thematique/', 'Suivant', "class='btn btn-lg btn-primary btn-block'"); ?>
-</div>
+
 </div>
 </div>
 <body>

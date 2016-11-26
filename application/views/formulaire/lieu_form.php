@@ -61,9 +61,6 @@
 
 </div>
 
-<div class="form-group">
-	<?php echo anchor('/formulaire/infoPopulation/', 'Suivant', "class='btn btn-lg btn-primary btn-block'"); ?>
-</div>
 </div>
 </div>
 <body>

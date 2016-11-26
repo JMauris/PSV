@@ -21,10 +21,6 @@
     			<input type="radio" name="optionsRadios" id="optionsRadios4" value="option2">	&gt 45 ans</label>
     	</div>
 </div>
-<div class="form-signin">
-<div class="form-group">
-	<?php echo anchor('/formulaire/origine/', 'Suivant', "class='btn btn-lg btn-primary btn-block'"); ?>
-</div>
-</div>
+
 </div>
 <body>

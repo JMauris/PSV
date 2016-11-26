@@ -137,10 +137,6 @@
 
 
 
-<div class="form-signin">
-<div class="form-group">
-		<?php echo anchor('/formulaire/lieu/', 'Suivant', "class='btn btn-lg btn-primary btn-block'"); ?>
-</div>
-</div>
+
 </div>
 <body>

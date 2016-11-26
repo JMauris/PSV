@@ -55,10 +55,5 @@
     <input class="form-control" type="number" id="example-number-input">
   </div>
 </div>
-<div class="form-signin">
-<div class="form-group">
-  <?php echo anchor('/formulaire/end/', 'Suivant', "class='btn btn-lg btn-primary btn-block'"); ?>
-</div>
-</div>
 </div>
 <body>
