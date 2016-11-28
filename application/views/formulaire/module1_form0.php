@@ -290,8 +290,53 @@
 	  </label>
 		</div>
 	</div>
-
-
-
 </div>
+<h1>Age moyen </h1>
+<div class="form-group row">
+	<div class="radio">
+		<label><h4>Age moyen : </h4> </label>
+		<label>
+			<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> &lt 18 ans</label>
+		<label>
+			<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">18 - 35 ans</label>
+		<label>
+			<input type="radio" name="optionsRadios" id="optionsRadios3" value="option2">35 - 45 ans</label>
+		<label>
+			<input type="radio" name="optionsRadios" id="optionsRadios4" value="option2">	&gt 45 ans</label>
+	</div>
+</div>
+<div class="form-group row">
+	<div class="col-xs-4">
+		<label>Origine</label>
+<select class="form-control">
+  <option>1</option>
+  <option>2</option>
+  <option>3</option>
+  <option>4</option>
+  <option>5</option>
+</select>
+</div>
+	<div class="col-xs-4">
+			<label>Identité sexuel</label>
+<select class="form-control">
+  <option>1</option>
+  <option>2</option>
+  <option>3</option>
+  <option>4</option>
+  <option>5</option>
+</select>
+</div>
+	<div class="col-xs-4">
+			<label>Identité sexuel</label> 
+<select class="form-control">
+  <option>1</option>
+  <option>2</option>
+  <option>3</option>
+  <option>4</option>
+  <option>5</option>
+</select>
+</div>
+</div>
+<?php echo form_submit('submit_Profil', 'Valider', "class='btn btn-lg btn-primary btn-block'"); ?>
+
 <body>
