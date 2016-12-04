@@ -51,8 +51,9 @@ class Intervention extends CI_Controller
 
   function create()
   {
+    var_dump($this->input->post('date'));
     $intervenant_id = $this->input->post('intervenant');
-    $date           = strtotime($this->input->post('date'));
+    $date           = $this->input->post('date');
     $place_id       = $this->input->post('place');
     $kind_id        = 4;
     $this->intervention_model->insert($intervenant_id, $date, $place_id, $kind_id);

@@ -37,6 +37,7 @@ class Intervention_Model extends CI_Model
     $raw = $query->row(0);
 
     $intervention = array(
+      'id_intrevention'  => $raw->id_intrevention,
       'intervenant_id'  => $raw->intervenant_id,
       'date'            => $raw->date,
       'place_id'        => $raw->place_id,
