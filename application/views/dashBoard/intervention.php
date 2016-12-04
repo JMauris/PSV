@@ -98,3 +98,8 @@ foreach ($futur as $key => $value) {
 	 echo "</div>";
  }
   ?>
+	<script>
+	$(function() {
+		$(".date").datepicker({ dateFormat: 'dd-mm-yy' });
+	});
+	</script>
