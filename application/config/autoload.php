@@ -137,4 +137,5 @@ $autoload['model'] = array(
   'persons/intervenant_model',
   'intervention/intervention_model',
   'intervention/place_model',
+  'intervention/material_model',
   'intervention/thematics_model');
