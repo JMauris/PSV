@@ -40,12 +40,15 @@ class Intervention extends CI_Controller
     $places = $this->place_model->getAll();
     $intervenants = $this->intervenant_model->getAllIntervenant();
     $thematics = $this->thematics_model->getTree();
+    $materials = $this->material_model->getAll();
+
 
     $data = array(
       'intervention'  => $intervention,
       'places'        => $places,
       'intervenants'  => $intervenants,
-      'thematics'     => $thematics
+      'thematics'     => $thematics,
+      'materials'     => $materials
      );
     var_dump($data);
 
