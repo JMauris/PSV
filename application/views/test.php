@@ -8,17 +8,34 @@ var_dump($thematics);
 <?php
 $this->output->enable_profiler(true);
 echo form_open('test');
+  $selctedThema = array();
   $labelExtraTopLevel = array('style' => 'font-weight:700');
   $labelExtraMidLevel = array('style' => 'font-weight:400');
   $labelExtraLowLevel = array('style' => 'font-weight:400;font-style: italic');
   if(isset($thematics['children']))
     foreach ($thematics['children'] as $topLevelThema) {
-        echo '<div style="padding-left: 10px">';
+      $selctedThema[$topLevelThema['id']]=false;
+      if(isset($topLevelThema['children']))
+          foreach ($topLevelThema['children'] as $midLevelThema) {
+            $selctedThema[$midLevelThema['id']]=false;
+            if(isset($midLevelThema['children']))
+              foreach ($midLevelThema['children'] as $lowLevelThema) {
+                  $selctedThema[$lowLevelThema['id']]=false;
+              }
+          }
+  }
+
+
+  if(isset($thematics['children']))
+    foreach ($thematics['children'] as $topLevelThema) {
+      echo '<div style="padding-left: 10px">';
+      $selctedThema[$topLevelThema['id']]=false;
+      $id=$topLevelThema['id'];
       $data = array(
-            'name'          => 'thematics_'.$topLevelThema['id'],
-            'id'            => 'thematics_'.$topLevelThema['id'],
+            'name'          => 'selctedThema[]',
+            'id'            => 'thematics_'.$id,
             'value'         => 'accept',
-            'checked'       => false,
+            'checked'       => &$selctedThema[$id],
             'style'         => 'margin:10px'
         );
         echo form_checkbox($data);
@@ -26,11 +43,12 @@ echo form_open('test');
         if(isset($topLevelThema['children']))
           foreach ($topLevelThema['children'] as $midLevelThema) {
             echo '<div style="padding-left: 10px">';
+            $id=$midLevelThema['id'];
             $data = array(
-                  'name'          => 'thematics_'.$midLevelThema['id'],
-                  'id'            => 'thematics_'.$midLevelThema['id'],
+                  'name'          => 'selctedThema[]',
+                  'id'            => 'thematics_'.$id,
                   'value'         => 'accept',
-                  'checked'       => false,
+                  'checked'       => &$selctedThema[$id],
                   'style'         => 'margin:10px'
               );
               echo form_checkbox($data);
@@ -38,11 +56,12 @@ echo form_open('test');
               if(isset($midLevelThema['children']))
                 foreach ($midLevelThema['children'] as $lowLevelThema) {
                   echo '<div style="padding-left: 10px">';
+                  $id=$lowLevelThema['id'];
                   $data = array(
-                        'name'          => 'thematics_'.$lowLevelThema['id'],
-                        'id'            => 'thematics_'.$lowLevelThema['id'],
+                        'name'          => 'selctedThema[]',
+                        'id'            => 'thematics_'.$id,
                         'value'         => 'accept',
-                        'checked'       => false,
+                        'checked'       => &$selctedThema[$id],
                         'style'         => 'margin:10px'
                     );
                     echo form_checkbox($data);

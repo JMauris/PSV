@@ -27,10 +27,6 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 			</div>
 			<div class="col-xs-4">
 				<?php
-					$placeInput= array(
-						'id' 		=> 'place',
-						'name'	=> 'place',
-						'class'	=> 'form-control date');
 					echo form_label('Lieu');
 					echo "<br/>";
 					array_unshift($places,'');

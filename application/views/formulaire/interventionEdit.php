@@ -1,20 +1,17 @@
 <?php
 	//include_once('/../header.php');
-	$interventionType = array(
-		'1' => 'Mail',
-		'2' => 'Entretient',
-		'3' => 'Téléphone',
-		'4' => 'Démarche',
-	);
 
 $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 	echo form_open('intervention/edit/'. $intervention['id_intrevention']);
 
 ?>
-	<div class="container">
+	<div class="container-fluid">
 		<br/>
+		<div class="row text-center">
+				<h2>Informations générales</h2>
+		</div>
 		<div class="form-group row">
-			<div class="col-xs-4">
+			<div class="col-sm-4">
 				<?php
 					echo form_label('Intervenant');
 					echo "<br/>";
@@ -22,7 +19,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 
 				?>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-sm-4">
 				<?php
 					$dateInput= array(
 						'id' 		=> 'date',
@@ -33,7 +30,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 					echo form_input($dateInput);
 				?>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-sm-4">
 				<?php
 
 					echo form_label('Lieu');
@@ -41,7 +38,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 					echo form_dropdown('place', $places, $intervention['place_id'], $DropDownextra);
 				?>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-sm-4">
 				<?php
 					$durationInput= array(
 						'id' 		=> 'duration',
@@ -52,7 +49,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 					echo form_input($durationInput);
 				?>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-sm-4">
 				<?php
 				$value =0;
 				if($intervention['distance']!=null)
@@ -66,7 +63,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 					echo form_input($distanceInput);
 				?>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-sm-4">
 				<?php
 				$value =0;
 				if($intervention['extraCost']!=null)
@@ -81,6 +78,9 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 				?>
 			</div>
 		</div>
+		<div class="row text-center">
+				<h2>Thèmes abordés</h2>
+		</div>
 		<div class="form-group row">
 			<?php
 			$labelExtraTopLevel = array('style' => 'font-weight:700');
@@ -88,7 +88,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 			$labelExtraLowLevel = array('style' => 'font-weight:400;font-style: italic');
 			if(isset($thematics['children']))
 				foreach ($thematics['children'] as $topLevelThema) {
-						echo '<div class="col-xs-3">';
+						echo '<div class="col-sm-3 col-xs-6">';
 					$data = array(
 								'name'          => 'thematics_'.$topLevelThema['id'],
 								'id'            => 'thematics_'.$topLevelThema['id'],
@@ -129,8 +129,36 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 							}
 					echo "</div>";
 			}
-			echo "</div>";
 			?>
 		</div>
+		<div class="row text-center">
+			<h2>Materiel distribué</h2>
+		</div>
+		<div class="form-group row">
+			<?php
+				foreach ($materials as $key => $material) {
+					echo '<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">';
+					$data = array(
+					  'name' => 'material_'.$key,
+					  'id' => 'material_'.$key,
+					  'class' => 'form-control',
+					  'type' => 'number'
+					);
+					echo form_label($material);
+					echo form_input($data);
+					echo "</div>";
+				}
+			 ?>
+		</div>
 
-<?php echo form_submit('submit_Profil', 'Valider', "class='btn btn-lg btn-primary btn-block'"); ?>
+		<div class="form-group row">
+		<?php echo form_submit('submit_Profil', 'Valider', "class='btn btn-lg btn-primary btn-block'"); ?>
+		</div>
+		<div class="row text-center">
+			<h2>presonnes rencontrées</h2>
+		</div>
+		<div class="form-group row">
+		</div>
+		<div class="form-group row">
+		<?php echo form_submit('submit_Profil', 'Valider', "class='btn btn-lg btn-primary btn-block'"); ?>
+		</div>
