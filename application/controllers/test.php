@@ -14,8 +14,10 @@ class Test extends CI_Controller
   }
   public function index()
   {
-    var_dump("null");
-      $this->load->view('formulaire/participant');
+    $thematics = $this->thematics_model->getTree();
+    $data = array('thematics' =>$thematics);
+    
+    $this->load->view('test',$data);
   }
 
 }

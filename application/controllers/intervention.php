@@ -57,7 +57,8 @@ class Intervention extends CI_Controller
     $place_id       = $this->input->post('place');
     $kind_id        = 4;
     $this->intervention_model->insert($intervenant_id, $date, $place_id, $kind_id);
-    redirect('intervention');
+
+    //redirect('intervention');
   }
 
 

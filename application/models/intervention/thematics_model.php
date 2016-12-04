@@ -1,15 +1,13 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Origines_Model extends CI_Model
+class Thematics_Model extends CI_Model
 {
   function __construct()
   {
     parent::__construct();
   }
 
-  function getOriginsTree(){
-    if ($query->num_rows() != 1)
-    return NULL;
+  function getTree(){
 
     $respons = array('id' => 0,
                   'text' => '');
@@ -21,7 +19,7 @@ class Origines_Model extends CI_Model
 
   function populate(&$daddy){
     $this->db->where('parent_id', $daddy['id']);
-    $query = $this->db->get('origines');
+    $query = $this->db->get('thematics');
     if ($query->num_rows() == 0)
       return NULL;
 
@@ -29,7 +27,7 @@ class Origines_Model extends CI_Model
 
     $children = array();
     foreach ($rows as $row) {
-      $temp = array('id' => $row['id_origine'],
+      $temp = array('id' => $row['id_thematic'],
                     'text' => $row['name']);
       $this->populate($temp);
       array_push($children , $temp);
@@ -37,7 +35,5 @@ class Origines_Model extends CI_Model
 
     $daddy['children']=$children;
 
-
-
-  }
+}
 }
