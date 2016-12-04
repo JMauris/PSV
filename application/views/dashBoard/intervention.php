@@ -1,7 +1,7 @@
 <h2>Créer une nouvelle intervention</h2>
 <?php
 	//include_once('/../header.php');
-
+$DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 	echo form_open('intervention/create');
 ?>
 	<div class="container">
@@ -12,7 +12,7 @@
 					echo form_label('Intervenant');
 					echo "<br/>";
 					array_unshift($intervenants,'');
-					echo form_dropdown('intervenant', $intervenants);
+					echo form_dropdown('intervenant', $intervenants,'',$DropDownextra);
 				?>
 			</div>
 			<div class="col-xs-4">
@@ -34,10 +34,12 @@
 					echo form_label('Lieu');
 					echo "<br/>";
 					array_unshift($places,'');
-					echo form_dropdown('place', $places);
+					echo form_dropdown('place', $places,'',$DropDownextra);
 				?>
 			</div>
-			<div class="col-xs-8">
+		</div>
+		<div class="form-group row">
+			<div class="col-xs-8" >
 				<?php
 					echo form_submit('submit_Profil', 'Créer une nouvelle intervention', "class='btn btn-lg btn-primary btn-block'");
 				?>
