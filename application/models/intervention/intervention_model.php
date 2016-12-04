@@ -73,14 +73,44 @@ class Intervention_Model extends CI_Model
     $this->db->update('intreventions', $insertRow);
   }
   function _populate(&$intervention){
-    $this->db->where('id_kind', $intervention['kind_id']);
-    $query = $this->db->get('intrevention_kinds');
-    $kind = $query->result_array(0);
-
-    $intervention['intervenant'] =
-        $this->intervenant_model->getIntervenantById($intervention['intervenant_id']);
-    $intervention['place'] =
-        $this->place_model->getById($intervention['place_id']);
-    $intervention['kind'] = $kind;
+    $this->_addIntervenant($intervention);
+    $this->_addKind($intervention);
+    $this->_addPlace($intervention);
+    $this->_addMaterial($intervention);
+    $this->_addThematics($intervention);
+    }
+    function _addIntervenant(&$intervention){
+      $intervention['intervenant'] =
+          $this->intervenant_model->getIntervenantById($intervention['intervenant_id']);
+    }
+    function _addKind(&$intervention){
+      $this->db->where('id_kind', $intervention['kind_id']);
+      $query = $this->db->get('intrevention_kinds');
+      $kind = $query->result_array(0);
+      $intervention['kind'] = $kind;
+    }
+    function _addPlace(&$intervention){
+      $intervention['place'] =
+          $this->place_model->getById($intervention['place_id']);
+    }
+    function _addMaterial(&$intervention){
+      $this->db->where('intrevention_id', $intervention['id_intrevention']);
+      $query = $this->db->get('material_has_intrevention');
+      $rows = $query->result_array();
+      $materials= array();
+      foreach ($rows as $key => $row) {
+        $materials[$row['material_id']]=$row['quantity'];
+      }
+      $intervention['materials']=$materials;
+    }
+    function _addThematics(&$intervention){
+      $this->db->where('intervention_id', $intervention['id_intrevention']);
+      $query = $this->db->get('interventions_has_thematics');
+      $rows = $query->result_array();
+      $thematics= array();
+      foreach ($rows as $key => $row) {
+          array_push($thematics, $row['thematic_id']);
+      }
+      $intervention['thematics']=$thematics;
     }
 }

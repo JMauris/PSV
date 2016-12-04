@@ -23,5 +23,5 @@ $(function(){
 });
 
 $(function() {
-  $(".date").datepicker({ dateFormat: 'dd-mm-yy' });
+  $(".date").datepicker({ dateFormat: 'yy-mm-dd' });
 });

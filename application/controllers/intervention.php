@@ -36,13 +36,17 @@ class Intervention extends CI_Controller
   }
 
   function edit($id){
+$this->output->enable_profiler(true);
+
+    if ($this->form_validation->run() == TRUE){
+
+    }
+
     $intervention =  $this->intervention_model->getById($id);
     $places = $this->place_model->getAll();
     $intervenants = $this->intervenant_model->getAllIntervenant();
     $thematics = $this->thematics_model->getTree();
     $materials = $this->material_model->getAll();
-
-
     $data = array(
       'intervention'  => $intervention,
       'places'        => $places,
@@ -51,24 +55,19 @@ class Intervention extends CI_Controller
       'materials'     => $materials
      );
     var_dump($data);
-
-
-
     $this->load->view('formulaire/interventionEdit',$data);
-
-
   }
+
 
   function create()
   {
-    var_dump($this->input->post('date'));
     $intervenant_id = $this->input->post('intervenant');
     $date           = $this->input->post('date');
     $place_id       = $this->input->post('place');
     $kind_id        = 4;
     $this->intervention_model->insert($intervenant_id, $date, $place_id, $kind_id);
 
-    //redirect('intervention');
+    redirect('intervention');
   }
 
 

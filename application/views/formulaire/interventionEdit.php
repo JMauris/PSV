@@ -15,7 +15,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 				<?php
 					echo form_label('Intervenant');
 					echo "<br/>";
-					echo form_dropdown('intervenant', $intervenants, $intervention['intervenant_id'],$DropDownextra);
+					echo form_dropdown('$intervention[intervenant_id]', $intervenants, $intervention['intervenant_id'],$DropDownextra);
 
 				?>
 			</div>
@@ -23,7 +23,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 				<?php
 					$dateInput= array(
 						'id' 		=> 'date',
-    				'name'	=> 'date',
+    				'name'	=> '$intervention[date]',
 					 	'class'	=> 'form-control date',
 						'value' => $intervention['date']);
 					echo form_label('Date');
@@ -35,14 +35,14 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 
 					echo form_label('Lieu');
 					echo "<br/>";
-					echo form_dropdown('place', $places, $intervention['place_id'], $DropDownextra);
+					echo form_dropdown('$intervention[place_id]', $places, $intervention['place_id'], $DropDownextra);
 				?>
 			</div>
 			<div class="col-sm-4">
 				<?php
 					$durationInput= array(
 						'id' 		=> 'duration',
-						'name'	=> 'duration',
+						'name'	=> '$intervention[duration]',
 						'class'	=> 'form-control',
 						'value' => $intervention['duration']);
 					echo form_label('Durée');
@@ -56,7 +56,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 					$value=$intervention['distance'];
 					$distanceInput= array(
 						'id' 		=> 'distance',
-						'name'	=> 'distance',
+						'name'	=> '$intervention[distance]',
 						'class'	=> 'form-control',
 						'value' => $value);
 					echo form_label('Distance (Km)');
@@ -70,7 +70,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 					$value=$intervention['extraCost'];
 					$extraCostInput= array(
 						'id' 		=> 'extraCost',
-						'name'	=> 'extraCost',
+						'name'	=> '$intervention[extraCost]',
 						'class'	=> 'form-control',
 						'value' => $value);
 					echo form_label('Note de frais');
@@ -88,12 +88,16 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 			$labelExtraLowLevel = array('style' => 'font-weight:400;font-style: italic');
 			if(isset($thematics['children']))
 				foreach ($thematics['children'] as $topLevelThema) {
-						echo '<div class="col-sm-3 col-xs-6">';
+					echo '<div class="col-sm-3 col-xs-6">'."\n";
+					$cheked= false;
+					if(isset($intervention['thematics']))
+							if(in_array($topLevelThema['id'],$intervention['thematics']))
+								$cheked=true;
 					$data = array(
-								'name'          => 'thematics_'.$topLevelThema['id'],
+								'name'          => '$intervention[thematics][]',
 								'id'            => 'thematics_'.$topLevelThema['id'],
-								'value'         => 'accept',
-								'checked'       => false,
+								'value'         => $topLevelThema['id'],
+								'checked'       => $cheked,
 								'style'         => 'margin:10px'
 						);
 						echo form_checkbox($data);
@@ -101,33 +105,41 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 
 						if(isset($topLevelThema['children']))
 							foreach ($topLevelThema['children'] as $midLevelThema) {
-								echo '<div style="padding-left: 10px">';
+								echo '<div style="padding-left: 10px">'."\n";
+								$cheked= false;
+								if(isset($intervention['thematics']))
+										if(in_array($midLevelThema['id'],$intervention['thematics']))
+												$cheked=true;
 								$data = array(
-											'name'          => 'thematics_'.$midLevelThema['id'],
+											'name'          => '$intervention[thematics][]',
 											'id'            => 'thematics_'.$midLevelThema['id'],
-											'value'         => 'accept',
-											'checked'       => false,
+											'value'         => $midLevelThema['id'],
+											'checked'       => $cheked,
 											'style'         => 'margin:10px'
 									);
 									echo form_checkbox($data);
 									echo form_label($midLevelThema['text'],'',$labelExtraMidLevel);
 									if(isset($midLevelThema['children']))
 										foreach ($midLevelThema['children'] as $lowLevelThema) {
-											echo '<div style="padding-left: 10px">';
+											echo '<div style="padding-left: 10px">'."\n";
+											$cheked= false;
+											if(isset($intervention['thematics']))
+													if(in_array($lowLevelThema['id'],$intervention['thematics']))
+															$cheked=true;
 											$data = array(
-														'name'          => 'thematics_'.$lowLevelThema['id'],
+														'name'          => '$intervention[thematics][]',
 														'id'            => 'thematics_'.$lowLevelThema['id'],
-														'value'         => 'accept',
-														'checked'       => false,
+														'value'         => $lowLevelThema['id'],
+														'checked'       => $cheked,
 														'style'         => 'margin:10px'
 												);
 												echo form_checkbox($data);
 												echo form_label($lowLevelThema['text'],'',$labelExtraLowLevel);
-												echo "</div>";
+												echo '</div>'."\n";
 										}
-								echo "</div>";
+								echo '</div>'."\n";
 							}
-					echo "</div>";
+					echo '</div>'."\n";
 			}
 			?>
 		</div>
@@ -137,16 +149,21 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 		<div class="form-group row">
 			<?php
 				foreach ($materials as $key => $material) {
-					echo '<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">';
+					echo '<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">'."\n";
+					$value=0;
+					if(isset($intervention['materials']))
+						if(isset($intervention['materials'][$key]))
+							$value = $intervention['materials'][$key];
 					$data = array(
-					  'name' => 'material_'.$key,
+					  'name' => '$intervention[materials]['.$key.']',
 					  'id' => 'material_'.$key,
+						'value' => $value,
 					  'class' => 'form-control',
 					  'type' => 'number'
 					);
 					echo form_label($material);
 					echo form_input($data);
-					echo "</div>";
+					echo "</div>"."\n";
 				}
 			 ?>
 		</div>
