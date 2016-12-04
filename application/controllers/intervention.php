@@ -39,14 +39,21 @@ class Intervention extends CI_Controller
     $intervention =  $this->intervention_model->getById($id);
     $places = $this->place_model->getAll();
     $intervenants = $this->intervenant_model->getAllIntervenant();
+    $thematics = $this->thematics_model->getTree();
 
     $data = array(
       'intervention'  => $intervention,
       'places'        => $places,
-      'intervenants'  => $intervenants
+      'intervenants'  => $intervenants,
+      'thematics'     => $thematics
      );
     var_dump($data);
+
+
+
     $this->load->view('formulaire/interventionEdit',$data);
+
+
   }
 
   function create()
