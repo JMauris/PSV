@@ -1,14 +1,34 @@
-<form>
-  <input type="button" value="Ajouter !" onclick="ajouterElement();" />
-  <div id="conteneur">
-    <div id="element1">
-      <input type="text" value="" id="input1" name="input1" />
-      <input type="button" value="Supprimer n°1 !" id="delete1" />
-    </div>
-    ...
-    <div id="elementn">
-      <input type="text" value="" id="inputn" name="inputn" />
-      <input type="button" value="Supprimer n°n !" id="deleten" />
-    </div>
-  </div>
-</form>
+<html>
+<head>
+<script>
+function test(){
+
+  var first = document.querySelector('table tbody tr:first-child');
+  first.parentNode.appendChild(first.cloneNode(true));
+
+}
+
+
+</script>
+
+</head>
+<body>
+<table>
+  <thead>
+    <tr><th></th></tr>
+  </thead>
+  <tbody>
+<tr>
+    <td><input type="file" name="fichier[]" /></td>
+    <td><input type="text" name="titre[]" placeholder="Titre photo"/></td>
+    <td><input type="text" name="description[]" placeholder="Description"/></td>
+    <td><input type="text" name="annee" placeholder="annee"/></td>
+    <td ><button onClick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode)">Suppr.</button></td>
+
+</tr>
+  </tbody>
+</table>
+
+<button id="add" onClick="test()">Ajouter ligne</button>
+  </body>
+</html>
