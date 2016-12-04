@@ -43,7 +43,7 @@ class Intervention_Model extends CI_Model
       'place_id'        => $raw->place_id,
       'duration'        => $raw->duration,
       'extraCost'       => $raw->extraCost,
-      'distance'       => $raw->distance,
+      'distance'        => 0,
       'kind_id'         => $raw->kind_id
      );
 
