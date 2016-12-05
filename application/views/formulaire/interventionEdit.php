@@ -171,9 +171,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 			 ?>
 		</div>
 
-		<div class="form-group row">
-		<?php echo form_submit('submit_Profil', 'Valider', "class='btn btn-lg btn-primary btn-block'"); ?>
-		</div>
+	
 		<div class="row text-center">
 			<h2>presonnes rencontrées</h2>
 		</div>
@@ -238,8 +236,6 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 							echo form_dropdown('intervention[persons]['.$key.'][quickAction]', $quckActions, 'none', $DropDownextra);
 						echo "</div>"."\n";
 						echo '<div class="col-xs-6">';
-							echo "<br/>";
-							echo form_submit('submit_Profil', 'Valider', "class='btn btn-lg btn-primary btn-block'");
 						echo "</div>"."\n";
 					echo "</div>"."\n";
 				}
@@ -274,13 +270,15 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 					  ?>
 				 </div>
 				 <div class="col-xs-12">
-					  <?php
+					   <?php
 					 echo "<br/>";
 					 echo form_submit('submit_Profil', 'Ajouter', "class='btn btn-lg btn-primary btn-block'");
 					  ?>
 				 </div>
 			 </div>
 		</div>
-		<div class="form-group row">
-		<?php echo form_submit('submit_Profil', 'Valider', "class='btn btn-lg btn-primary btn-block'"); ?>
-		</div>
+
+
+			<nav class="navbar navbar-fixed-bottom navbar-light bg-faded">
+					<?php echo form_submit('submit_Profil', 'Valider', "class='btn btn-lg btn-primary btn-block'"); ?>
+			</nav>
