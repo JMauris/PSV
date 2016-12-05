@@ -36,55 +36,25 @@ class Intervention extends CI_Controller
   }
 
   function edit($id){
-    $this->output->enable_profiler(true);
-    $intervention = $this->input->post('intervention');
-    if (null !== $intervention){
-        if($intervention['id_intrevention']!=$id)
-          return;
+$this->output->enable_profiler(true);
 
-        $potentialyAdded = array_pop($intervention['persons']);
-        if( 0 != $potentialyAdded['gender_id'])
-          if( 0 != $potentialyAdded['sexuality_id'])
-            if( 0 != $potentialyAdded['ageGroup_id']){
-              $inserted = $this->person_model->getById(
-                $this->person_model->insertPerson(
-                  "",
-                  $potentialyAdded['origine_id'],
-                  $potentialyAdded['ageGroup_id'],
-                  $potentialyAdded['gender_id'],
-                  $potentialyAdded['sexuality_id']
-                )
-              );
-              $inserted['quickAction']= 'added';
-              array_push($intervention['persons'],$inserted);
-            }
+    if ($this->form_validation->run() == TRUE){
 
-            $this->intervention_model->update($intervention);
     }
-
 
     $intervention =  $this->intervention_model->getById($id);
     $places = $this->place_model->getAll();
     $intervenants = $this->intervenant_model->getAllIntervenant();
     $thematics = $this->thematics_model->getTree();
     $materials = $this->material_model->getAll();
-    $genders = $this->gender_model->getActivs();
-    $sexuality = $this->sexuality_model->getActivs();
-    $ageGroups=$this->agegroup_model->getActivs();
-    $origins = $this->origines_model->getFlatTree();
-
     $data = array(
       'intervention'  => $intervention,
       'places'        => $places,
       'intervenants'  => $intervenants,
       'thematics'     => $thematics,
-      'materials'     => $materials,
-      'genders'       => $genders,
-      'sexuality'     => $sexuality,
-      'ageGroups'     => $ageGroups,
-      'origins'       => $origins
+      'materials'     => $materials
      );
-     var_dump($data);
+    var_dump($data);
     $this->load->view('formulaire/interventionEdit',$data);
   }
 
