@@ -14,10 +14,9 @@ class Test extends CI_Controller
   }
   public function index()
   {
-    $thematics = $this->thematics_model->getTree();
-    $data = array('thematics' =>$thematics);
-    
-    $this->load->view('test',$data);
+
+    $test = $this->person_model->getByIntervention(3);
+    var_dump($test);
   }
 
 }
