@@ -134,7 +134,11 @@ $autoload['language'] = array('tank_auth');
 */
 $autoload['model'] = array(
   'persons/origines_model',
+  'persons/agegroup_model',
+  'persons/gender_model',
+  'persons/sexuality_model',
   'persons/intervenant_model',
+  'persons/person_model',
   'intervention/intervention_model',
   'intervention/place_model',
   'intervention/material_model',
