@@ -2,6 +2,27 @@
 	//include_once('/../header.php');
 
 $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
+$dropDownDuration = array(
+	'0' => '',
+	'5'  => '05',
+	'10' => '10',
+	'15' => '15',
+	'20' => '20',
+	'30' => '30',
+	'40' => '40',
+	'50' => '50',
+	'60' => '1:00',
+	'75' => '1:15',
+	'90' => '1:30',
+	'105' => '1:45',
+	'120' => '2:00',
+	'135' => '2:15',
+	'150' => '2:30',
+	'180' => '3:00',
+	'210' => '3:30',
+	'240' => '4:00',
+	'310' => '4:30',
+);
 	echo form_open('intervention/edit/'. $intervention['id_intrevention']);
 
 ?>
@@ -97,51 +118,51 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 							if(in_array($topLevelThema['id'],$intervention['thematics']))
 								$cheked=true;
 					$data = array(
-								'name'          => 'intervention[thematics][]',
-								'id'            => 'thematics_'.$topLevelThema['id'],
-								'value'         => $topLevelThema['id'],
-								'checked'       => $cheked,
-								'style'         => 'margin:10px'
-						);
-						echo form_checkbox($data);
-						echo form_label($topLevelThema['text'],'',$labelExtraTopLevel);
+							'name'          => 'intervention[thematics][]',
+							'id'            => 'thematics_'.$topLevelThema['id'],
+							'value'         => $topLevelThema['id'],
+							'checked'       => $cheked,
+							'style'         => 'margin:10px'
+					);
+					echo form_checkbox($data);
+					echo form_label($topLevelThema['text'],'',$labelExtraTopLevel);
 
-						if(isset($topLevelThema['children']))
-							foreach ($topLevelThema['children'] as $midLevelThema) {
-								echo '<div style="padding-left: 10px">'."\n";
-								$cheked= false;
-								if(isset($intervention['thematics']))
-										if(in_array($midLevelThema['id'],$intervention['thematics']))
-												$cheked=true;
-								$data = array(
-											'name'          => 'intervention[thematics][]',
-											'id'            => 'thematics_'.$midLevelThema['id'],
-											'value'         => $midLevelThema['id'],
-											'checked'       => $cheked,
-											'style'         => 'margin:10px'
-									);
-									echo form_checkbox($data);
-									echo form_label($midLevelThema['text'],'',$labelExtraMidLevel);
-									if(isset($midLevelThema['children']))
-										foreach ($midLevelThema['children'] as $lowLevelThema) {
-											echo '<div style="padding-left: 10px">'."\n";
-											$cheked= false;
-											if(isset($intervention['thematics']))
-													if(in_array($lowLevelThema['id'],$intervention['thematics']))
-															$cheked=true;
-											$data = array(
-														'name'          => 'intervention[thematics][]',
-														'id'            => 'thematics_'.$lowLevelThema['id'],
-														'value'         => $lowLevelThema['id'],
-														'checked'       => $cheked,
-														'style'         => 'margin:10px'
-												);
-												echo form_checkbox($data);
-												echo form_label($lowLevelThema['text'],'',$labelExtraLowLevel);
-												echo '</div>'."\n";
-										}
-								echo '</div>'."\n";
-							}
+					if(isset($topLevelThema['children']))
+						foreach ($topLevelThema['children'] as $midLevelThema) {
+							echo '<div style="padding-left: 10px">'."\n";
+							$cheked= false;
+							if(isset($intervention['thematics']))
+									if(in_array($midLevelThema['id'],$intervention['thematics']))
+											$cheked=true;
+							$data = array(
+										'name'          => 'intervention[thematics][]',
+										'id'            => 'thematics_'.$midLevelThema['id'],
+										'value'         => $midLevelThema['id'],
+										'checked'       => $cheked,
+										'style'         => 'margin:10px'
+								);
+								echo form_checkbox($data);
+								echo form_label($midLevelThema['text'],'',$labelExtraMidLevel);
+								if(isset($midLevelThema['children']))
+									foreach ($midLevelThema['children'] as $lowLevelThema) {
+										echo '<div style="padding-left: 10px">'."\n";
+										$cheked= false;
+										if(isset($intervention['thematics']))
+												if(in_array($lowLevelThema['id'],$intervention['thematics']))
+														$cheked=true;
+										$data = array(
+													'name'          => 'intervention[thematics][]',
+													'id'            => 'thematics_'.$lowLevelThema['id'],
+													'value'         => $lowLevelThema['id'],
+													'checked'       => $cheked,
+													'style'         => 'margin:10px'
+											);
+											echo form_checkbox($data);
+											echo form_label($lowLevelThema['text'],'',$labelExtraLowLevel);
+											echo '</div>'."\n";
+									}
+							echo '</div>'."\n";
+						}
 					echo '</div>'."\n";
 			}
 			?>
@@ -171,16 +192,16 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 			 ?>
 		</div>
 
-	
+
 		<div class="row text-center">
 			<h2>presonnes rencontrées</h2>
 		</div>
 		<div class="form-group row">
 			<?php
-				foreach ($intervention['persons'] as $key => $peron) {
+				foreach ($intervention['persons'] as $key => $person) {
 					echo '<div>';
 						echo form_hidden('intervention[persons]['.$key.'][id_Person]',
-							$intervention['persons'][$key]['id_Person']);
+							$person['id_Person']);
 					echo '</div>';
 
 
@@ -235,8 +256,79 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 							echo form_label('Action rapide');
 							echo form_dropdown('intervention[persons]['.$key.'][quickAction]', $quckActions, 'none', $DropDownextra);
 						echo "</div>"."\n";
-						echo '<div class="col-xs-6">';
-						echo "</div>"."\n";
+						$currentKey = $person['id_Person'];
+						if(true == isset($intervention['interventions'][$currentKey])){
+							$current = $intervention['interventions'][$currentKey];
+							echo '<div class="col-xs-12">';
+								echo "<h4>Entretient personel</h4>";
+								echo "<div>";
+									echo form_label('Durée');
+									echo form_dropdown('intervention[interventions]['.$currentKey.'][duration]', $dropDownDuration , $current['duration'], $DropDownextra);
+								echo "</div>"."\n";
+								echo "<div>";
+								$labelExtraTopLevel = array('style' => 'font-weight:700');
+								$labelExtraMidLevel = array('style' => 'font-weight:400');
+								$labelExtraLowLevel = array('style' => 'font-weight:400;font-style: italic');
+								if(isset($thematics['children']))
+									foreach ($thematics['children'] as $topLevelThema) {
+										echo '<div class="col-sm-3 col-xs-6">'."\n";
+										$cheked= false;
+										if(isset($intervention['thematics']))
+												if(in_array($topLevelThema['id'],$intervention['thematics']))
+													$cheked=true;
+										$data = array(
+												'name'          => 'intervention[interventions]['.$currentKey.'][thematics][]',
+												'id'            => 'thematics_'.$topLevelThema['id'],
+												'value'         => $topLevelThema['id'],
+												'checked'       => $cheked,
+												'style'         => 'margin:10px'
+										);
+										echo form_checkbox($data);
+										echo form_label($topLevelThema['text'],'',$labelExtraTopLevel);
+
+										if(isset($topLevelThema['children']))
+											foreach ($topLevelThema['children'] as $midLevelThema) {
+												echo '<div style="padding-left: 10px">'."\n";
+												$cheked= false;
+												if(isset($intervention['thematics']))
+														if(in_array($midLevelThema['id'],$intervention['thematics']))
+																$cheked=true;
+												$data = array(
+															'name'          => 'intervention[interventions]['.$currentKey.'][thematics][]',
+															'id'            => 'thematics_'.$midLevelThema['id'],
+															'value'         => $midLevelThema['id'],
+															'checked'       => $cheked,
+															'style'         => 'margin:10px'
+													);
+													echo form_checkbox($data);
+													echo form_label($midLevelThema['text'],'',$labelExtraMidLevel);
+													if(isset($midLevelThema['children']))
+														foreach ($midLevelThema['children'] as $lowLevelThema) {
+															echo '<div style="padding-left: 10px">'."\n";
+															$cheked= false;
+															if(isset($intervention['thematics']))
+																	if(in_array($lowLevelThema['id'],$intervention['thematics']))
+																			$cheked=true;
+															$data = array(
+																		'name'          => 'intervention[interventions]['.$currentKey.'][thematics][]',
+																		'id'            => 'thematics_'.$lowLevelThema['id'],
+																		'value'         => $lowLevelThema['id'],
+																		'checked'       => $cheked,
+																		'style'         => 'margin:10px'
+																);
+																echo form_checkbox($data);
+																echo form_label($lowLevelThema['text'],'',$labelExtraLowLevel);
+																echo '</div>'."\n";
+														}
+												echo '</div>'."\n";
+											}
+										echo '</div>'."\n";
+								}
+
+								echo "</div>"."\n";
+							echo "</div>"."\n";
+						}
+
 					echo "</div>"."\n";
 				}
 			 ?>

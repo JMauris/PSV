@@ -14,6 +14,7 @@ class Intervention_Model extends CI_Model
 
   function getFuturs(){
     $this->db->where('date >=', 'NOW()', FALSE);
+    $this->db->where('parent', null);
     $this->db->order_by("date", "desc");
     $query = $this->db->get(self::intervention_Table);
     $raw = $query->result_array();
@@ -24,6 +25,7 @@ class Intervention_Model extends CI_Model
   }
   function getOld(){
     $this->db->where('date <', 'NOW()', FALSE);
+    $this->db->where('parent', null);
     $this->db->order_by("date", "desc");
     $query = $this->db->get(self::intervention_Table);
     $raw = $query->result_array();
@@ -55,6 +57,7 @@ class Intervention_Model extends CI_Model
      );
 
     $this->_populate($intervention);
+    $this->_addMeet($intervention);
 
     return $intervention;
   }
@@ -65,7 +68,7 @@ class Intervention_Model extends CI_Model
       'place_id' => $place_id,
       'kind_id' => $kind_id
      );
-     $this->db->insert('intreventions', $insertRow);
+     return $this->db->insert(self::intervention_Table, $insertRow);
   }
   function update($intervention){
     //search current data in db
@@ -142,6 +145,30 @@ class Intervention_Model extends CI_Model
       $intervention['persons'] =
           $this->person_model->getByIntervention($intervention['id_intrevention']);
     }
+    function _addMeet(&$intervention){
+      $this->db->where('parent', $intervention['id_intrevention']);
+      $query = $this->db->get(self::intervention_Table);
+
+      $interventions = array();
+      $rows = $query->result_array();
+      foreach ($rows as $key => $row) {
+        $meet= array(
+          'id_intrevention'  => $row['id_intrevention'],
+          'intervenant_id'  => $row['intervenant_id'],
+          'date'            => $row['date'],
+          'place_id'        => $row['place_id'],
+          'duration'        => $row['duration'],
+          'extraCost'       => $row['extraCost'],
+          'distance'        => $row['distance'],
+          'kind_id'         => $row['kind_id'],
+          'person_id'       => $row['person_id']
+         );
+        $this->_populate($meet);
+        $interventions[$meet['person_id']] =$meet;
+      }
+      $intervention['interventions']=$interventions;
+
+    }
     function _updateThematics($interventionId, $thematicsIdsArray){
 
       $this->db->where('intervention_id',$interventionId);
@@ -181,7 +208,7 @@ class Intervention_Model extends CI_Model
               $this->_addPersonInIntervention($interventionId,$person['id_Person']);
             break;
           case 'addMeet':
-              $this->_addPersonInIntervention($interventionId,$person['id_Person']);
+              $this->_addInerIntervention($interventionId,$person['id_Person']);
             break;
 
           }
@@ -210,6 +237,22 @@ class Intervention_Model extends CI_Model
       $this->db->delete(self::thematics_LinkTable);
     }
     function _addInerIntervention($interventionId, $personsid){
-        $toto;
+      $this->db->where('id_intrevention', $interventionId);
+      $query = $this->db->get(self::intervention_Table);
+      if ($query->num_rows() != 1){
+          return null;
+      }
+      $raw = $query->row(0);
+      $insertRow = array(
+        'intervenant_id'  => $raw->intervenant_id,
+        'date'            => $raw->date,
+        'place_id'        => $raw->place_id,
+        'kind_id'         => 3,
+        'parent'          => $interventionId,
+        'person_id'       => $personsid
+
+       );
+       $this->db->insert(self::intervention_Table, $insertRow);
+
     }
 }
