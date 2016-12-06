@@ -11,7 +11,28 @@ class Intervention_Model extends CI_Model
   {
     parent::__construct();
   }
-
+  function getFuturs_OnlyMine($id){
+    $this->db->where('date >=', 'NOW()', FALSE);
+    $this->db->where('intervenant_id =', $id, FALSE);
+    $this->db->order_by("date", "desc");
+    $query = $this->db->get(self::intervention_Table);
+    $raw = $query->result_array();
+    foreach ($raw as $key => $value) {
+      $this->_populate($raw[$key]);
+    }
+    return $raw;
+  }
+  function getOld_OnlyMine($id){
+    $this->db->where('date <', 'NOW()', FALSE);
+    $this->db->where('intervenant_id =', $id, FALSE);
+    $this->db->order_by("date", "desc");
+    $query = $this->db->get(self::intervention_Table);
+    $raw = $query->result_array();
+    foreach ($raw as $key => $value) {
+      $this->_populate($raw[$key]);
+    }
+    return $raw;
+  }
   function getFuturs(){
     $this->db->where('date >=', 'NOW()', FALSE);
     $this->db->where('parent', null);

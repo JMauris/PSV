@@ -12,6 +12,7 @@ class Intervention extends CI_Controller
 
     $this->load->helper(array('form', 'url'));
     $this->load->library('form_validation');
+  //  $this->load->library('tank_auth');
     if (!$this->tank_auth->is_logged_in()) {
       redirect('');
 }
@@ -20,6 +21,7 @@ class Intervention extends CI_Controller
 
   function index()
   {
+    $user = $this->tank_auth->get_user_id();
     $past = $this->intervention_model->getOld();
     $futur = $this->intervention_model->getFuturs();
     $places = $this->place_model->getAll();
@@ -29,7 +31,8 @@ class Intervention extends CI_Controller
       'futur' => $futur,
       'past' => $past,
       'places' => $places,
-      'intervenants' => $intervenants
+      'intervenants' => $intervenants,
+      'user'  =>  $user
      );
 
     $this->load->view('dashBoard/intervention',$data);

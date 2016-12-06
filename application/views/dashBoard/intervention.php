@@ -1,5 +1,6 @@
 <h2>Créer une nouvelle intervention</h2>
 <?php
+
 	//include_once('/../header.php');
 $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 	echo form_open('intervention/create');
@@ -12,7 +13,7 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 					echo form_label('Intervenant');
 					echo "<br/>";
 					array_unshift($intervenants,'');
-					echo form_dropdown('intervenant', $intervenants,'',$DropDownextra);
+					echo form_dropdown('intervenant', $intervenants,$user,$DropDownextra);
 				?>
 			</div>
 			<div class="col-xs-4">
@@ -97,5 +98,11 @@ foreach ($futur as $key => $value) {
 	<script>
 	$(function() {
 		$(".date").datepicker({ dateFormat: 'dd-mm-yy' });
+			var today = new Date();
+			var dd = ("0" + (today.getDate())).slice(-2);
+			var mm = ("0" + (today.getMonth() +　1)).slice(-2);
+			var yyyy = today.getFullYear();
+			today = yyyy + '-' + mm + '-' + dd ;
+			$(".date").attr("value", today);
 	});
 	</script>
