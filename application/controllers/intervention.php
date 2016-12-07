@@ -12,29 +12,29 @@ class Intervention extends CI_Controller
 
     $this->load->helper(array('form', 'url'));
     $this->load->library('form_validation');
-  //  $this->load->library('tank_auth');
     if (!$this->tank_auth->is_logged_in()) {
       redirect('');
-}
+    }
+
   }
 
 
   function index()
   {
-    $user = $this->tank_auth->get_user_id();
-    $past = $this->intervention_model->getOld();
-    $futur = $this->intervention_model->getFuturs();
+    $past = $this->demarches_model->getOld();
+    $futur = $this->demarches_model->getFuturs();
     $places = $this->place_model->getAll();
     $intervenants = $this->intervenant_model->getAllIntervenant();
-
+    $user = $this->tank_auth->get_user_id();
+    
     $data = array(
       'futur' => $futur,
       'past' => $past,
       'places' => $places,
       'intervenants' => $intervenants,
-      'user'  =>  $user
+      'user' => $user
      );
-
+     var_dump($data);
     $this->load->view('dashBoard/intervention',$data);
   }
 
@@ -62,19 +62,19 @@ class Intervention extends CI_Controller
               array_push($intervention['persons'],$inserted);
             }
 
-            $this->intervention_model->update($intervention);
+            $this->demarches_model->update($intervention);
     }
 
 
-    $intervention =  $this->intervention_model->getById($id);
-    $places = $this->place_model->getAll();
+    $intervention =  $this->demarches_model->getById($id);
+    $places       = $this->place_model->getAll();
     $intervenants = $this->intervenant_model->getAllIntervenant();
-    $thematics = $this->thematics_model->getTree();
-    $materials = $this->material_model->getAll();
-    $genders = $this->gender_model->getActivs();
-    $sexuality = $this->sexuality_model->getActivs();
-    $ageGroups=$this->agegroup_model->getActivs();
-    $origins = $this->origines_model->getFlatTree();
+    $thematics    = $this->thematics_model->getTree();
+    $materials    = $this->material_model->getAll();
+    $genders      = $this->gender_model->getActivs();
+    $sexuality    = $this->sexuality_model->getActivs();
+    $ageGroups    =$this->agegroup_model->getActivs();
+    $origins      = $this->origines_model->getFlatTree();
 
     $data = array(
       'intervention'  => $intervention,
@@ -98,7 +98,7 @@ class Intervention extends CI_Controller
     $date           = $this->input->post('date');
     $place_id       = $this->input->post('place');
     $kind_id        = 4;
-    $this->intervention_model->insert($intervenant_id, $date, $place_id, $kind_id);
+    $this->demarches_model->insert($intervenant_id, $date, $place_id, $kind_id);
 
     redirect('intervention');
   }
