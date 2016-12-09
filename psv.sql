@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 05 Décembre 2016 à 18:01
+-- Généré le :  Ven 09 Décembre 2016 à 17:23
 -- Version du serveur :  10.1.16-MariaDB
 -- Version de PHP :  5.6.24
 
@@ -128,7 +128,9 @@ INSERT INTO `intervention_has_persons` (`intervention_id`, `person_id`) VALUES
 (3, 5),
 (3, 6),
 (3, 7),
-(3, 8);
+(3, 8),
+(15, 10),
+(16, 9);
 
 -- --------------------------------------------------------
 
@@ -174,20 +176,23 @@ CREATE TABLE `intreventions` (
   `extraCost` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `distance` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `kind_id` int(11) NOT NULL,
-  `parent` int(11) DEFAULT NULL
+  `parent` int(11) DEFAULT NULL,
+  `person_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `intreventions`
 --
 
-INSERT INTO `intreventions` (`id_intrevention`, `intervenant_id`, `date`, `place_id`, `duration`, `extraCost`, `distance`, `kind_id`, `parent`) VALUES
-(3, 2, '2016-12-29', 1, 15, 12, 25, 4, NULL),
-(13, 3, '0000-00-00', 1, 0, 0, 0, 4, NULL),
-(14, 3, '0000-00-00', 1, 0, 0, 0, 4, NULL),
-(15, 1, '2016-12-21', 1, 0, 0, 0, 4, NULL),
-(16, 2, '2017-08-09', 1, 0, 0, 0, 4, NULL),
-(17, 1, '2016-12-01', 1, 0, 0, 0, 4, NULL);
+INSERT INTO `intreventions` (`id_intrevention`, `intervenant_id`, `date`, `place_id`, `duration`, `extraCost`, `distance`, `kind_id`, `parent`, `person_id`) VALUES
+(3, 2, '2016-12-29', 1, 15, 12, 25, 4, NULL, NULL),
+(13, 3, '0000-00-00', 1, 0, 0, 0, 4, NULL, NULL),
+(14, 3, '0000-00-00', 1, 0, 0, 0, 4, NULL, NULL),
+(15, 1, '2016-12-21', 1, 0, 0, 0, 4, NULL, NULL),
+(16, 2, '2017-08-09', 1, 0, 0, 0, 4, NULL, NULL),
+(17, 1, '2016-12-01', 1, 0, 0, 0, 4, NULL, NULL),
+(21, 2, '2017-08-09', 1, 0, 0, 0, 3, 16, 9),
+(22, 1, '2016-12-21', 1, 0, 0, 0, 3, 15, 10);
 
 -- --------------------------------------------------------
 
@@ -322,7 +327,9 @@ INSERT INTO `persons` (`id_Person`, `name`, `declared_origine_id`, `age_group_id
 (5, '', 11, 1, 2, 1),
 (6, '', 11, 1, 2, 1),
 (7, '', 11, 1, 2, 1),
-(8, '', 11, 1, 2, 1);
+(8, '', 11, 1, 2, 1),
+(9, '', 3, 1, 4, 1),
+(10, '', 5, 2, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -453,7 +460,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `group_id`) VALUES
-(1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-05 11:07:43', '2016-11-29 17:54:13', '2016-12-05 10:07:43', 300),
+(1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-06 13:27:24', '2016-11-29 17:54:13', '2016-12-06 12:27:24', 300),
 (2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-11-29 19:32:15', '2016-11-29 19:32:15', '2016-11-29 18:32:15', 300),
 (3, 'titi', '$2a$08$iBHekq9MdoJOGJEI04xaMeYcEzbvcz5OS8caVDsIZGJDPxJcRPgVi', 'titi@titi.titi', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-01 14:03:10', '2016-12-01 14:02:43', '2016-12-01 13:03:10', 300);
 
@@ -551,7 +558,8 @@ ALTER TABLE `intreventions`
   ADD KEY `fk_Intrevention_programe1_idx` (`kind_id`),
   ADD KEY `dateIndex` (`date`),
   ADD KEY `intervenant_id` (`intervenant_id`),
-  ADD KEY `parent_ik_idx` (`parent`);
+  ADD KEY `parent_ik_idx` (`parent`),
+  ADD KEY `person_id` (`person_id`);
 
 --
 -- Index pour la table `intrevention_has_material`
@@ -669,7 +677,7 @@ ALTER TABLE `genders`
 -- AUTO_INCREMENT pour la table `intreventions`
 --
 ALTER TABLE `intreventions`
-  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT pour la table `intrevention_kinds`
 --
@@ -694,7 +702,7 @@ ALTER TABLE `origines`
 -- AUTO_INCREMENT pour la table `persons`
 --
 ALTER TABLE `persons`
-  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT pour la table `place`
 --
@@ -756,6 +764,7 @@ ALTER TABLE `intreventions`
   ADD CONSTRAINT `fk_Intrevention_Lieu1` FOREIGN KEY (`place_id`) REFERENCES `place` (`id_lieu`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Intrevention_programe1` FOREIGN KEY (`kind_id`) REFERENCES `intrevention_kinds` (`id_kind`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `intreventions_ibfk_1` FOREIGN KEY (`intervenant_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `intreventions_ibfk_2` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id_Person`),
   ADD CONSTRAINT `paren_ik` FOREIGN KEY (`parent`) REFERENCES `intreventions` (`id_intrevention`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
