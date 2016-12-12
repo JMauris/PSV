@@ -21,6 +21,20 @@ class Intervenant_Model extends CI_Model
     }
     return $intervenants;
   }
+
+    function getAllOldIntervenant(){
+
+  		$this->db->where('activated', 0);
+      $this->db->where('group_id', 300);
+      $query =$this->db->get('users');
+
+      $intervenants = array();
+      $rows = $query->result_array();
+      foreach ($rows as $key => $row) {
+        $intervenants[$row['id']]= $row['username'];
+      }
+      return $intervenants;
+    }
   function getIntervenantById($id){
 
     $this->db->where('id', $id);
@@ -32,8 +46,16 @@ class Intervenant_Model extends CI_Model
     $row = $query->row(0);
     $intervenant = array(
       'id'=> $row->id,
+      'activated'=> $row->activated,
       'username'=> $row->username
       );
     return $intervenant;
+  }
+
+  function updateStatus($id, $data)
+  {
+
+    $this->db->where('id', $id);
+    $this->db->update('users', $data);
   }
 }

@@ -115,7 +115,7 @@ class Demarches_Model extends Intervention_Model
 
 
   function _populate(&$demarche){
-    parent::_populate(&$demarche);
+  //  parent::_populate(&$demarche);
     $this->_addMeet($demarche);
   }
 

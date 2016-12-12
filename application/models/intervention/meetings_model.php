@@ -136,7 +136,7 @@ class Meetings_Model extends Intervention_Model
   }
 
   function _populate(&$meeting){
-    parent::_populate(&$meeting);
+  //  parent::_populate(&$meeting);
   }
 
   function _updatePersons($meetingId, $personsArray){
