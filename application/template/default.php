@@ -1,7 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-var_dump($is_logged);
-var_dump($groupId);
 ?><!DOCTYPE html>
 <html lang="en">
   <head>

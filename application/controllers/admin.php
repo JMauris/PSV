@@ -26,7 +26,7 @@ class Admin extends CI_Controller
   function index()
   {
 
-  //  $this->output->enable_profiler(true);
+  //  //$this->output->enable_profiler(true);
     $intervenants = $this->input->post('intervenants');
     if(null !== $intervenants)
     {
@@ -57,7 +57,7 @@ class Admin extends CI_Controller
 
   function updateStatues()
   {
-    $this->output->enable_profiler(true);
+    ////$this->output->enable_profiler(true);
   /* $id = $this->input->post('intervenants');
 
    $currentIntervenant = $this->intervenant_model->getIntervenantById($id);
@@ -76,7 +76,7 @@ class Admin extends CI_Controller
 
   function edit()
   {
-    $this->output->enable_profiler(true);
+    ////$this->output->enable_profiler(true);
     $intervenant = $this->input->post('intervenant');
     $data=$intervenant;
     var_dump($intervenant);

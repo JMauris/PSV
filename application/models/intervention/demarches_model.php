@@ -5,8 +5,8 @@ class Demarches_Model extends Intervention_Model
   function __construct(){
     parent::__construct();
   }
-  function getFuturs_OnlyMine($id){
-    $this->db->where('date >=', 'NOW()', FALSE);
+  function getFutursByIntervenant($id){
+    $this->db->where('date >=', 'CURRENT_DATE()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
     $this->db->where_in('kind_id',self::interventionTypes);
     $this->db->order_by("date", "desc");
@@ -17,8 +17,8 @@ class Demarches_Model extends Intervention_Model
     }
     return $raw;
   }
-  function getOld_OnlyMine($id){
-    $this->db->where('date <', 'NOW()', FALSE);
+  function getOldByIntervenant($id){
+    $this->db->where('date <', 'CURRENT_DATE()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
     $this->db->order_by("date", "desc");
     $this->db->where_in('kind_id',self::interventionTypes);
@@ -30,7 +30,7 @@ class Demarches_Model extends Intervention_Model
     return $raw;
   }
   function getFuturs(){
-    $this->db->where('date >=', 'NOW()', FALSE);
+    $this->db->where('date >=', 'CURRENT_DATE()', FALSE);
     $this->db->where('parent', null);
     $this->db->order_by("date", "desc");
     $this->db->where_in('kind_id',self::interventionTypes);
@@ -42,7 +42,7 @@ class Demarches_Model extends Intervention_Model
     return $raw;
   }
   function getOld(){
-    $this->db->where('date <', 'NOW()', FALSE);
+    $this->db->where('date <', 'CURRENT_DATE()', FALSE);
     $this->db->where('parent', null);
     $this->db->order_by("date", "desc");
     $this->db->where_in('kind_id',self::interventionTypes);

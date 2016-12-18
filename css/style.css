@@ -15,3 +15,30 @@ select {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+.G-DB .meeting, .G-DB .demarche{
+  background-clip:content-box;
+  margin: 2px;
+  padding: 2px;
+  border-radius:6px;
+}
+.G-DB .element {
+  margin: 0px;
+  padding:0px;
+}
+.G-DB .meeting {
+  background-color: lightgrey;
+}
+.G-DB .demarche {
+  background-color: lightblue;
+}
+.G-DB label{
+  text-align: center;
+  padding-top: 10px;
+  height:100%;
+  width: 100%;
+  margin: 0px;
+}
+.G-DB .btn{
+  width: 100%;
+  margin: 3px;
+}

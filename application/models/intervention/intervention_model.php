@@ -2,17 +2,170 @@
 
 class Intervention_Model extends CI_Model
 {
-  const meetingTypes         = array(1, 2,3);
-  const interventionTypes     = array(4);
-  const intervention_Table   = 'intreventions';
-  const thematics_LinkTable  = 'intervention_has_thematics';
-  const material_LinkTable   = 'intrevention_has_material';
-  const person_linkTable     = 'intervention_has_persons';
+  const meetingTypes            = array(1, 2,3);
+  const interventionTypes       = array(4);
+  const intervention_Table      = 'intreventions';
+  const kind_Table              = 'intrevention_kinds';
+  const kind_join_claus         = 'intreventions.kind_id = intrevention_kinds.id_kind';
+  const intervenant_Table       = 'users';
+  const intervenant_join_claus  = 'intreventions.intervenant_id = users.id';
+  const place_Table             = 'place';
+  const place_join_claus        = 'intreventions.place_id = place.id_lieu';
+  const thematics_LinkTable     = 'intervention_has_thematics';
+  const material_LinkTable      = 'intrevention_has_material';
+  const person_linkTable        = 'intervention_has_persons';
 
 
   function __construct(){
     parent::__construct();
   }
+
+  function getFutursByIntervenant($id){
+    $this->db->select('*');
+    $this->db->from(self::intervention_Table);
+    $this->db->join(self::kind_Table, self::kind_join_claus);
+    $this->db->join(self::place_Table, self::place_join_claus);
+    $this->db->where('date >=', 'CURRENT_DATE()', FALSE);
+    $this->db->where('intervenant_id', $id);
+    $this->db->where('parent', null);
+    $this->db->order_by("date", "desc");
+    $query = $this->db->get();
+    $raw = $query->result_array();
+    foreach ($raw as $key => $row) {
+      unset($raw[$key]['intervenant_id']);
+      unset($raw[$key]['duration']);
+      unset($raw[$key]['extraCost']);
+      unset($raw[$key]['distance']);
+      unset($raw[$key]['parent']);
+      unset($raw[$key]['person_id']);
+      unset($raw[$key]['kind_id']);
+      unset($raw[$key]['kind']);
+      unset($raw[$key]['adresse']);
+      unset($raw[$key]['actived']);
+      if($raw[$key]['id_kind']==4)
+        $raw[$key]['subClass']='demarche';
+      else
+        $raw[$key]['subClass']='meeting';
+    }
+    return $raw;
+  }
+  function getOldByIntervenant($id){
+    $this->db->select('*');
+    $this->db->from(self::intervention_Table);
+    $this->db->join(self::kind_Table, self::kind_join_claus);
+    $this->db->join(self::place_Table, self::place_join_claus);
+    $this->db->where('date <', 'CURRENT_DATE()', FALSE);
+    $this->db->where('intervenant_id', $id);
+    $this->db->where('parent', null);
+    $this->db->order_by("date", "desc");
+    $query = $this->db->get();
+    $raw = $query->result_array();
+    foreach ($raw as $key => $row) {
+      unset($raw[$key]['intervenant_id']);
+      unset($raw[$key]['duration']);
+      unset($raw[$key]['extraCost']);
+      unset($raw[$key]['distance']);
+      unset($raw[$key]['parent']);
+      unset($raw[$key]['person_id']);
+      unset($raw[$key]['kind_id']);
+      unset($raw[$key]['kind']);
+      unset($raw[$key]['adresse']);
+      unset($raw[$key]['actived']);
+      if($raw[$key]['id_kind']==4)
+        $raw[$key]['subClass']='demarche';
+      else
+        $raw[$key]['subClass']='meeting';
+    }
+    return $raw;
+  }
+  function getFuturs(){
+    $this->db->select('*');
+    $this->db->from(self::intervention_Table);
+    $this->db->join(self::kind_Table, self::kind_join_claus);
+    $this->db->join(self::intervenant_Table, self::intervenant_join_claus);
+    $this->db->join(self::place_Table, self::place_join_claus);
+    $this->db->where('date >=', 'CURRENT_DATE()', FALSE);
+    $this->db->where('parent', null);
+    $this->db->order_by("date", "desc");
+    $query = $this->db->get();
+    $raw = $query->result_array();
+    foreach ($raw as $key => $row) {
+      unset($raw[$key]['intervenant_id']);
+      unset($raw[$key]['duration']);
+      unset($raw[$key]['extraCost']);
+      unset($raw[$key]['distance']);
+      unset($raw[$key]['parent']);
+      unset($raw[$key]['person_id']);
+      unset($raw[$key]['kind_id']);
+      unset($raw[$key]['kind']);
+      unset($raw[$key]['adresse']);
+      unset($raw[$key]['actived']);
+      unset($raw[$key]['password']);
+      unset($raw[$key]['email']);
+      unset($raw[$key]['activated']);
+      unset($raw[$key]['banned']);
+      unset($raw[$key]['ban_reason']);
+      unset($raw[$key]['new_password_key']);
+      unset($raw[$key]['new_password_requested']);
+      unset($raw[$key]['new_email']);
+      unset($raw[$key]['new_email_key']);
+      unset($raw[$key]['last_ip']);
+      unset($raw[$key]['last_login']);
+      unset($raw[$key]['created']);
+      unset($raw[$key]['modified']);
+      unset($raw[$key]['group_id']);
+      if($raw[$key]['id_kind']==4)
+        $raw[$key]['subClass']='demarche';
+      else
+        $raw[$key]['subClass']='meeting';
+    }
+    return $raw;
+  }
+  function getOld(){
+    $this->db->select('*');
+    $this->db->from(self::intervention_Table);
+    $this->db->join(self::kind_Table, self::kind_join_claus);
+    $this->db->join(self::intervenant_Table, self::intervenant_join_claus);
+    $this->db->join(self::place_Table, self::place_join_claus);
+    $this->db->where('date <', 'CURRENT_DATE()', FALSE);
+    $this->db->where('parent', null);
+    $this->db->order_by("date", "desc");
+    $query = $this->db->get();
+    $raw = $query->result_array();
+    foreach ($raw as $key => $row) {
+      unset($raw[$key]['intervenant_id']);
+      unset($raw[$key]['duration']);
+      unset($raw[$key]['extraCost']);
+      unset($raw[$key]['distance']);
+      unset($raw[$key]['parent']);
+      unset($raw[$key]['person_id']);
+      unset($raw[$key]['kind_id']);
+      unset($raw[$key]['kind']);
+      unset($raw[$key]['adresse']);
+      unset($raw[$key]['actived']);
+      unset($raw[$key]['password']);
+      unset($raw[$key]['email']);
+      unset($raw[$key]['activated']);
+      unset($raw[$key]['banned']);
+      unset($raw[$key]['ban_reason']);
+      unset($raw[$key]['new_password_key']);
+      unset($raw[$key]['new_password_requested']);
+      unset($raw[$key]['new_email']);
+      unset($raw[$key]['new_email_key']);
+      unset($raw[$key]['last_ip']);
+      unset($raw[$key]['last_login']);
+      unset($raw[$key]['created']);
+      unset($raw[$key]['modified']);
+      unset($raw[$key]['group_id']);
+      if($raw[$key]['id_kind']==4)
+        $raw[$key]['subClass']='demarche';
+      else
+        $raw[$key]['subClass']='meeting';
+    }
+    return $raw;
+  }
+
+
   function _delete(&$intervention){
     $this->db->where('id_intrevention',$intervention['id_intrevention']);
     $this->db->delete(self::intervention_Table);

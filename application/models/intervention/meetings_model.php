@@ -6,8 +6,8 @@ class Meetings_Model extends Intervention_Model
   function __construct() {
     parent::__construct();
   }
-  function getFuturs_OnlyMine($id){
-    $this->db->where('date >=', 'NOW()', FALSE);
+  function getFutursByIntervenant($id){
+    $this->db->where('date >=', 'CURRENT_DATE()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
     $this->db->where_in('kind_id',self::meetingTypes);
     $this->db->where('parent', null);
@@ -19,8 +19,8 @@ class Meetings_Model extends Intervention_Model
     }
     return $raw;
   }
-  function getOld_OnlyMine($id){
-    $this->db->where('date <', 'NOW()', FALSE);
+  function getOldByIntervenant($id){
+    $this->db->where('date <', 'CURRENT_DATE()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
     $this->db->where_in('kind_id',self::meetingTypes);
     $this->db->where('parent', null);
@@ -33,7 +33,7 @@ class Meetings_Model extends Intervention_Model
     return $raw;
   }
   function getFuturs(){
-    $this->db->where('date >=', 'NOW()', FALSE);
+    $this->db->where('date >=', 'CURRENT_DATE()', FALSE);
     $this->db->where('parent', null);
     $this->db->where_in('kind_id',self::meetingTypes);
     $this->db->order_by("date", "desc");
@@ -45,7 +45,7 @@ class Meetings_Model extends Intervention_Model
     return $raw;
   }
   function getOld(){
-    $this->db->where('date <', 'NOW()', FALSE);
+    $this->db->where('date <', 'CURRENT_DATE()', FALSE);
     $this->db->where('parent', null);
     $this->db->where_in('kind_id',self::meetingTypes);
     $this->db->order_by("date", "desc");
@@ -143,7 +143,8 @@ class Meetings_Model extends Intervention_Model
     parent::_populate($meeting);
   }
   function _addPersons(&$meeting){
-    $meeting['person'] =
-        $this->person_model->getById($meeting['person_id']);
+    if(false==($meeting['person_id']==null))
+      $meeting['person'] =
+          $this->person_model->getById($meeting['person_id']);
   }
 }

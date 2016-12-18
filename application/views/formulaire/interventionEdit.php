@@ -44,13 +44,18 @@ echo form_open('intervention/edit/'. $intervention['id_intrevention']);
 			<div>
 				<?php echo form_hidden('intervention[id_intrevention]',	$intervention['id_intrevention']);?>
 			</div>
+
 			<div class="col-sm-4">
 				<?php
-					echo form_label('Intervenant');
-					echo "<br/>";
-					echo form_dropdown('intervention[intervenant_id]', $intervenantsDropDown, $intervention['intervenant_id']);
+				echo form_label('Intervenant');
+				echo "<br/>";
+				if($this->session->userdata['groupId']==500){
+						echo form_dropdown('intervention[intervenant_id]', $intervenantsDropDown, $intervention['intervenant_id']);
+				}else{
+					echo form_label($intervention['intervenant']['username']);
+					echo form_hidden('intervention[intervenant_id]', $intervention['intervenant_id']);
+				} ?>
 
-				?>
 			</div>
 			<div class="col-sm-4">
 				<?php

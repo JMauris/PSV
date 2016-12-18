@@ -23,11 +23,19 @@ class Intervention extends CI_Controller
 
   function index()
   {
-    $past = $this->demarches_model->getOld();
-    $futur = $this->demarches_model->getFuturs();
-    $places = $this->place_model->getAll();
-    $intervenants = $this->intervenant_model->getAllIntervenant();
+    //$this->output->enable_profiler(true);
     $user = $this->tank_auth->get_user_id();
+    $past = $this->demarches_model->getOldByIntervenant($user);
+    $futur = $this->demarches_model->getFutursByIntervenant($user);
+    $places = $this->place_model->getAll();
+    $intervenant = $this->intervenant_model->getIntervenantById($user);
+    $intervenants = array($intervenant['id']=> $intervenant['username']);
+
+    if($this->tank_auth->get_groupId()==500){
+      $intervenants = $this->intervenant_model->getAllIntervenant();
+      $past = $this->demarches_model->getOld();
+      $futur = $this->demarches_model->getFuturs();
+    }
 
     $data = array(
       'futur' => $futur,
@@ -41,11 +49,18 @@ class Intervention extends CI_Controller
   }
 
   function edit($id){
-    $this->output->enable_profiler(true);
+    //$this->output->enable_profiler(true);
+    $user = $this->tank_auth->get_user_id();
     $intervention = $this->input->post('intervention');
     if (null !== $intervention){
         if($intervention['id_intrevention']!=$id)
           return;
+        if(false == ($this->tank_auth->get_groupId()==500))
+          if(false==($intervention['intervenant_id']==$user)){
+            redirect('/intervention');
+            return;
+          }
+
 
         $potentialyAdded = array_pop($intervention['persons']);
         if( 0 != $potentialyAdded['gender_id'])
@@ -69,14 +84,26 @@ class Intervention extends CI_Controller
 
 
     $intervention =  $this->demarches_model->getById($id);
+    if(false == ($this->tank_auth->get_groupId()==500))
+      if(false==($intervention['intervenant_id']==$user)){
+        redirect('/intervention');
+        return;
+      }
+
+
     $places       = $this->place_model->getAll();
-    $intervenants = $this->intervenant_model->getAllIntervenant();
+    $intervenant = $this->intervenant_model->getIntervenantById($user);
+    $intervenants = array($intervenant['id']=> $intervenant['username']);
     $thematics    = $this->thematics_model->getTree();
     $materials    = $this->material_model->getAll();
     $genders      = $this->gender_model->getActivs();
     $sexuality    = $this->sexuality_model->getActivs();
     $ageGroups    =$this->agegroup_model->getActivs();
     $origins      = $this->origines_model->getFlatTree();
+
+    if($this->tank_auth->get_groupId()==500){
+      $intervenants = $this->intervenant_model->getAllIntervenant();
+    }
 
     $data = array(
       'intervention'  => $intervention,
