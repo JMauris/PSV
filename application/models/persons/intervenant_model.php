@@ -31,7 +31,13 @@ class Intervenant_Model extends CI_Model
       $intervenants = array();
       $rows = $query->result_array();
       foreach ($rows as $key => $row) {
-        $intervenants[$row['id']]= $row['username'];
+        $intervenants[$row['id']]=   $intervenant = array(
+            'id'        => $row['id'],
+            'activated' => $row['activated'],
+            'username'  => $row['username'],
+            'email'     => $row['email'],
+            'group_id'  => $row['group_id']
+            );
       }
       return $intervenants;
     }

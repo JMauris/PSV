@@ -48,9 +48,21 @@ class Admin extends CI_Controller
 
      $this->intervenant_model->updateStatus($id,$currentIntervenant);
 
- redirect('/admin/');
-
-
+     redirect('/admin/');
 
   }
+
+  function edit()
+  {
+    $this->output->enable_profiler(true);
+    $intervenant = $this->input->post('intervenant');
+    $data=$intervenant;
+    var_dump($intervenant);
+      $this->load->view('administration/intervenantEdit',$data);
+      $this->load->view('auth/change_email_form');
+      $this->load->view('auth/change_password_form');
+      $this->load->view('auth/forgot_password_form');
+
+
+}
 }
