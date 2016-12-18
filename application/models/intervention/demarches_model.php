@@ -8,6 +8,7 @@ class Demarches_Model extends Intervention_Model
   function getFuturs_OnlyMine($id){
     $this->db->where('date >=', 'NOW()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
+    $this->db->where_in('kind_id',self::interventionTypes);
     $this->db->order_by("date", "desc");
     $query = $this->db->get(self::intervention_Table);
     $raw = $query->result_array();
@@ -20,6 +21,7 @@ class Demarches_Model extends Intervention_Model
     $this->db->where('date <', 'NOW()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
     $this->db->order_by("date", "desc");
+    $this->db->where_in('kind_id',self::interventionTypes);
     $query = $this->db->get(self::intervention_Table);
     $raw = $query->result_array();
     foreach ($raw as $key => $value) {
@@ -31,6 +33,7 @@ class Demarches_Model extends Intervention_Model
     $this->db->where('date >=', 'NOW()', FALSE);
     $this->db->where('parent', null);
     $this->db->order_by("date", "desc");
+    $this->db->where_in('kind_id',self::interventionTypes);
     $query = $this->db->get(self::intervention_Table);
     $raw = $query->result_array();
     foreach ($raw as $key => $value) {
@@ -42,6 +45,7 @@ class Demarches_Model extends Intervention_Model
     $this->db->where('date <', 'NOW()', FALSE);
     $this->db->where('parent', null);
     $this->db->order_by("date", "desc");
+    $this->db->where_in('kind_id',self::interventionTypes);
     $query = $this->db->get(self::intervention_Table);
     $raw = $query->result_array();
     foreach ($raw as $key => $value) {

@@ -9,6 +9,7 @@ class Meetings_Model extends Intervention_Model
   function getFuturs_OnlyMine($id){
     $this->db->where('date >=', 'NOW()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
+    $this->db->where_in('kind_id',self::meetingTypes);
     $this->db->where('parent', null);
     $this->db->order_by("date", "desc");
     $query = $this->db->get(self::intervention_Table);
@@ -21,6 +22,7 @@ class Meetings_Model extends Intervention_Model
   function getOld_OnlyMine($id){
     $this->db->where('date <', 'NOW()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
+    $this->db->where_in('kind_id',self::meetingTypes);
     $this->db->where('parent', null);
     $this->db->order_by("date", "desc");
     $query = $this->db->get(self::intervention_Table);
@@ -33,6 +35,7 @@ class Meetings_Model extends Intervention_Model
   function getFuturs(){
     $this->db->where('date >=', 'NOW()', FALSE);
     $this->db->where('parent', null);
+    $this->db->where_in('kind_id',self::meetingTypes);
     $this->db->order_by("date", "desc");
     $query = $this->db->get(self::intervention_Table);
     $raw = $query->result_array();
@@ -44,6 +47,7 @@ class Meetings_Model extends Intervention_Model
   function getOld(){
     $this->db->where('date <', 'NOW()', FALSE);
     $this->db->where('parent', null);
+    $this->db->where_in('kind_id',self::meetingTypes);
     $this->db->order_by("date", "desc");
     $query = $this->db->get(self::intervention_Table);
     $raw = $query->result_array();

@@ -73,13 +73,8 @@ echo form_open('intervention/edit/'. $intervention['id_intrevention']);
 			</div>
 			<div class="col-sm-4">
 				<?php
-					$durationInput= array(
-						'id' 		=> 'duration',
-						'name'	=> 'intervention[duration]',
-						'class'	=> 'form-control',
-						'value' => $intervention['duration']);
 					echo form_label('Durée');
-					echo form_input($durationInput);
+					echo form_dropdown('intervention[duration]', $dropDownDuration, $intervention['duration']);
 				?>
 			</div>
 			<div class="col-sm-4">

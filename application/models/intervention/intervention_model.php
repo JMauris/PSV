@@ -2,7 +2,8 @@
 
 class Intervention_Model extends CI_Model
 {
-
+  const meetingTypes         = array(1, 2,3);
+  const interventionTypes     = array(4);
   const intervention_Table   = 'intreventions';
   const thematics_LinkTable  = 'intervention_has_thematics';
   const material_LinkTable   = 'intrevention_has_material';
@@ -33,7 +34,7 @@ class Intervention_Model extends CI_Model
     $this->db->where('id_kind', $intervention['kind_id']);
     $query = $this->db->get('intrevention_kinds');
     $kind = $query->result_array(0);
-    $intervention['kind'] = $kind;
+    $intervention['kind'] = $kind[0];
   }
   function _addPlace(&$intervention){
     $intervention['place'] =
