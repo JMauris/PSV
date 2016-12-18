@@ -3,6 +3,7 @@ class MY_Loader extends CI_Loader {
 	var $template;
 	function __construct() {
 		parent::__construct();
+
 		// load template
 		$this->_load_template();
 	}
@@ -20,6 +21,7 @@ class MY_Loader extends CI_Loader {
 		$CI =& get_instance();
 		$vars['content_view'] = $view;
 		$vars['is_logged'] = $CI->tank_auth->is_logged_in();
+		$vars['groupId'] = $CI->tank_auth->get_groupId();
 		//$vars['is_brooker'] = $CI->brookerModel->isValidBrooker($CI->session->userdata["user_id"]);
 
 		if ($this->template !== FALSE) {

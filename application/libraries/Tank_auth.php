@@ -69,6 +69,7 @@ class Tank_auth
 
 					} else {
 						$this->ci->session->set_userdata(array(
+								'groupId'=> $user->group_id,
 								'user_id'	=> $user->id,
 								'username'	=> $user->username,
 								'status'	=> ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED,
@@ -113,7 +114,7 @@ class Tank_auth
 		$this->delete_autologin();
 
 		// See http://codeigniter.com/forums/viewreply/662369/ as the reason for the next line
-		$this->ci->session->set_userdata(array('user_id' => '', 'username' => '', 'status' => ''));
+		$this->ci->session->set_userdata(array('groupId'=> '','user_id' => '', 'username' => '', 'status' => ''));
 
 		$this->ci->session->sess_destroy();
 	}
@@ -147,6 +148,9 @@ class Tank_auth
 	function get_username()
 	{
 		return $this->ci->session->userdata('username');
+	}
+	function get_groupId(){
+		return $this->ci->session->userdata('groupId');
 	}
 
 	/**
@@ -565,6 +569,7 @@ class Tank_auth
 
 						// Login user
 						$this->ci->session->set_userdata(array(
+								'groupId'=> $user->group_id,
 								'user_id'	=> $user->id,
 								'username'	=> $user->username,
 								'status'	=> STATUS_ACTIVATED,

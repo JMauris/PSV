@@ -1,5 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+var_dump($is_logged);
+var_dump($groupId);
 ?><!DOCTYPE html>
 <html lang="en">
   <head>
@@ -49,10 +51,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <li <?php if ($class == 'intervention') {
                 echo 'class="active"';
               }?>><a href=<?php echo base_url(). index_page(). '/' . 'intervention/';?>>Intervention</a></li>
-                <li <?php if ($class == 'request' || $class == 'wares') {
+              <li <?php if ($class == 'meeting') {
+                echo 'class="active"';
+              }?>><a href=<?php echo base_url(). index_page(). '/' . 'meeting/';?>>Entretient</a></li>
+              <?php
+              if($groupId==500){
+                ?>
+                <li <?php if ($class == 'admin') {
                   echo 'class="active"';
-                }?>><a href=<?php echo base_url() . index_page(). '/'. 'request/fillrequest';?>>Créer une demande</a></li>
+                }?>><a href=<?php echo base_url(). index_page(). '/' . 'admin/';?>>Administration</a></li>
                 <?php
+              }
             }
             else {
             ?>

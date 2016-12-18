@@ -12,6 +12,8 @@ class Intervention extends CI_Controller
 
     $this->load->helper(array('form', 'url'));
     $this->load->library('form_validation');
+    $iduser = $this->tank_auth->get_user_id();
+    $user=$this->intervenant_model->getIntervenantById($iduser);
     if (!$this->tank_auth->is_logged_in()) {
       redirect('');
     }
