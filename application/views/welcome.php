@@ -9,8 +9,10 @@
   <div class="container">
      <div class="form-signin">
       <div class="form-group">
-      	<?php echo anchor('/admin/', 'Administration', "class='btn btn-lg btn-primary btn-block'"); ?>
-        <?php echo anchor('/intervention/', 'Inscription', "class='btn btn-lg btn-primary btn-block'"); ?>
+      	<?php
+        if($user['group_id']==500)
+          echo anchor('/admin/', 'Administration', "class='btn btn-lg btn-primary btn-block'"); ?>
+        <?php echo anchor('/intervention/', 'Intervention', "class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
     </div>
   </div>

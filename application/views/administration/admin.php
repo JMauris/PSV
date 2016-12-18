@@ -13,97 +13,62 @@ function myFunction(val) {
 <h3>Internvenants actifs</h3>
 
 <?php
-  echo form_open('admin/updateStatues');
-$DropDownextra  = array(
-'style' => 'width: 100% ; height: 35px',
-'id' =>  'intervenant',
-'onChange' => 'myFunction(this.value);');
+  echo form_open('/admin/');
+
 $extra  = array('disabled' => 'disabled');
-  foreach ($intervenants_Actif as $key => $value) {
-    echo '<div class="container">';
-    echo  '<div class="form-group row">';
-    echo '<div class="col-lg-9">';
-    echo form_input("",$value);
-    echo "</div>";
-    echo '<div class="col-lg-3">';
-    echo anchor(
-        '/admin/edit/' . $value ,
-        'modifier',
-        "class='btn btn-default'");
-    echo "</div>";
-    echo "</div>";
-    echo "</div>";
-
-
-  }
+echo '<div class="container">';
+echo  '<h3>Internvenants inactifs</h3>';
+echo '<table class="table table-hover">';
+echo '<thead>';
+echo '<tr>';
+echo  '<th>ID</th>';
+echo  '<th>Username</th>';
+echo   '<th>Email</th>' ;
+echo    '<th>Role</th>' ;
+echo    '<th>Actif</th>' ;
+echo    '</tr>';
+echo    '</thead>';
+echo "<tbody>";
+foreach ($intervenants as $key => $value) {
+  if($value['activated']==0)
+  {
+      echo '<tr class="active">';
+  }elseif ($value['group_id']==300)
+    {
+        echo '<tr class="info">';
+    }
+  else {
+        echo '<tr class="danger">';
+    }
+    echo  '<td>';
+    echo form_hidden('intervenants['.$value['id'].'][id]',$value['id']);
+    echo '</td>';
+    echo  '<td>';
+    echo form_input('intervenants['.$value['id'].'][username]',$value['username']);
+    echo '</td>';
+    echo '<td>';
+    echo form_input('intervenants['.$value['id'].'][email]',$value['email']);
+    echo '</td>';
+    echo '<td>';
+    echo form_dropdown('intervenants['.$value['id'].'][group_id]',$roles,$value['group_id']);
+    echo '</td>';
+    echo '<td>';
+    echo form_checkbox('intervenants['.$value['id'].'][activated]',1,$value['activated']);
+    echo '</td>
+          </tr>';
+}
+echo "</tbody>";
+echo '</table>';
 ?>
-  <div class="col-lg-7">
-  </div>
+
     <?php
-  echo '<div class="col-lg-3">';
-  echo form_label('Intervenant');
-  echo form_dropdown('intervenant', $intervenants_Actif,'',$DropDownextra);
-  echo '</div>';
-  echo '<div class="col-lg-2">';
-  echo "</br>";
-  echo form_submit('submit_Profil', 'Rendre inactif',"class='btn btn-lg btn-primary btn-block'");
-  echo '</div>';
+
+  echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");
+
 
    ?>
 </form>
-<?php
-  if(sizeof($intervenants_Inactif)!=0){
-  echo '<div class="container">';
- echo  '<h3>Internvenants inactifs</h3>';
- echo '<table class="table table-hover">';
-  echo '<thead>';
-  echo '<tr>';
-  echo  '<th>Username</th>';
-  echo   '<th>Email</th>' ;
-  echo    '<th>Role</th>' ;
-  echo    '</tr>';
-  echo    '</thead>';
-  echo "<tbody>";
-  foreach ($intervenants_Inactif as $key => $value) {
-      echo '<tr>
-          <td>';
-      echo form_input('',$value['username']);
-      echo '</td>';
-      echo '<td>';
-      echo form_input('',$value['email']);
-      echo '</td>';
-      echo '<td>';
-      echo form_input('',$value['group_id']);
-      echo '</td>
-            </tr>';
-      var_dump($intervenants_Inactif);
 
-  }
-  echo "</tbody>";
-  echo '</table>';
-    echo form_open('admin/updateStatues');
-?>
 </div>
-<div class="col-lg-7">
-</div>
-  <?php
-
-echo '<div class="col-lg-3">';
-echo form_label('Intervenant');
-echo form_dropdown('intervenant', $intervenants_Inactif,'',$DropDownextra);
-  echo '</div>';
-echo '<div class="col-lg-2">';
-echo "</br>";
-echo form_submit('submit_Profil', 'Réactivé',"class='btn btn-lg btn-primary btn-block'");
-echo "</div>";
-
-echo "</div>";
-
-
-?>
-</form>
- </div>
- <?php } ?>
-
 
 <h2>View</h2>

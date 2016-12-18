@@ -58,8 +58,7 @@ class Person_Model extends CI_Model
 
     $persons = array();
     $rows = $query->result_array();
-    //var_dump($persons);
-    foreach ($rows as $key => $row){
+        foreach ($rows as $key => $row){
       $person = array(
         'id_Person' => $row['id_Person'],
         'name' => $row['name'],

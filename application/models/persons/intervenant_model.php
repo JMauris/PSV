@@ -22,22 +22,20 @@ class Intervenant_Model extends CI_Model
     return $intervenants;
   }
 
-    function getAllOldIntervenant(){
-
-  		$this->db->where('activated', 0);
-      $this->db->where('group_id', 300);
-      $query =$this->db->get('users');
+    function getAllFullIntervenant(){
+        $query =$this->db->get('users');
 
       $intervenants = array();
       $rows = $query->result_array();
       foreach ($rows as $key => $row) {
-        $intervenants[$row['id']]=   $intervenant = array(
+        $intervenant = array(
             'id'        => $row['id'],
             'activated' => $row['activated'],
             'username'  => $row['username'],
             'email'     => $row['email'],
             'group_id'  => $row['group_id']
             );
+          $intervenants[$row['id']]=  $intervenant;
       }
       return $intervenants;
     }
@@ -53,15 +51,28 @@ class Intervenant_Model extends CI_Model
     $intervenant = array(
       'id'=> $row->id,
       'activated'=> $row->activated,
-      'username'=> $row->username
+      'username'=> $row->username,
+      'email' =>$row->email,
+      'group_id' => $row->group_id
       );
     return $intervenant;
   }
 
-  function updateStatus($id, $data)
+  function update($intervenant)
   {
+    $oldUser = $this->getIntervenantById($intervenant['id']);
+    $userRow = array(
+      'id'        => $oldUser['id'],
+      'activated' => $oldUser['activated'],
+      'username'  => $oldUser['username'],
+      'email'     => $oldUser['email'],
+      'group_id'  => $oldUser['group_id']);
 
-    $this->db->where('id', $id);
-    $this->db->update('users', $data);
+      foreach ($userRow as $key => $value) {
+      if(true ==isset($intervenant[$key]))
+          $userRow[$key]=$intervenant[$key];
+      }
+    $this->db->where('id', $intervenant['id']);
+    $this->db->update('users', $userRow);
   }
 }

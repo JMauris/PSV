@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               ?>
               <li <?php if ($class == 'intervention') {
                 echo 'class="active"';
-              }?>><a href=<?php echo base_url(). index_page(). '/' . 'intervention/';?>>intervention</a></li>
+              }?>><a href=<?php echo base_url(). index_page(). '/' . 'intervention/';?>>Intervention</a></li>
                 <li <?php if ($class == 'request' || $class == 'wares') {
                   echo 'class="active"';
                 }?>><a href=<?php echo base_url() . index_page(). '/'. 'request/fillrequest';?>>Créer une demande</a></li>

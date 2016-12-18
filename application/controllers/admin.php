@@ -12,21 +12,42 @@ class Admin extends CI_Controller
 
     $this->load->helper(array('form', 'url'));
     $this->load->library('form_validation');
-    if (!$this->tank_auth->is_logged_in()) {
+
+    $iduser = $this->tank_auth->get_user_id();
+    $user=$this->intervenant_model->getIntervenantById($iduser);
+    if (!$this->tank_auth->is_logged_in()||$user['group_id']!=500) {
       redirect('');
-}
+
+    }
+
   }
 
 
   function index()
   {
+
+  //  $this->output->enable_profiler(true);
+    $intervenants = $this->input->post('intervenants');
+    if(null !== $intervenants)
+    {
+      foreach ($intervenants as $key => $intervenant) {
+          if(FALSE==isset($intervenant['activated']))
+            $intervenant['activated']=0;
+          $this->intervenant_model->update($intervenant);
+
+      }
+    }
+
+
     $user = $this->tank_auth->get_user_id();
-    $intervenants_Actif = $this->intervenant_model->getAllIntervenant();
-    $intervenants_Inactif = $this->intervenant_model->getAllOldIntervenant();
+    $intervenants= $this->intervenant_model->getAllFullIntervenant();
+    $roles = array(
+      '300' => 'user' ,
+      '500' => 'admin' ,
+    );
     $data = array(
-      'intervenants_Actif' => $intervenants_Actif,
-      'intervenants_Inactif' => $intervenants_Inactif,
-      'user'  =>  $user
+      'intervenants' => $intervenants,
+      'roles' => $roles
      );
 
 
@@ -37,7 +58,8 @@ class Admin extends CI_Controller
   function updateStatues()
   {
     $this->output->enable_profiler(true);
-   $id = $this->input->post('intervenant');
+  /* $id = $this->input->post('intervenants');
+
    $currentIntervenant = $this->intervenant_model->getIntervenantById($id);
    if($currentIntervenant['activated']==1)
    {
@@ -48,7 +70,7 @@ class Admin extends CI_Controller
 
      $this->intervenant_model->updateStatus($id,$currentIntervenant);
 
-     redirect('/admin/');
+     redirect('/admin/');*/
 
   }
 
@@ -58,10 +80,10 @@ class Admin extends CI_Controller
     $intervenant = $this->input->post('intervenant');
     $data=$intervenant;
     var_dump($intervenant);
-      $this->load->view('administration/intervenantEdit',$data);
+    /*  $this->load->view('administration/intervenantEdit',$data);
       $this->load->view('auth/change_email_form');
       $this->load->view('auth/change_password_form');
-      $this->load->view('auth/forgot_password_form');
+      $this->load->view('auth/forgot_password_form');*/
 
 
 }
