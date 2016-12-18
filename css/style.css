@@ -1,0 +1,17 @@
+select {
+  width: 100%;
+  height: 34px;
+}
+.in-intervention-meeting {
+  background-clip:content-box;
+  margin: 5px;
+  padding: 5px;
+  border-radius:15px;
+  background-color: lightgrey;
+
+}
+.in-intervention-meeting .row {
+  margin: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

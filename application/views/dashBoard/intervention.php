@@ -1,22 +1,19 @@
 <h2>Créer une nouvelle intervention</h2>
 <?php
 
-	//include_once('/../header.php');
-$DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 	echo form_open('intervention/create');
 ?>
 	<div class="container">
 		<br/>
 		<div class="form-group row">
-			<div class="col-xs-4">
+			<div class="col-sm-4 col-xs-6">
 				<?php
 					echo form_label('Intervenant');
-					echo "<br/>";
 					array_unshift($intervenants,'');
-					echo form_dropdown('intervenant', $intervenants,$user,$DropDownextra);
+					echo form_dropdown('intervenant', $intervenants,$user);
 				?>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-sm-4 col-xs-6">
 				<?php
 					$dateInput= array(
 						'id' 		=> 'date',
@@ -26,22 +23,27 @@ $DropDownextra  = array('style' => 'width: 100% ; height: 35px');
 					echo form_input($dateInput);
 				?>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-sm-4 col-xs-6">
 				<?php
 					echo form_label('Lieu');
-					echo "<br/>";
 					array_unshift($places,'');
-					echo form_dropdown('place', $places,'',$DropDownextra);
+					echo form_dropdown('place', $places,'');
+				?>
+			</div>
+			<div class="col-xs-6 hidden-xl hidden-lg hidden-md hidden-sm">
+				<?php
+				echo'<br/>';
+					echo anchor('', 'créer un nouveau lieu', "class='btn btn-default'");
 				?>
 			</div>
 		</div>
 		<div class="form-group row">
-			<div class="col-xs-8" >
+			<div class="col-sm-8 col-xs-12 ">
 				<?php
 					echo form_submit('submit_Profil', 'Créer une nouvelle intervention', "class='btn btn-lg btn-primary btn-block'");
 				?>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-sm-4 hidden-xs">
 				<?php
 					echo anchor('', 'créer un nouveau lieu', "class='btn btn-default'");
 				?>
@@ -53,16 +55,16 @@ foreach ($futur as $key => $value) {
 
 //  var_dump($value);
   echo '<div class="container">';
-    echo '<div class="col-lg-3">';
+    echo '<div class="col-sm-3 col-xs-6">';
       echo form_label($value['date']);
     echo "</div>";
-    echo '<div class="col-lg-3">';
+    echo '<div class="col-sm-3 col-xs-6">';
 			echo form_label($value['place']['Name']);
 		echo "</div>";
-		echo '<div class="col-lg-3">';
+		echo '<div class="col-sm-3 col-xs-6">';
 			echo form_label($value['intervenant']['username']);
     echo "</div>";
-		echo '<div class="col-lg-3">';
+		echo '<div class="col-sm-3 col-xs-6">';
 			echo anchor(
 				'intervention/edit/' . $value["id_intrevention"],
 				'éditer - completer',

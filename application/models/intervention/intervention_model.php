@@ -7,11 +7,16 @@ class Intervention_Model extends CI_Model
   const thematics_LinkTable  = 'intervention_has_thematics';
   const material_LinkTable   = 'intrevention_has_material';
   const person_linkTable     = 'intervention_has_persons';
-  function __construct()
-  {
+
+
+  function __construct(){
     parent::__construct();
   }
+  function _delete(&$intervention){
+    $this->db->where('id_intrevention',$intervention['id_intrevention']);
+    $this->db->delete(self::intervention_Table);
 
+  }
   function _populate(&$intervention){
     $this->_addIntervenant($intervention);
     $this->_addKind($intervention);
@@ -54,7 +59,6 @@ class Intervention_Model extends CI_Model
     }
     $intervention['thematics']=$thematics;
   }
-
   function _updateThematics($interventionId, $thematicsIdsArray){
 
     $this->db->where('intervention_id',$interventionId);

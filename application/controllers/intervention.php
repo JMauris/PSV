@@ -26,7 +26,7 @@ class Intervention extends CI_Controller
     $places = $this->place_model->getAll();
     $intervenants = $this->intervenant_model->getAllIntervenant();
     $user = $this->tank_auth->get_user_id();
-    
+
     $data = array(
       'futur' => $futur,
       'past' => $past,
@@ -34,7 +34,7 @@ class Intervention extends CI_Controller
       'intervenants' => $intervenants,
       'user' => $user
      );
-     var_dump($data);
+     //var_dump($data);
     $this->load->view('dashBoard/intervention',$data);
   }
 
@@ -87,7 +87,7 @@ class Intervention extends CI_Controller
       'ageGroups'     => $ageGroups,
       'origins'       => $origins
      );
-     var_dump($data);
+     //var_dump($data);
     $this->load->view('formulaire/interventionEdit',$data);
   }
 

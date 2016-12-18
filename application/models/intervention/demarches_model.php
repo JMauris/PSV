@@ -2,10 +2,7 @@
 
 class Demarches_Model extends Intervention_Model
 {
-
-
-  function __construct()
-  {
+  function __construct(){
     parent::__construct();
   }
   function getFuturs_OnlyMine($id){
@@ -109,45 +106,50 @@ class Demarches_Model extends Intervention_Model
       parent::_updateThematics( $demarche['id_intrevention'],$demarche['thematics']);
     if(true == isset($demarche['materials']))
       parent::_updateMaterials( $demarche['id_intrevention'],$demarche['materials']);
+    if(true == isset($demarche['interventions']))
+      foreach ($demarche['interventions'] as $key => $meeting)
+        $this->meetings_model->update($meeting);
     if(true == isset($demarche['persons']))
       $this->_updatePersons( $demarche['id_intrevention'],$demarche['persons']);
+
+    $query = $this->db->query('SELECT sum(duration) asInerDuration FROM intreventions WHERE parent='.$demarcheRow['id_intrevention'].';');
+    $inerDuration = $query->row(0)->asInerDuration;
+    $this->db->where('id_intrevention', $demarche['id_intrevention']);
+    $this->db->update('intreventions',array('duration' => $demarche['duration']-$inerDuration ));
   }
-
-
   function _populate(&$demarche){
-  //  parent::_populate(&$demarche);
+    parent::_populate($demarche);
     $this->_addMeet($demarche);
+    foreach ($demarche['interventions'] as $key => $intervention)
+      $demarche['duration']= $demarche['duration']+$intervention['duration'];
   }
-
-
-
   function _addPersons(&$intervention){
     $intervention['persons'] =
         $this->person_model->getByIntervention($intervention['id_intrevention']);
   }
-
   function _addMeet(&$intervention){
     $intervention['interventions']=
-      $this->meetings_model(['id_intrevention']);
+      $this->meetings_model->getByIntervention($intervention['id_intrevention']);
 
   }
-
   function _updatePersons($demarcheId, $personsArray){
     foreach ($personsArray as $key => $person)
       switch ($person['quickAction']) {
         case 'added':
-            $this->_addPersonIndemarche($demarcheId,$person['id_Person']);
+            $this->_addPersonInDemarche($demarcheId,$person['id_Person']);
           break;
         case 'duplic':
             $this->_addNewPersonIndemarche($demarcheId,$person);
           break;
         case 'remove':
-            $this->_addPersonIndemarche($demarcheId,$person['id_Person']);
+            $this->_removePersonInDemarche($demarcheId,$person['id_Person']);
           break;
         case 'addMeet':
-            $this->_addInerdemarche($demarcheId,$person['id_Person']);
+            $this->_addInerMeeting($demarcheId,$person['id_Person']);
           break;
-
+        case 'update':
+            $this->person_model->update($person);
+          break;
         }
   }
   function _addPersonIndemarche($demarcheId, $personsid){
@@ -157,7 +159,7 @@ class Demarches_Model extends Intervention_Model
     );
     $this->db->insert(self::person_linkTable, $row);
   }
-  function _addNewPersonIndemarche($demarcheId, $persons){
+  function _addNewPersonInDemarche($demarcheId, $persons){
     $this->_addPersonIndemarche($demarcheId,
         $this->person_model->insertPerson(
           "",
@@ -168,12 +170,16 @@ class Demarches_Model extends Intervention_Model
         )
       );
   }
-  function _removePersonIndemarche($demarcheId, $personsid){
+  function _removePersonInDemarche($demarcheId, $personsid){
     $this->db->where('intervention_id',$demarcheId);
     $this->db->where('person_id',$personsid);
-    $this->db->delete(self::thematics_LinkTable);
+    $this->db->delete(self::person_linkTable);
+
+    $this->db->where('parent',$demarcheId);
+    $this->db->where('person_id',$personsid);
+    $this->db->delete(self::intervention_Table);
   }
-  function _addInerdemarche($demarcheId, $personsid){
+  function _addInerMeeting($demarcheId, $personsid){
     $this->db->where('id_intrevention', $demarcheId);
     $query = $this->db->get(self::intervention_Table);
     if ($query->num_rows() != 1){
@@ -185,7 +191,7 @@ class Demarches_Model extends Intervention_Model
       'date'            => $raw->date,
       'place_id'        => $raw->place_id,
       'kind_id'         => 3,
-      'parent'          => $interventionId,
+      'parent'          => $demarcheId,
       'person_id'       => $personsid
 
      );

@@ -3,13 +3,13 @@
 class Meetings_Model extends Intervention_Model
 {
 
-  function __construct()
-  {
+  function __construct() {
     parent::__construct();
   }
   function getFuturs_OnlyMine($id){
     $this->db->where('date >=', 'NOW()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
+    $this->db->where('parent', null);
     $this->db->order_by("date", "desc");
     $query = $this->db->get(self::intervention_Table);
     $raw = $query->result_array();
@@ -21,6 +21,7 @@ class Meetings_Model extends Intervention_Model
   function getOld_OnlyMine($id){
     $this->db->where('date <', 'NOW()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
+    $this->db->where('parent', null);
     $this->db->order_by("date", "desc");
     $query = $this->db->get(self::intervention_Table);
     $raw = $query->result_array();
@@ -69,7 +70,8 @@ class Meetings_Model extends Intervention_Model
       'duration'        => $raw->duration,
       'extraCost'       => $raw->extraCost,
       'distance'        => $raw->distance,
-      'kind_id'         => $raw->kind_id
+      'kind_id'         => $raw->kind_id,
+      'person_id'         => $raw->person_id
      );
 
     $this->_populate($meeting);
@@ -119,6 +121,7 @@ class Meetings_Model extends Intervention_Model
       'duration'        => $oldmeeting['duration'],
       'extraCost'       => $oldmeeting['extraCost'],
       'distance'        => $oldmeeting['distance'],
+      'person_id'        => $oldmeeting['person_id'],
       'kind_id'         => $oldmeeting['kind_id']
     );
     foreach ($meetingRow as $fieldName => $fieldValue) {
@@ -131,15 +134,12 @@ class Meetings_Model extends Intervention_Model
       parent::_updateThematics( $meeting['id_intrevention'],$meeting['thematics']);
     if(true == isset($meeting['materials']))
       parent::_updateMaterials( $meeting['id_intrevention'],$meeting['materials']);
-    if(true == isset($meeting['persons']))
-      $this->_updatePersons( $meeting['id_intrevention'],$meeting['persons']);
   }
-
   function _populate(&$meeting){
-  //  parent::_populate(&$meeting);
+    parent::_populate($meeting);
   }
-
-  function _updatePersons($meetingId, $personsArray){
-
+  function _addPersons(&$meeting){
+    $meeting['person'] =
+        $this->person_model->getById($meeting['person_id']);
   }
-  }
+}

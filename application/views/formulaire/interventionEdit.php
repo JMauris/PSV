@@ -1,7 +1,16 @@
 <?php
-	//include_once('/../header.php');
+$intervenantsDropDown = array();{
+	$intervenantsDropDown[$intervention['intervenant']['id']]=$intervention['intervenant']['username'];
+	foreach ($intervenants as $id => $name)
+		$intervenantsDropDown[$id]= $name;
+}
 
-$DropDownextra  = array('style' => 'width: 100% ; height: 35px');
+$placeDropDown = array();{
+	$placeDropDown[$intervention['place']['id_lieu']]=$intervention['place']['Name'];
+		foreach ($places as $id => $name)
+			$placeDropDown[$id]= $name;
+}
+
 $dropDownDuration = array(
 	'0' => '',
 	'5'  => '05',
@@ -23,9 +32,9 @@ $dropDownDuration = array(
 	'240' => '4:00',
 	'310' => '4:30',
 );
-	echo form_open('intervention/edit/'. $intervention['id_intrevention']);
+echo form_open('intervention/edit/'. $intervention['id_intrevention']);
 
-?>
+		?>
 	<div class="container-fluid">
 		<br/>
 		<div class="row text-center">
@@ -39,7 +48,7 @@ $dropDownDuration = array(
 				<?php
 					echo form_label('Intervenant');
 					echo "<br/>";
-					echo form_dropdown('intervention[intervenant_id]', $intervenants, $intervention['intervenant_id'],$DropDownextra);
+					echo form_dropdown('intervention[intervenant_id]', $intervenantsDropDown, $intervention['intervenant_id']);
 
 				?>
 			</div>
@@ -59,7 +68,7 @@ $dropDownDuration = array(
 
 					echo form_label('Lieu');
 					echo "<br/>";
-					echo form_dropdown('intervention[place_id]', $places, $intervention['place_id'], $DropDownextra);
+					echo form_dropdown('intervention[place_id]', $placeDropDown, $intervention['place_id']);
 				?>
 			</div>
 			<div class="col-sm-4">
@@ -199,10 +208,11 @@ $dropDownDuration = array(
 		<div class="form-group row">
 			<?php
 				foreach ($intervention['persons'] as $key => $person) {
-					echo '<div>';
+					echo '<div class="in-intervention-meeting">';
+					echo '<div class="form-group row">';
 						echo form_hidden('intervention[persons]['.$key.'][id_Person]',
 							$person['id_Person']);
-					echo '</div>';
+
 
 
 					$choices = array(
@@ -231,39 +241,41 @@ $dropDownDuration = array(
 						$choices['ageGroups'][$id]=$value;
 
 					$quckActions = array(
-						'none' => "",
+						'update' => "",
 						'addMeet'=>'Ajouter un entretient personnel',
 						'duplic' => 'dupliquer',
 						'remove' =>"supprimer" );
-					echo '<div class="form-group row">';
+
 						echo '<div class="col-sm-3 col-xs-6">';
 							echo form_label('Origine');
-							echo form_dropdown('intervention[persons]['.$key.'][origine_id]', 	$choices['origins'], $intervention['persons'][$key]['origine_id'], $DropDownextra);
+							echo form_dropdown('intervention[persons]['.$key.'][origine_id]', 	$choices['origins'], $intervention['persons'][$key]['origine_id']);
 						echo "</div>"."\n";
 						echo '<div class="col-sm-3 col-xs-6">';
 							echo form_label('Genre');
-							echo form_dropdown('intervention[persons]['.$key.'][gender_id]', 	$choices['genders'], $intervention['persons'][$key]['gender_id'], $DropDownextra);
+							echo form_dropdown('intervention[persons]['.$key.'][gender_id]', 	$choices['genders'], $intervention['persons'][$key]['gender_id']);
 						echo "</div>"."\n";
 						echo '<div class="col-sm-3 col-xs-6">';
 							echo form_label('Orinentation');
-							echo form_dropdown('intervention[persons]['.$key.'][sexuality_id]', 	$choices['sexuality'], $intervention['persons'][$key]['sexuality_id'], $DropDownextra);
+							echo form_dropdown('intervention[persons]['.$key.'][sexuality_id]', 	$choices['sexuality'], $intervention['persons'][$key]['sexuality_id']);
 						echo "</div>"."\n";
 						echo '<div class="col-sm-3 col-xs-6">';
 							echo form_label("Groupe d'age");
-							echo form_dropdown('intervention[persons]['.$key.'][ageGroup_id]', 	$choices['ageGroups'], $intervention['persons'][$key]['ageGroup_id'], $DropDownextra);
+							echo form_dropdown('intervention[persons]['.$key.'][ageGroup_id]', 	$choices['ageGroups'], $intervention['persons'][$key]['ageGroup_id']);
 						echo "</div>"."\n";
 						echo '<div class="col-xs-6">';
 							echo form_label('Action rapide');
-							echo form_dropdown('intervention[persons]['.$key.'][quickAction]', $quckActions, 'none', $DropDownextra);
+							echo form_dropdown('intervention[persons]['.$key.'][quickAction]', $quckActions, 'none');
 						echo "</div>"."\n";
 						$currentKey = $person['id_Person'];
 						if(true == isset($intervention['interventions'][$currentKey])){
 							$current = $intervention['interventions'][$currentKey];
 							echo '<div class="col-xs-12">';
 								echo "<h4>Entretient personel</h4>";
+								echo form_hidden('intervention[interventions]['.$currentKey.'][id_intrevention]',
+									$current['id_intrevention']);
 								echo "<div>";
 									echo form_label('Durée');
-									echo form_dropdown('intervention[interventions]['.$currentKey.'][duration]', $dropDownDuration , $current['duration'], $DropDownextra);
+									echo form_dropdown('intervention[interventions]['.$currentKey.'][duration]', $dropDownDuration , $current['duration']);
 								echo "</div>"."\n";
 								echo "<div>";
 								$labelExtraTopLevel = array('style' => 'font-weight:700');
@@ -273,8 +285,8 @@ $dropDownDuration = array(
 									foreach ($thematics['children'] as $topLevelThema) {
 										echo '<div class="col-sm-3 col-xs-6">'."\n";
 										$cheked= false;
-										if(isset($intervention['thematics']))
-												if(in_array($topLevelThema['id'],$intervention['thematics']))
+										if(isset($intervention['interventions'][$currentKey]['thematics']))
+												if(in_array($topLevelThema['id'],$intervention['interventions'][$currentKey]['thematics']))
 													$cheked=true;
 										$data = array(
 												'name'          => 'intervention[interventions]['.$currentKey.'][thematics][]',
@@ -290,8 +302,8 @@ $dropDownDuration = array(
 											foreach ($topLevelThema['children'] as $midLevelThema) {
 												echo '<div style="padding-left: 10px">'."\n";
 												$cheked= false;
-												if(isset($intervention['thematics']))
-														if(in_array($midLevelThema['id'],$intervention['thematics']))
+												if(isset($intervention['interventions'][$currentKey]['thematics']))
+														if(in_array($midLevelThema['id'],$intervention['interventions'][$currentKey]['thematics']))
 																$cheked=true;
 												$data = array(
 															'name'          => 'intervention[interventions]['.$currentKey.'][thematics][]',
@@ -306,8 +318,8 @@ $dropDownDuration = array(
 														foreach ($midLevelThema['children'] as $lowLevelThema) {
 															echo '<div style="padding-left: 10px">'."\n";
 															$cheked= false;
-															if(isset($intervention['thematics']))
-																	if(in_array($lowLevelThema['id'],$intervention['thematics']))
+															if(isset($intervention['interventions'][$currentKey]['thematics']))
+																	if(in_array($lowLevelThema['id'],$intervention['interventions'][$currentKey]['thematics']))
 																			$cheked=true;
 															$data = array(
 																		'name'          => 'intervention[interventions]['.$currentKey.'][thematics][]',
@@ -328,7 +340,7 @@ $dropDownDuration = array(
 								echo "</div>"."\n";
 							echo "</div>"."\n";
 						}
-
+					echo "</div>"."\n";
 					echo "</div>"."\n";
 				}
 			 ?>
@@ -337,28 +349,28 @@ $dropDownDuration = array(
 					 <?php
 					 echo form_label('Origine');
 					 $origins['0']="";
-					 echo form_dropdown('intervention[persons][added][origine_id]', $origins, 0, $DropDownextra);
+					 echo form_dropdown('intervention[persons][added][origine_id]', $origins, 0);
 					  ?>
 				 </div>
 				 <div class="col-sm-3 col-xs-6">
 					  <?php
 					 echo form_label('Genre');
 					 $genders['0']="";
-					 echo form_dropdown('intervention[persons][added][gender_id]', $genders, 0, $DropDownextra);
+					 echo form_dropdown('intervention[persons][added][gender_id]', $genders, 0);
 					  ?>
 				 </div>
 				 <div class="col-sm-3 col-xs-6">
 					  <?php
 					 echo form_label('Orinentation');
 					 $sexuality['0']="";
-					 echo form_dropdown('intervention[persons][added][sexuality_id]', $sexuality, 0, $DropDownextra);
+					 echo form_dropdown('intervention[persons][added][sexuality_id]', $sexuality, 0);
 					  ?>
 				 </div>
 				 <div class="col-sm-3 col-xs-6">
 					  <?php
 					 echo form_label("Groupe d'age");
 						$ageGroups['0']= "";
-					 echo form_dropdown('intervention[persons][added][ageGroup_id]', $ageGroups, 0, $DropDownextra);
+					 echo form_dropdown('intervention[persons][added][ageGroup_id]', $ageGroups, 0);
 					  ?>
 				 </div>
 				 <div class="col-xs-12">

@@ -73,6 +73,34 @@ class Person_Model extends CI_Model
     }
     return $persons;
   }
+  function update($person){
+    $this->db->where('id_Person', $person['id_Person']);
+    $query =$this->db->get(self::TABLE_NAME);
+
+    if ($query->num_rows() != 1){
+        return null;
+    }
+    $raw = $query->row(0);
+    $row = array(
+      'id_Person' => $raw->id_Person,
+      'name' => $raw->name,
+      'origine_id' => $raw->declared_origine_id,
+      'ageGroup_id' => $raw->age_group_id,
+      'gender_id' => $raw->gender_id,
+      'sexuality_id' => $raw->sexuality_id,
+     );
+    foreach ($row as $fieldName => $fieldValue)
+      if(true ==isset($person[$fieldName]))
+        $row[$fieldName]=$person[$fieldName];
+    {
+      $row['declared_origine_id']=$row['origine_id'];
+      unset($row['origine_id']);
+      $row['age_group_id']=$row['ageGroup_id'];
+      unset($row['ageGroup_id']);
+    }
+    $this->db->where('id_Person', $row['id_Person']);
+    $this->db->update(self::TABLE_NAME, $row);
+  }
   function _populate(&$person){
     $this->_addOrigine($person);
     $this->_addAgeGroup($person);
