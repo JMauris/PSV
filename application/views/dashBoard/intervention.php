@@ -40,7 +40,7 @@
 			<div class="col-xs-6 hidden-xl hidden-lg hidden-md hidden-sm">
 				<?php
 				echo'<br/>';
-					echo anchor('', 'créer un nouveau lieu', "class='btn btn-default'");
+					echo anchor('/intervention/createLieu/', 'créer un nouveau lieu', "class='btn btn-default'");
 				?>
 			</div>
 		</div>
