@@ -32,7 +32,7 @@ $dropDownDuration = array(
 	'240' => '4:00',
 	'310' => '4:30',
 );
-echo form_open('intervention/edit/'. $intervention['id_intrevention']);
+echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 
 		?>
 	<div class="container-fluid">

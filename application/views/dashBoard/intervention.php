@@ -1,7 +1,7 @@
 <h2>Créer une nouvelle intervention</h2>
 <?php
 
-	echo form_open('intervention/create');
+	echo form_open('demarche/create');
 ?>
 	<div class="container">
 		<br/>
@@ -84,7 +84,7 @@ if($this->session->userdata['groupId']==500)
 			}
 				echo $divType;
 					echo anchor(
-						'intervention/edit/' . $value["id_intrevention"],
+						'demarche/edit/' . $value["id_intrevention"],
 						'éditer - completer',
 						"class='btn btn-default'");
 				echo "</div>";
