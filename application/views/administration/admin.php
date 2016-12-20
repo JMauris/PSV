@@ -10,14 +10,13 @@ function myFunction(val) {
 <h2>Management</h2>
 <?php echo anchor('/auth/register/', 'Créer un nouvel intervenant',"class='btn btn-lg btn-primary btn-block'"); ?>
 
-<h3>Internvenants actifs</h3>
+<h3>Internvenants</h3>
 
 <?php
   echo form_open('/admin/');
 
 $extra  = array('disabled' => 'disabled');
 echo '<div class="container">';
-echo  '<h3>Internvenants inactifs</h3>';
 echo '<table class="table table-hover">';
 echo '<thead>';
 echo '<tr>';
@@ -70,5 +69,3 @@ echo '</table>';
 </form>
 
 </div>
-
-<h2>View</h2>
