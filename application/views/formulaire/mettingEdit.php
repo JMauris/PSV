@@ -282,6 +282,7 @@ echo form_open('meeting/edit/'. $intervention['id_intrevention']);
 				}
 			 ?>
 		</div>
+		<div style="height: 40px;"> </div>
 			<nav class="navbar navbar-fixed-bottom navbar-light bg-faded">
 					<?php echo form_submit('submit_Profil', 'Valider', "class='btn btn-lg btn-primary btn-block'"); ?>
 			</nav>

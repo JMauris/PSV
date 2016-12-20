@@ -381,7 +381,7 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 				 </div>
 			 </div>
 		</div>
-
+<div style="height: 40px;"> </div>
 
 			<nav class="navbar navbar-fixed-bottom navbar-light bg-faded">
 					<?php echo form_submit('submit_Profil', 'Valider', "class='btn btn-lg btn-primary btn-block'"); ?>
