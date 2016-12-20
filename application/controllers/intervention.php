@@ -132,7 +132,13 @@ class Intervention extends CI_Controller
     redirect('intervention');
   }
 
+  function createLieu()
+  {
 
+    $kind_place = $this->place_model->getAllKind();
+    $data['kind_place']=$kind_place;
+      $this->load->view('formulaire/lieuCreate', $data);
+  }
 }
 
  ?>

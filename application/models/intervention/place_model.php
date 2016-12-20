@@ -35,6 +35,16 @@ class Place_Model extends CI_Model
     return $places;
   }
 
+  function getAllKind(){
+    $query =$this->db->get('place_kind');
+    $kinds = array();
+    $rows = $query->result_array();
+    foreach ($rows as $key => $row) {
+      $kinds[$row['id_kind']]= $row['descr'];
+    }
+    return $kinds;
+  }
+
   function insert(){
 
   }
