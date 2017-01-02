@@ -49,10 +49,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               ?>
               <li <?php if ($class == 'demarche') {
                 echo 'class="active"';
-              }?>><a href=<?php echo base_url(). index_page(). '/' . 'demarche/';?>>Intervention</a></li>
+              }?>><a href=<?php echo base_url(). index_page(). '/' . 'demarche/';?>>Collectif</a></li>
               <li <?php if ($class == 'meeting') {
                 echo 'class="active"';
-              }?>><a href=<?php echo base_url(). index_page(). '/' . 'meeting/';?>>Entretient</a></li>
+              }?>><a href=<?php echo base_url(). index_page(). '/' . 'meeting/';?>>Individuel</a></li>
               <?php
               if($groupId==500){
                 ?>
