@@ -266,6 +266,7 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 					<div class="in-intervention-meeting" id="PersDetail_<?php echo($key); ?>" data-toggle="modal" data-target="#editModal_<?php echo($personId);?>">
 
 						<div class="form-group row">
+							<h4>Persone n°<?php echo($key+1); ?></h4>
 							<?php
 							echo form_hidden('intervention[persons]['.$key.'][id_Person]',$personId);
 							/*echo form_hidden('intervention[persons]['.$key.'][origine_id]',$person['origine_id']);
@@ -286,7 +287,7 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 							foreach ($personInfos as $name => $value) {
 								?>
 								<div class="col-sm-3 col-xs-6">
-										<p id=<?php  echo($key."_".$name);?>><?php echo($name.': '.$value) ?></p>
+										<p id=<?php  echo($key."_".$name);?>><?php echo($value) ?></p>
 
 								</div><?php
 							}
@@ -329,33 +330,56 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 												$choices['ageGroups'][$id]=$value;
 										?>
 										<div class="col-sm-3 col-xs-6"><?php
+											$dropDownId='intervention[persons]['.$key.'][origine_id]';
+											$script="var yourSelect = document.getElementById('$dropDownId' );
+												$('#".$key."_Origine').html(yourSelect.options[ yourSelect.selectedIndex ].innerHTML);";
 												echo form_label('Origine');
 												echo form_dropdown(
-													'intervention[persons]['.$key.'][origine_id]'
-													,$choices['origins']
-													,$intervention['persons'][$key]['origine_id']
-													,array('id' =>'intervention[persons]['.$key.'][origine_id]')
+													$dropDownId,
+													$choices['origins'],
+													$intervention['persons'][$key]['origine_id'],
+													array('id' =>$dropDownId, 'onchange' => $script)
 												);
 										?>
-										<script type="text/javascript">
-										$("#intervention[persons][<?php echo($key);?>][origine_id]").change(function() {
-											alert("Hello! I am an alert box!!");
-										}).change();
-											</script>
+
 										</div>
 										<div class="col-sm-3 col-xs-6"><?php
+											$dropDownId='intervention[persons]['.$key.'][gender_id]';
+											$script="var yourSelect = document.getElementById('$dropDownId' );
+												$('#".$key."_Genre').html(yourSelect.options[ yourSelect.selectedIndex ].innerHTML);";
 												echo form_label('Genre');
-												echo form_dropdown('intervention[persons]['.$key.'][gender_id]', 	$choices['genders'], $intervention['persons'][$key]['gender_id']);
+												echo form_dropdown(
+													$dropDownId,
+													$choices['genders'],
+													$intervention['persons'][$key]['gender_id'],
+													array('id' =>$dropDownId, 'onchange' => $script)
+												);
 										?>
 										</div>
 										<div class="col-sm-3 col-xs-6"><?php
+												$dropDownId='intervention[persons]['.$key.'][sexuality_id]';
+												$script="var yourSelect = document.getElementById('$dropDownId' );
+													$('#".$key."_Sexualité').html(yourSelect.options[ yourSelect.selectedIndex ].innerHTML);";
 												echo form_label('Orinentation');
-												echo form_dropdown('intervention[persons]['.$key.'][sexuality_id]', 	$choices['sexuality'], $intervention['persons'][$key]['sexuality_id']);
+												echo form_dropdown(
+													$dropDownId,
+													$choices['sexuality'],
+													$intervention['persons'][$key]['sexuality_id'],
+													array('id' =>$dropDownId, 'onchange' => $script)
+												);
 										?>
 										</div>
 										<div class="col-sm-3 col-xs-6"><?php
+												$dropDownId='intervention[persons]['.$key.'][ageGroup_id]';
+												$script="var yourSelect = document.getElementById('$dropDownId' );
+													$('#".$key."_Age').html(yourSelect.options[ yourSelect.selectedIndex ].innerHTML);";
 												echo form_label("Groupe d'age");
-												echo form_dropdown('intervention[persons]['.$key.'][ageGroup_id]', 	$choices['ageGroups'], $intervention['persons'][$key]['ageGroup_id']);
+												echo form_dropdown(
+													$dropDownId,
+													$choices['ageGroups'],
+													$intervention['persons'][$key]['ageGroup_id'],
+													array('id' =>$dropDownId, 'onchange' => $script)
+												);
 										?>
 									</div><?php
 											$currentKey = $person['id_Person'];
@@ -441,6 +465,12 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 					    </div>
 					  </div>
 					</div>
+					<script type="text/javascript">
+						$("#intervention[persons][<?php echo($key);?>][origine_id]").change(function() {
+								alert("Hello! I am an alert box!!");
+						    $('#<?php echo($key);?>_Origine').html("toto");
+						}).change();
+					</script>
 						<?php
 
 
