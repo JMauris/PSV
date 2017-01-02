@@ -10,25 +10,25 @@ function myFunction(val) {
 <h2>Management</h2>
 <?php echo anchor('/auth/register/', 'Créer un nouvel intervenant',"class='btn btn-lg btn-primary btn-block'"); ?>
 
-<h3>Internvenants actifs</h3>
+<h3>Internvenants</h3>
 
 <?php
   echo form_open('/admin/');
+?>
 
-$extra  = array('disabled' => 'disabled');
-echo '<div class="container">';
-echo  '<h3>Internvenants inactifs</h3>';
-echo '<table class="table table-hover">';
-echo '<thead>';
-echo '<tr>';
-echo  '<th>ID</th>';
-echo  '<th>Username</th>';
-echo   '<th>Email</th>' ;
-echo    '<th>Role</th>' ;
-echo    '<th>Actif</th>' ;
-echo    '</tr>';
-echo    '</thead>';
-echo "<tbody>";
+<div class="container">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actif</th>
+      </tr>
+    </thead>
+    <tbody>
+<?php
 foreach ($intervenants as $key => $value) {
   if($value['activated']==0)
   {
@@ -57,9 +57,10 @@ foreach ($intervenants as $key => $value) {
     echo '</td>
           </tr>';
 }
-echo "</tbody>";
-echo '</table>';
 ?>
+</tbody>
+</table>
+
 
     <?php
 

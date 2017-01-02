@@ -30,11 +30,12 @@ class Welcome extends CI_Controller
 	     );
 	    $this->load->view('dashBoard/general',$data);
 
-
+/*
 		$user_id	= $this->tank_auth->get_user_id();
 		$user=$this->intervenant_model->getIntervenantById($user_id);
 		$data['user']=$user;
 		$this->load->view('welcome', $data);
+		*/
 		}
 	}
 }

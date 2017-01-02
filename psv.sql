@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 09 Décembre 2016 à 17:23
+-- Généré le :  Dim 18 Décembre 2016 à 23:36
 -- Version du serveur :  10.1.16-MariaDB
 -- Version de PHP :  5.6.24
 
@@ -130,7 +130,8 @@ INSERT INTO `intervention_has_persons` (`intervention_id`, `person_id`) VALUES
 (3, 7),
 (3, 8),
 (15, 10),
-(16, 9);
+(16, 13),
+(16, 15);
 
 -- --------------------------------------------------------
 
@@ -159,7 +160,12 @@ INSERT INTO `intervention_has_thematics` (`intervention_id`, `thematic_id`) VALU
 (3, 14),
 (3, 15),
 (16, 11),
-(16, 12);
+(16, 12),
+(26, 3),
+(26, 15),
+(26, 16),
+(27, 10),
+(27, 11);
 
 -- --------------------------------------------------------
 
@@ -189,10 +195,33 @@ INSERT INTO `intreventions` (`id_intrevention`, `intervenant_id`, `date`, `place
 (13, 3, '0000-00-00', 1, 0, 0, 0, 4, NULL, NULL),
 (14, 3, '0000-00-00', 1, 0, 0, 0, 4, NULL, NULL),
 (15, 1, '2016-12-21', 1, 0, 0, 0, 4, NULL, NULL),
-(16, 2, '2017-08-09', 1, 0, 0, 0, 4, NULL, NULL),
+(16, 2, '2017-08-09', 1, 45, 0, 0, 4, NULL, NULL),
 (17, 1, '2016-12-01', 1, 0, 0, 0, 4, NULL, NULL),
-(21, 2, '2017-08-09', 1, 0, 0, 0, 3, 16, 9),
-(22, 1, '2016-12-21', 1, 0, 0, 0, 3, 15, 10);
+(22, 1, '2016-12-21', 1, 0, 0, 0, 3, 15, 10),
+(23, 2, '2017-08-09', 1, 0, 0, 0, 3, NULL, 11),
+(26, 2, '2017-08-09', 1, 30, 0, 0, 3, 16, 13),
+(27, 1, '2016-12-19', 0, 0, 0, 0, 3, NULL, 2),
+(28, 1, '2016-12-08', 1, 0, 0, 0, 1, NULL, NULL),
+(32, 1, '2016-12-18', 0, 0, 0, 0, 4, NULL, NULL),
+(33, 1, '2016-12-18', 0, 0, 0, 0, 4, NULL, NULL),
+(34, 1, '2016-12-18', 0, 0, 0, 0, 4, NULL, NULL),
+(35, 1, '2016-12-19', 0, 0, 0, 0, 4, NULL, NULL),
+(36, 1, '2016-12-18', 0, 0, 0, 0, 1, NULL, NULL);
+
+--
+-- Déclencheurs `intreventions`
+--
+DELIMITER $$
+CREATE TRIGGER `intreventions_BEFORE_DELETE` BEFORE DELETE ON `intreventions` FOR EACH ROW BEGIN
+ delete from intervention_has_persons
+	where intervention_id = OLD.id_intrevention;
+ delete from intervention_has_thematics
+	where intervention_id = OLD.id_intrevention;
+ delete from intrevention_has_material
+	where intrevention_id = OLD.id_intrevention;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -214,6 +243,7 @@ INSERT INTO `intrevention_has_material` (`intrevention_id`, `material_id`, `quan
 (3, 1, 2),
 (3, 2, 4),
 (16, 2, 1),
+(27, 3, 3),
 (3, 4, 14);
 
 -- --------------------------------------------------------
@@ -321,7 +351,7 @@ CREATE TABLE `persons` (
 --
 
 INSERT INTO `persons` (`id_Person`, `name`, `declared_origine_id`, `age_group_id`, `gender_id`, `sexuality_id`) VALUES
-(2, '', 11, 2, 3, 2),
+(2, '', 11, 2, 1, 2),
 (3, '', 11, 2, 2, 2),
 (4, '', 11, 2, 3, 2),
 (5, '', 11, 1, 2, 1),
@@ -329,7 +359,12 @@ INSERT INTO `persons` (`id_Person`, `name`, `declared_origine_id`, `age_group_id
 (7, '', 11, 1, 2, 1),
 (8, '', 11, 1, 2, 1),
 (9, '', 3, 1, 4, 1),
-(10, '', 5, 2, 2, 2);
+(10, '', 5, 2, 2, 2),
+(11, '', 11, 1, 2, 1),
+(12, '', 11, 1, 2, 2),
+(13, '', 11, 2, 2, 1),
+(14, '', 11, 1, 5, 1),
+(15, '', 8, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -350,6 +385,7 @@ CREATE TABLE `place` (
 --
 
 INSERT INTO `place` (`id_lieu`, `Name`, `kind`, `adresse`, `actived`) VALUES
+(0, 'non renseigné', 1, NULL, 1),
 (1, 'perle d''asie', 1, NULL, 1);
 
 -- --------------------------------------------------------
@@ -460,8 +496,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `group_id`) VALUES
-(1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-06 13:27:24', '2016-11-29 17:54:13', '2016-12-06 12:27:24', 300),
-(2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-11-29 19:32:15', '2016-11-29 19:32:15', '2016-11-29 18:32:15', 300),
+(1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-18 20:14:51', '2016-11-29 17:54:13', '2016-12-18 19:14:51', 300),
+(2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-18 20:16:20', '2016-11-29 19:32:15', '2016-12-18 19:16:20', 500),
 (3, 'titi', '$2a$08$iBHekq9MdoJOGJEI04xaMeYcEzbvcz5OS8caVDsIZGJDPxJcRPgVi', 'titi@titi.titi', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-01 14:03:10', '2016-12-01 14:02:43', '2016-12-01 13:03:10', 300);
 
 -- --------------------------------------------------------
@@ -677,7 +713,7 @@ ALTER TABLE `genders`
 -- AUTO_INCREMENT pour la table `intreventions`
 --
 ALTER TABLE `intreventions`
-  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT pour la table `intrevention_kinds`
 --
@@ -702,12 +738,12 @@ ALTER TABLE `origines`
 -- AUTO_INCREMENT pour la table `persons`
 --
 ALTER TABLE `persons`
-  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT pour la table `place`
 --
 ALTER TABLE `place`
-  MODIFY `id_lieu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_lieu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `place_kind`
 --
@@ -754,7 +790,7 @@ ALTER TABLE `intervention_has_persons`
 -- Contraintes pour la table `intervention_has_thematics`
 --
 ALTER TABLE `intervention_has_thematics`
-  ADD CONSTRAINT `intervention_has_thematics_ibfk_1` FOREIGN KEY (`intervention_id`) REFERENCES `intreventions` (`id_intrevention`),
+  ADD CONSTRAINT `intervention_has_thematics_ibfk_1` FOREIGN KEY (`intervention_id`) REFERENCES `intreventions` (`id_intrevention`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `intervention_has_thematics_ibfk_2` FOREIGN KEY (`thematic_id`) REFERENCES `thematics` (`id_thematic`);
 
 --
@@ -766,6 +802,13 @@ ALTER TABLE `intreventions`
   ADD CONSTRAINT `intreventions_ibfk_1` FOREIGN KEY (`intervenant_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `intreventions_ibfk_2` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id_Person`),
   ADD CONSTRAINT `paren_ik` FOREIGN KEY (`parent`) REFERENCES `intreventions` (`id_intrevention`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `intrevention_has_material`
+--
+ALTER TABLE `intrevention_has_material`
+  ADD CONSTRAINT `intrevention_has_material_ibfk_1` FOREIGN KEY (`intrevention_id`) REFERENCES `intreventions` (`id_intrevention`) ON DELETE NO ACTION,
+  ADD CONSTRAINT `intrevention_has_material_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `materials` (`id_material`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `origines`
