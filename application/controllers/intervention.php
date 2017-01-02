@@ -63,23 +63,28 @@ class Intervention extends CI_Controller
 
 
         $potentialyAdded = array_pop($intervention['persons']);
-        if( 0 != $potentialyAdded['gender_id'])
-          if( 0 != $potentialyAdded['sexuality_id'])
-            if( 0 != $potentialyAdded['ageGroup_id']){
-              $inserted = $this->person_model->getById(
-                $this->person_model->insertPerson(
-                  "",
-                  $potentialyAdded['origine_id'],
-                  $potentialyAdded['ageGroup_id'],
-                  $potentialyAdded['gender_id'],
-                  $potentialyAdded['sexuality_id']
-                )
-              );
-              $inserted['quickAction']= 'added';
-              array_push($intervention['persons'],$inserted);
-            }
+        var_dump($potentialyAdded);
+        if(  ( 0 != $potentialyAdded['origine_id'])
+          && ( 0 != $potentialyAdded['gender_id'])
+          && ( 0 != $potentialyAdded['sexuality_id'])
+          && ( 0 != $potentialyAdded['ageGroup_id'])
+          )
+          for ($i=0; $i < $potentialyAdded['quantity'] ; $i++) {
+            echo $i."/".$potentialyAdded['quantity'];
+            $inserted = $this->person_model->getById(
+              $this->person_model->insertPerson(
+                "",
+                $potentialyAdded['origine_id'],
+                $potentialyAdded['ageGroup_id'],
+                $potentialyAdded['gender_id'],
+                $potentialyAdded['sexuality_id']
+              )
+            );
+            $inserted['quickAction']= 'added';
+            array_push($intervention['persons'],$inserted);
+          }
 
-            $this->demarches_model->update($intervention);
+        $this->demarches_model->update($intervention);
     }
 
 
