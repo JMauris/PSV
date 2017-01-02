@@ -250,7 +250,7 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 				 echo form_input($quantityInput);
 				 ?>
 			</div>
-			<div class="col-sm-10 col-sm-offset-1 col-xs-12">
+			<div class="col-sm-10 col-sm-offset-1 col-xs-6">
 					<?php
 				echo "<br/>";
 				echo form_submit('submit_Profil', 'Ajouter', "class='btn btn-lg btn-primary btn-block'");
