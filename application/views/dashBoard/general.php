@@ -7,7 +7,7 @@
 
 	$allInterventions = array(
 		'Les éléments à venir' => $futur,
-		'Les éléments passée' => $past
+		'Les éléments passés' => $past
 	 );
 	 foreach ($allInterventions as $title => $interventions) {
 	 	echo " <h2>".$title."</h2>"."\n";

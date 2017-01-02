@@ -69,7 +69,7 @@
 		$divType ='<div class="col-md-2 col-sm-4 col-xs-6">';
 	$allInterventions = array(
 		'Les entretients à venir' => $futur,
-		'Les entretients passée' => $past
+		'Les entretients passés' => $past
 	 );
 	 foreach ($allInterventions as $title => $intervgentions) {
 	 	echo " <h2>".$title."</h2>";

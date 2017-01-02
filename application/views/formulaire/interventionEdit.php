@@ -177,7 +177,7 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 			?>
 		</div>
 		<div class="row text-center">
-			<h2>Materiel distribué</h2>
+			<h2>Matériels distribués</h2>
 		</div>
 		<div class="form-group row">
 			<?php
