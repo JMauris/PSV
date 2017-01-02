@@ -29,18 +29,6 @@ function myFunction(val) {
     <tbody>
 <?php
 $extra  = array('disabled' => 'disabled');
-echo '<div class="container">';
-echo '<table class="table table-hover">';
-echo '<thead>';
-echo '<tr>';
-echo  '<th>ID</th>';
-echo  '<th>Username</th>';
-echo   '<th>Email</th>' ;
-echo    '<th>Role</th>' ;
-echo    '<th>Actif</th>' ;
-echo    '</tr>';
-echo    '</thead>';
-echo "<tbody>";
 foreach ($intervenants as $key => $value) {
   if($value['activated']==0)
   {
