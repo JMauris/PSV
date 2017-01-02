@@ -15,8 +15,6 @@ function myFunction(val) {
 <?php
   echo form_open('/admin/');
 ?>
-
-<<<<<<< HEAD
 <div class="container">
   <table class="table table-hover">
     <thead>
@@ -30,7 +28,6 @@ function myFunction(val) {
     </thead>
     <tbody>
 <?php
-=======
 $extra  = array('disabled' => 'disabled');
 echo '<div class="container">';
 echo '<table class="table table-hover">';
@@ -44,7 +41,6 @@ echo    '<th>Actif</th>' ;
 echo    '</tr>';
 echo    '</thead>';
 echo "<tbody>";
->>>>>>> origin/master
 foreach ($intervenants as $key => $value) {
   if($value['activated']==0)
   {
