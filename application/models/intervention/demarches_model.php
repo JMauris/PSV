@@ -79,6 +79,7 @@ class Demarches_Model extends Intervention_Model
     return $demarche;
   }
   function insert($intervenant_id, $date, $place_id, $kind_id){
+    $date= fromUiToSystem($date);
     $insertRow = array(
       'intervenant_id' => $intervenant_id,
       'date' => $date,
@@ -88,6 +89,8 @@ class Demarches_Model extends Intervention_Model
      return $this->db->insert(self::intervention_Table, $insertRow);
   }
   function update($demarche){
+    if(isset($demarche['date']))
+      $demarche['date']=fromUiToSystem($demarche['date']);
     //search current data in db
     $olddemarche = $this->getById($demarche['id_intrevention']);
     $demarcheRow = array(
@@ -111,15 +114,10 @@ class Demarches_Model extends Intervention_Model
     if(true == isset($demarche['materials']))
       parent::_updateMaterials( $demarche['id_intrevention'],$demarche['materials']);
     if(true == isset($demarche['interventions']))
-      foreach ($demarche['interventions'] as $key => $meeting)
-        $this->meetings_model->update($meeting);
+      $this->_updateInerMeetings($demarche['id_intrevention'], $demarche['interventions']);
     if(true == isset($demarche['persons']))
       $this->_updatePersons( $demarche['id_intrevention'],$demarche['persons']);
 
-    $query = $this->db->query('SELECT sum(duration) asInerDuration FROM intreventions WHERE parent='.$demarcheRow['id_intrevention'].';');
-    $inerDuration = $query->row(0)->asInerDuration;
-    $this->db->where('id_intrevention', $demarche['id_intrevention']);
-    $this->db->update('intreventions',array('duration' => $demarche['duration']-$inerDuration ));
   }
   function _populate(&$demarche){
     parent::_populate($demarche);
@@ -142,14 +140,8 @@ class Demarches_Model extends Intervention_Model
         case 'added':
             $this->_addPersonInDemarche($demarcheId,$person['id_Person']);
           break;
-        case 'duplic':
-            $this->_addNewPersonIndemarche($demarcheId,$person);
-          break;
         case 'remove':
             $this->_removePersonInDemarche($demarcheId,$person['id_Person']);
-          break;
-        case 'addMeet':
-            $this->_addInerMeeting($demarcheId,$person['id_Person']);
           break;
         case 'update':
             $this->person_model->update($person);
@@ -183,6 +175,18 @@ class Demarches_Model extends Intervention_Model
     $this->db->where('person_id',$personsid);
     $this->db->delete(self::intervention_Table);
   }
+  function _updateInerMeetings($demarcheId, $inerMeetings){
+
+    foreach ($inerMeetings as $personId => $inerMeeting) {
+      $isNew = true;
+      if(isset($inerMeeting['id_intrevention']))
+        $isNew=false;
+      if($isNew)
+        $inerMeeting['id_intrevention'] = $this->_addInerMeeting($demarcheId,$personId);
+
+      $this->meetings_model->update($inerMeeting);
+    }
+  }
   function _addInerMeeting($demarcheId, $personsid){
     $this->db->where('id_intrevention', $demarcheId);
     $query = $this->db->get(self::intervention_Table);
@@ -200,6 +204,6 @@ class Demarches_Model extends Intervention_Model
 
      );
      $this->db->insert(self::intervention_Table, $insertRow);
-
+     return $this->db->insert_id();
   }
 }

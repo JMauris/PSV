@@ -83,7 +83,17 @@ class Demarche extends CI_Controller
             array_push($intervention['persons'],$inserted);
           }
 
-        $this->demarches_model->update($intervention);
+          {
+            $nullMeetings = array();
+            foreach ($intervention['interventions'] as $key => $meeting)
+              if( 0 >= $meeting['duration'])
+                array_push($nullMeetings, $key);
+            foreach ($nullMeetings as $value)
+              unset($intervention['interventions'][$value]);
+          }
+          /*echo "contoleur/demarche/var_intervention\n";
+          var_dump($intervention);*/
+          $this->demarches_model->update($intervention);
     }
 
 
@@ -120,7 +130,8 @@ class Demarche extends CI_Controller
       'ageGroups'     => $ageGroups,
       'origins'       => $origins
      );
-     //var_dump($data);
+     /*echo "contoleur/demarche/var_intervention\n";
+     var_dump($data['intervention']);*/
     $this->load->view('formulaire/interventionEdit',$data);
   }
 
@@ -133,7 +144,7 @@ class Demarche extends CI_Controller
     $kind_id        = 4;
     $this->demarches_model->insert($intervenant_id, $date, $place_id, $kind_id);
 
-    redirect('demarche');
+    //redirect('demarche');
   }
 
 

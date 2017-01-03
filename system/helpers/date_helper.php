@@ -794,3 +794,17 @@ if ( ! function_exists('date_range'))
 		return $range;
 	}
 }
+if ( ! function_exists('fromUiToSystem'))
+{
+	function fromUiToSystem($uiDate){
+		$raw = explode('-',$uiDate);
+		return $raw[2].'-'.$raw[1].'-'.$raw[0];
+	}
+}
+if ( ! function_exists('fromSystemToUi'))
+{
+	function fromSystemToUi($systemDate){
+		$raw = explode('-',$systemDate);
+		return $raw[2].'-'.$raw[1].'-'.$raw[0];
+	}
+}

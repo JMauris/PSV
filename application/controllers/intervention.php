@@ -63,7 +63,6 @@ class Intervention extends CI_Controller
 
 
         $potentialyAdded = array_pop($intervention['persons']);
-        var_dump($potentialyAdded);
         if(  ( 0 != $potentialyAdded['origine_id'])
           && ( 0 != $potentialyAdded['gender_id'])
           && ( 0 != $potentialyAdded['sexuality_id'])

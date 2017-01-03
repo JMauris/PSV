@@ -33,10 +33,10 @@ class Auth extends CI_Controller
 		if ($this->tank_auth->is_logged_in()) {									// logged in
 			redirect('');
 
-		} elseif ($this->tank_auth->is_logged_in(FALSE)) {						// logged in, not activated
+		} /*elseif ($this->tank_auth->is_logged_in(FALSE)) {						// logged in, not activated
 			redirect('/auth/send_again/');
 
-		} else {
+		}*/ else {
 			$data['login_by_username'] = ($this->config->item('login_by_username', 'tank_auth') AND
 					$this->config->item('use_username', 'tank_auth'));
 			$data['login_by_email'] = $this->config->item('login_by_email', 'tank_auth');
@@ -76,10 +76,10 @@ class Auth extends CI_Controller
 					if (isset($errors['banned'])) {								// banned user
 						$this->_show_message($this->lang->line('auth_message_banned').' '.$errors['banned']);
 
-					} elseif (isset($errors['not_activated'])) {				// not activated user
+					}/* elseif (isset($errors['not_activated'])) {				// not activated user
 						redirect('/auth/send_again/');
 
-					} else {													// fail
+					} */else {													// fail
 						foreach ($errors as $k => $v)	$data['errors'][$k] = $this->lang->line($v);
 					}
 				}
@@ -200,9 +200,9 @@ class Auth extends CI_Controller
 	 */
 	function send_again()
 	{
-		if (!$this->tank_auth->is_logged_in(FALSE)) {							// not logged in or activated
+	//	if (!$this->tank_auth->is_logged_in(FALSE)) {							// not logged in or activated
 			redirect('/auth/login/');
-
+/*
 		} else {
 			$this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email');
 
@@ -225,7 +225,7 @@ class Auth extends CI_Controller
 				}
 			}
 			$this->load->view('auth/send_again_form', $data);
-		}
+		}*/
 	}
 
 	/**
@@ -260,10 +260,10 @@ class Auth extends CI_Controller
 		if ($this->tank_auth->is_logged_in()) {									// logged in
 			redirect('');
 
-		} elseif ($this->tank_auth->is_logged_in(FALSE)) {						// logged in, not activated
+		}/* elseif ($this->tank_auth->is_logged_in(FALSE)) {						// logged in, not activated
 			redirect('/auth/send_again/');
 
-		} else {
+		} */else {
 			$this->form_validation->set_rules('login', 'Email or login', 'trim|required|xss_clean');
 
 			$data['errors'] = array();

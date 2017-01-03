@@ -92,11 +92,9 @@ class Meetings_Model extends Intervention_Model
       $meet= array(
         'id_intrevention'  => $row['id_intrevention'],
         'intervenant_id'  => $row['intervenant_id'],
-        'date'            => $row['date'],
         'place_id'        => $row['place_id'],
+        'date'            => $row['date'],
         'duration'        => $row['duration'],
-        'extraCost'       => $row['extraCost'],
-        'distance'        => $row['distance'],
         'kind_id'         => $row['kind_id'],
         'person_id'       => $row['person_id']
        );
@@ -106,15 +104,19 @@ class Meetings_Model extends Intervention_Model
     return $interventions;
   }
   function insert($intervenant_id, $date, $place_id, $kind_id){
+    $date= fromUiToSystem($date);
     $insertRow = array(
       'intervenant_id' => $intervenant_id,
       'date' => $date,
       'place_id' => $place_id,
       'kind_id' => $kind_id
      );
-     return $this->db->insert(self::intervention_Table, $insertRow);
+     $this->db->insert(self::intervention_Table, $insertRow);
+     return $this->db->insert_id();
   }
   function update($meeting){
+    if(isset($meeting['date']))
+      $meeting['date']= fromUiToSystem($meeting['date']);
     //search current data in db
     $oldmeeting = $this->getById($meeting['id_intrevention']);
     $meetingRow = array(

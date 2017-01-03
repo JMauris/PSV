@@ -32,6 +32,7 @@ class Intervention_Model extends CI_Model
     $query = $this->db->get();
     $raw = $query->result_array();
     foreach ($raw as $key => $row) {
+      $raw[$key]['date']=fromSystemToUi($raw[$key]['date']);
       unset($raw[$key]['intervenant_id']);
       unset($raw[$key]['duration']);
       unset($raw[$key]['extraCost']);
@@ -61,6 +62,7 @@ class Intervention_Model extends CI_Model
     $query = $this->db->get();
     $raw = $query->result_array();
     foreach ($raw as $key => $row) {
+      $raw[$key]['date']=fromSystemToUi($raw[$key]['date']);
       unset($raw[$key]['intervenant_id']);
       unset($raw[$key]['duration']);
       unset($raw[$key]['extraCost']);
@@ -90,6 +92,7 @@ class Intervention_Model extends CI_Model
     $query = $this->db->get();
     $raw = $query->result_array();
     foreach ($raw as $key => $row) {
+      $raw[$key]['date']=fromSystemToUi($raw[$key]['date']);
       unset($raw[$key]['intervenant_id']);
       unset($raw[$key]['duration']);
       unset($raw[$key]['extraCost']);
@@ -133,6 +136,7 @@ class Intervention_Model extends CI_Model
     $query = $this->db->get();
     $raw = $query->result_array();
     foreach ($raw as $key => $row) {
+      $raw[$key]['date']=fromSystemToUi($raw[$key]['date']);
       unset($raw[$key]['intervenant_id']);
       unset($raw[$key]['duration']);
       unset($raw[$key]['extraCost']);
@@ -172,6 +176,7 @@ class Intervention_Model extends CI_Model
 
   }
   function _populate(&$intervention){
+    $intervention['date']=fromSystemToUi($intervention['date']);
     $this->_addIntervenant($intervention);
     $this->_addKind($intervention);
     $this->_addPlace($intervention);

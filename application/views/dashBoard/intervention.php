@@ -24,7 +24,7 @@
 					$dateInput= array(
 						'id' 		=> 'date',
     				'name'	=> 'date',
-						'value'	=>  date ('Y-m-d'),
+						'value'	=>  date ('d-m-Y'),
 					 	'class'	=> 'form-control date');
 					echo form_label('Date');
 					echo form_input($dateInput);
