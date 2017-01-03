@@ -26,7 +26,9 @@ class Admin extends CI_Controller
   function index()
   {
 
-  //  //$this->output->enable_profiler(true);
+//$this->output->enable_profiler(true);
+
+
     $intervenants = $this->input->post('intervenants');
     if(null !== $intervenants)
     {
@@ -37,54 +39,77 @@ class Admin extends CI_Controller
 
       }
     }
+    $genres = $this->input->post('genres');
+    if(null !== $genres)
+    {
+      foreach ($genres as $key => $genre) {
+          if(FALSE==isset($genre['activated']))
+            $genre['activated']=0;
+          $this->gender_model->update($genre);
 
+      }
+    }
+    $ageGroups = $this->input->post('ageGroups');
+    if(null !== $ageGroups)
+    {
+      foreach ($ageGroups as $key => $ageGroup) {
+          if(FALSE==isset($ageGroup['activated']))
+            $ageGroup['activated']=0;
+          $this->agegroup_model->update($ageGroup);
+
+      }
+    }
+    $sexualitys = $this->input->post('sexualitys');
+    if(null !== $sexualitys)
+    {
+      foreach ($sexualitys as $key => $sexuality) {
+          if(FALSE==isset($sexuality['activated']))
+            $sexuality['activated']=0;
+          $this->sexuality_model->update($sexuality);
+
+      }
+    }
+
+      $newGroupAge = $this->input->post('newGroupAge');
+      if(null !== $newGroupAge)
+      {
+          $this->agegroup_model->insert_AgeGroup($newGroupAge);
+      }
+
+      $newSexuality = $this->input->post('newSexuality');
+      if(null !== $newSexuality)
+      {
+          $this->sexuality_model->insert_sexuality($newSexuality);
+      }
+
+      $newGender = $this->input->post('newGender');
+      if(null !== $newGender)
+      {
+          $this->gender_model->insert_gender($newGender);
+      }
 
     $user = $this->tank_auth->get_user_id();
     $intervenants= $this->intervenant_model->getAllFullIntervenant();
+    $genres= $this->gender_model->getAllFullGender();
+    $sexualitys= $this->sexuality_model->getAllFullSexuality();
+    $ageGroups= $this->agegroup_model->getAllFullAgeGroup();
+
     $roles = array(
       '300' => 'user' ,
       '500' => 'admin' ,
     );
     $data = array(
       'intervenants' => $intervenants,
+      'genres'=> $genres,
+      'sexualitys'=>$sexualitys,
+      'ageGroups'=>$ageGroups,
       'roles' => $roles
      );
 
-
+    //var_dump($data);
     $this->load->view('administration/admin',$data);
 
   }
 
-  function updateStatues()
-  {
-    ////$this->output->enable_profiler(true);
-  /* $id = $this->input->post('intervenants');
 
-   $currentIntervenant = $this->intervenant_model->getIntervenantById($id);
-   if($currentIntervenant['activated']==1)
-   {
-     $currentIntervenant['activated']=0;
-     }elseif ($currentIntervenant['activated']==0) {
-       $currentIntervenant['activated']=1;
-     }
-
-     $this->intervenant_model->updateStatus($id,$currentIntervenant);
-
-     redirect('/admin/');*/
-
-  }
-
-  function edit()
-  {
-    ////$this->output->enable_profiler(true);
-    $intervenant = $this->input->post('intervenant');
-    $data=$intervenant;
-    var_dump($intervenant);
-    /*  $this->load->view('administration/intervenantEdit',$data);
-      $this->load->view('auth/change_email_form');
-      $this->load->view('auth/change_password_form');
-      $this->load->view('auth/forgot_password_form');*/
-
-
-}
 }

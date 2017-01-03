@@ -13,6 +13,45 @@ class Gender_Model extends CI_Model
     parent::__construct();
   }
 
+
+  function getAllFullGender(){
+    $query=$this->db->get(self::TABLE_NAME);
+
+    $genders=array();
+    $rows=$query->result_array();
+    foreach ($rows as $key => $row) {
+    $gender=array(
+      'id_gender'=>$row['id_gender'],
+      'name'=>$row['name'],
+      'activated'=>$row['activated']
+    );
+    $genders[$row['id_gender']]= $gender;
+    }
+    return $genders;
+  }
+  function update($gender)
+  {
+    $oldGender = $this->getById($gender['id_gender']);
+    $genderRow = array(
+      'id_gender'=>$oldGender['id_gender'],
+      'name'=>$oldGender['name'],
+      'activated'=>$oldGender['activated']
+    );
+
+    foreach($genderRow as $key => $value){
+      if(true == isset($gender[$key]))
+        $genderRow[$key] = $gender[$key];
+    }
+    $this->db->where('id_gender', $gender['id_gender']);
+    $this->db->update(self::TABLE_NAME, $genderRow);
+
+  }
+  function insert_gender($newGender)
+  {
+    $this->name = $newGender;
+   $this->db->insert(self::TABLE_NAME,$this);
+
+  }
   function getActivs(){
 
 		$this->db->where('activated', 1);
@@ -37,6 +76,7 @@ class Gender_Model extends CI_Model
     return array(
       'id_gender' => $raw->id_gender,
       'name' => $raw->name,
+      'activated'=>$raw->activated,
       );
 
   }

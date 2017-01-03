@@ -60,14 +60,166 @@ foreach ($intervenants as $key => $value) {
 ?>
 </tbody>
 </table>
-
-
-    <?php
-
-  echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");
-
-
+  <?php
+      echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");
    ?>
-</form>
 
+</form>
+</div>
+<h3>Genre</h3>
+
+<?php
+
+  echo form_open('/admin/');
+  echo form_label("Créer un nouveau genre");
+  echo form_input( "newGender");
+  echo form_submit('submit_Profil', 'Ajouté',"class='btn btn-lg btn-primary '");
+  echo form_close();
+
+  echo form_open('/admin/');
+
+?>
+<div class="container">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Actif</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($genres as $key => $value)
+      {
+        if($value['activated']==0)
+        {
+            echo '<tr class="active">';
+        }else
+          {
+              echo '<tr class="info">';
+          }
+
+        echo  '<td>';
+          echo form_hidden('genres['.$value['id_gender'].'][id_gender]',$value['id_gender']);
+        echo '</td>';
+
+        echo  '<td>';
+        echo form_input('genres['.$value['id_gender'].'][name]',$value['name']);
+        echo '</td>';
+
+        echo  '<td>';
+        echo form_checkbox('genres['.$value['id_gender'].'][activated]',1,$value['activated']);
+        echo '</td>
+              </tr>';
+      } ?>
+
+
+  </tbody>
+  </table>
+  <?php
+      echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");
+   ?>
+   </form>
+  </div>
+<h3>Sexualité</h3>
+
+<?php
+
+echo form_open('/admin/');
+echo form_label("Créer une nouvelle catégorie de sexualité");
+echo form_input( "newSexuality");
+echo form_submit('submit_Profil', 'Ajouté',"class='btn btn-lg btn-primary '");
+echo form_close();
+
+  echo form_open('/admin/');
+?>
+<div class="container">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Actif</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($sexualitys as $key => $value)
+      {
+        if($value['activated']==0)
+        {
+            echo '<tr class="active">';
+        }else
+          {
+              echo '<tr class="info">';
+          }
+
+        echo  '<td>';
+          echo form_hidden('sexualitys['.$value['id_sexuality'].'][id_sexuality]',$value['id_sexuality']);
+        echo '</td>';
+
+        echo  '<td>';
+        echo form_input('sexualitys['.$value['id_sexuality'].'][name]',$value['name']);
+        echo '</td>';
+
+        echo  '<td>';
+        echo form_checkbox('sexualitys['.$value['id_sexuality'].'][activated]',1,$value['activated']);
+        echo '</td>
+              </tr>';
+      } ?>
+    </tbody>
+    </table>
+    <?php
+        echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");
+     ?>
+     </form>
+    </div>
+<h3>Groupe d'age</h3>
+
+<?php
+  echo form_open('/admin/');
+echo form_label("Créer un nouveau groupe d'age");
+echo form_input( "newGroupAge");
+echo form_submit('submit_Profil', 'Ajouté',"class='btn btn-lg btn-primary '");
+echo form_close();
+  echo form_open('/admin/');
+?>
+<div class="container">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Actif</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($ageGroups as $key => $value)
+      {
+        if($value['activated']==0)
+        {
+            echo '<tr class="active">';
+        }else
+          {
+              echo '<tr class="info">';
+          }
+
+        echo  '<td>';
+        echo form_hidden('ageGroups['.$value['id_ages_goup'].'][id_ages_goup]',$value['id_ages_goup']);
+        echo '</td>';
+
+        echo  '<td>';
+        echo form_input('ageGroups['.$value['id_ages_goup'].'][name]',$value['name']);
+        echo '</td>';
+
+        echo  '<td>';
+        echo form_checkbox('ageGroups['.$value['id_ages_goup'].'][activated]',1,$value['activated']);
+        echo '</td>
+              </tr>';
+      } ?>
+    </tbody>
+    </table>
+    <?php
+        echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");
+     ?>
+     </form>
 </div>
