@@ -2,45 +2,114 @@
 
 class Places_Model extends CI_Model
 {
-  const place_table           = 'place';
-  const placeKind_table       ='place_kind';
-  const placeKind_join_claus  = 'place.kind = place_kind.id_kind';
-
-
-  const adresses_table        ='adresses';
-  const city_table            ='citys';
-  const city_join_claus       = 'adresses.city = citys.id_city';
+  const places_table            = 'place';
+  const kind_table              = 'place_kind';
+  const kind_join_claus         = 'place.kind = place_kind.id_kind';
+  const adresses_table          = 'adresses';
+  const adresses_join_claus     = 'place.adresse = adresses.id_adresse';
+  const citys_table             = 'citys';
+  const citys_join_claus        = 'adresses.city = citys.id_city';
 
 
   function __construct(){
     parent::__construct();
   }
-
-  function getActives(){
+  function getAll(){
     $this->db->select('*');
-    $this->db->from(self::place_table);
-    $this->db->join(self::placeKind_table, self::placeKind_join_claus);
-    $this->db->where('actived', 1);
-    $query = $this->db->get();
+    $this->db->from(self::places_table);
+    $this->db->join(self::kind_table, self::kind_join_claus);
+    $query =$this->db->get();
+
     $raw = $query->result_array();
     foreach ($raw as $key => $row)
       $this->_addAdress($raw[$key]);
 
     return $raw;
   }
-  function _addAdress(&$place)
-  {
+  function getActives(){
+    $this->db->select('*');
+    $this->db->from(self::places_table);
+    $this->db->join(self::kind_table, self::kind_join_claus);
+    $this->db->where(self::places_table.'.actived', 1);
+    $query =$this->db->get();
+
+    $raw = $query->result_array();
+    foreach ($raw as $key => $row)
+      $this->_addAdress($raw[$key]);
+
+    return $raw;
+  }
+  function getById($id){
+    $this->db->select('*');
+    $this->db->from(self::places_table);
+    $this->db->join(self::kind_table, self::kind_join_claus);
+    $this->db->where(self::places_table.'.id_lieu', $id);
+    $query =$this->db->get();
+
+    if ($query->num_rows() != 1){
+        return null;
+    }
+    $raw = $query->result_array();
+    $place = $raw['0'];
+    $this->_addAdress($place);
+
+    return $place;
+  }
+
+  function _addAdress(&$place){
     $id = $place['adresse'];
     if(null == $id)
       return;
     $this->db->select('*');
     $this->db->from(self::adresses_table);
-    $this->db->join(self::placeKind_table, self::placeKind_join_claus);
-    $this->db->join(self::city_table, self::city_join_claus);
+    $this->db->join(self::citys_table, self::citys_join_claus);
     $this->db->where('id_adresse', $id);
     $query = $this->db->get();
     $raw = $query->result_array();
-    $place['adresse'] = $raw;
+    $place['adresse'] = $raw[0];
+  }
+  function getCitys(){
+    $this->db->select('*');
+    $this->db->from(self::citys_table);
+    $this->db->order_by("npa", "ASC");
+    $this->db->where('activated', 1);
+    $query =$this->db->get();
+    $raw = $query->result_array();
+    return $raw;
+  }
+  function getKinds(){
+    $this->db->select('*');
+    $this->db->from(self::kind_table);
+    $this->db->order_by("descr", "ASC");
+    $this->db->where('kind_actived', 1);
+    $query =$this->db->get();
+    $raw = $query->result_array();
+    return $raw;
+  }
+  function insert($place){
+
+  }
+  function activateCityByNpa($npa){
+    $this->activateCityRange($npa, $npa);
+  }
+  function unactivateCityByNpa($npa){
+    $this->unactivateCityRange($npa, $npa);
+  }
+  function activateCityRange($npaLow, $npaUp){
+    $this->db->simple_query("UPDATE `citys` SET `activated` = '1'
+        WHERE npa BETWEEN '$npaLow' AND '$npaUp';");
+  }
+  function unactivateCityRange($npaLow, $npaUp){
+    $this->db->simple_query("UPDATE `citys` SET `activated` = '0'
+        WHERE npa BETWEEN '$npaLow' AND '$npaUp';");
+  }
+  function activateCityByName($name){
+    $this->db->simple_query("UPDATE `citys` SET `activated` = '1'
+        WHERE name ='$name';");
+  }
+  function unactivateCityByName($name){
+    $this->db->simple_query("UPDATE `citys` SET `activated` = '0'
+        WHERE name ='$name';");
   }
   /*
   function getOldByIntervenant($id){

@@ -12,7 +12,6 @@
 					$divType ='<div class="col-sm-4 col-xs-6">';
 					echo $divType;
 						echo form_label('Intervenant');
-						array_unshift($intervenants,'');
 						echo form_dropdown('intervenant', $intervenants,$user);
 						?>
 				</div>
