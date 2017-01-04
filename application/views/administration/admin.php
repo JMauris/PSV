@@ -8,11 +8,10 @@ function myFunction(val) {
 </script>
 
 <h2>Management</h2>
-<?php echo anchor('/auth/register/', 'Créer un nouvel intervenant',"class='btn btn-lg btn-primary btn-block'"); ?>
-
 <h3>Internvenants</h3>
 
 <?php
+  echo anchor('/auth/register/', 'Créer un nouvel intervenant',"class='btn btn-lg btn-primary btn-block'");
   echo form_open('/admin/');
 ?>
 <div class="container">
@@ -83,36 +82,32 @@ foreach ($intervenants as $key => $value) {
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Nom</th>
         <th>Actif</th>
       </tr>
     </thead>
     <tbody>
-      <?php foreach ($genres as $key => $value)
-      {
-        if($value['activated']==0)
-        {
-            echo '<tr class="active">';
-        }else
-          {
-              echo '<tr class="info">';
-          }
-
-        echo  '<td>';
-          echo form_hidden('genres['.$value['id_gender'].'][id_gender]',$value['id_gender']);
-        echo '</td>';
-
-        echo  '<td>';
-        echo form_input('genres['.$value['id_gender'].'][name]',$value['name']);
-        echo '</td>';
-
-        echo  '<td>';
-        echo form_checkbox('genres['.$value['id_gender'].'][activated]',1,$value['activated']);
-        echo '</td>
-              </tr>';
-      } ?>
-
+      <?php foreach ($genres as $key => $value) {
+        ?>
+          <tr class="<?php if($value['activated']==0):?>active<?php else:?>info<?php endif?>">
+            <td>
+              <?php
+                echo form_hidden('genres['.$value['id_gender'].'][id_gender]',$value['id_gender']);
+      					$input= array(
+      						'id' 		=> 'genres['.$value['id_gender'].'][name]',
+      						'name'	=> 'genres['.$value['id_gender'].'][name]',
+      						'class'	=> 'form-control',
+      						'value' => $value['name']);
+      						echo form_input($input);
+              ?>
+            </td>
+            <td>
+              <?php echo form_checkbox('genres['.$value['id_gender'].'][activated]',1,$value['activated']);?>
+            </td>
+          </tr>
+        <?php
+      }
+        ?>
 
   </tbody>
   </table>
