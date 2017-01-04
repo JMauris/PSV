@@ -1,38 +1,46 @@
-<?php
-$this->output->enable_profiler(true);
-$intervenantsDropDown = array();{
-	$intervenantsDropDown[$intervention['intervenant']['id']]=$intervention['intervenant']['username'];
-	foreach ($intervenants as $id => $name)
-		$intervenantsDropDown[$id]= $name;
-}
+<?php //setup
+	$this->output->enable_profiler(true);
+	{ // convert $places for dropDown use
+		$tmp = array(''=>'');
+		foreach ($places as $key => $place)
+			$tmp[$place['id_lieu']] =$place['descr']." - ".$place['Name'];
+		$places = $tmp;
+	}
 
-$placeDropDown = array();{
-	$placeDropDown[$intervention['place']['id_lieu']]=$intervention['place']['Name'];
-		foreach ($places as $id => $name)
-			$placeDropDown[$id]= $name;
-}
 
-$dropDownDuration = array(
-	'0' => '',
-	'5'  => '05',
-	'10' => '10',
-	'15' => '15',
-	'20' => '20',
-	'30' => '30',
-	'40' => '40',
-	'50' => '50',
-	'60' => '1:00',
-	'75' => '1:15',
-	'90' => '1:30',
-	'105' => '1:45',
-	'120' => '2:00',
-	'135' => '2:15',
-	'150' => '2:30',
-	'180' => '3:00',
-	'210' => '3:30',
-	'240' => '4:00',
-	'310' => '4:30',
-);
+	$intervenantsDropDown = array();{
+		$intervenantsDropDown[$intervention['intervenant']['id']]=$intervention['intervenant']['username'];
+		foreach ($intervenants as $id => $name)
+			$intervenantsDropDown[$id]= $name;
+	}
+
+	$placeDropDown = array();{
+		$placeDropDown[$intervention['place']['id_lieu']]=$intervention['place']['Name'];
+			foreach ($places as $id => $name)
+				$placeDropDown[$id]= $name;
+	}
+
+	$dropDownDuration = array(
+		'0' => '',
+		'5'  => '05',
+		'10' => '10',
+		'15' => '15',
+		'20' => '20',
+		'30' => '30',
+		'40' => '40',
+		'50' => '50',
+		'60' => '1:00',
+		'75' => '1:15',
+		'90' => '1:30',
+		'105' => '1:45',
+		'120' => '2:00',
+		'135' => '2:15',
+		'150' => '2:30',
+		'180' => '3:00',
+		'210' => '3:30',
+		'240' => '4:00',
+		'310' => '4:30',
+	);
 echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 
 		?>

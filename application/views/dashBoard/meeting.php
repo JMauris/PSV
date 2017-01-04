@@ -1,3 +1,11 @@
+<?php //setup
+	{ // convert $places for dropDown use
+		$tmp = array(''=>'');
+		foreach ($places as $key => $place)
+			$tmp[$place['id_lieu']] =$place['descr']." - ".$place['Name'];
+		$places = $tmp;
+	}
+?>
 <h2>Créer un nouvel entretient</h2>
 <?php
 

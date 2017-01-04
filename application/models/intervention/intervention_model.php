@@ -196,7 +196,7 @@ class Intervention_Model extends CI_Model
   }
   function _addPlace(&$intervention){
     $intervention['place'] =
-        $this->place_model->getById($intervention['place_id']);
+        $this->places_model->getById($intervention['place_id']);
   }
   function _addMaterial(&$intervention){
     $this->db->where('intrevention_id', $intervention['id_intrevention']);

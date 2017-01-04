@@ -27,7 +27,7 @@ class Intervention extends CI_Controller
     $user = $this->tank_auth->get_user_id();
     $past = $this->demarches_model->getOldByIntervenant($user);
     $futur = $this->demarches_model->getFutursByIntervenant($user);
-    $places = $this->place_model->getAll();
+    $places = $this->places_model->getAll();
     $intervenant = $this->intervenant_model->getIntervenantById($user);
     $intervenants = array($intervenant['id']=> $intervenant['username']);
 
@@ -95,7 +95,7 @@ class Intervention extends CI_Controller
       }
 
 
-    $places       = $this->place_model->getAll();
+    $places       = $this->places_model->getAll();
     $intervenant = $this->intervenant_model->getIntervenantById($user);
     $intervenants = array($intervenant['id']=> $intervenant['username']);
     $thematics    = $this->thematics_model->getTree();
@@ -139,7 +139,7 @@ class Intervention extends CI_Controller
   function createLieu()
   {
 
-    $kind_place = $this->place_model->getAllKind();
+    $kind_place = $this->places_model->getAllKind();
     $data['kind_place']=$kind_place;
       $this->load->view('formulaire/lieuCreate', $data);
   }

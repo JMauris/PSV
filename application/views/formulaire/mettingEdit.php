@@ -1,4 +1,12 @@
-<?php
+<?php //setup
+	$this->output->enable_profiler(true);
+	{ // convert $places for dropDown use
+		$tmp = array(''=>'');
+		foreach ($places as $key => $place)
+			$tmp[$place['id_lieu']] =$place['descr']." - ".$place['Name'];
+		$places = $tmp;
+	}
+
 $intervenantsDropDown = array();{
 	$intervenantsDropDown[$intervention['intervenant']['id']]=$intervention['intervenant']['username'];
 	foreach ($intervenants as $id => $name)

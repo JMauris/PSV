@@ -27,7 +27,7 @@ class Demarche extends CI_Controller
     $user = $this->tank_auth->get_user_id();
     $past = $this->demarches_model->getOldByIntervenant($user);
     $futur = $this->demarches_model->getFutursByIntervenant($user);
-    $places = $this->place_model->getAll();
+    $places = $this->places_model->getAll();
     $intervenant = $this->intervenant_model->getIntervenantById($user);
     $intervenants = array($intervenant['id']=> $intervenant['username']);
 
@@ -105,7 +105,7 @@ class Demarche extends CI_Controller
       }
 
 
-    $places       = $this->place_model->getAll();
+    $places       = $this->places_model->getAll();
     $intervenant = $this->intervenant_model->getIntervenantById($user);
     $intervenants = array($intervenant['id']=> $intervenant['username']);
     $thematics    = $this->thematics_model->getTree();
