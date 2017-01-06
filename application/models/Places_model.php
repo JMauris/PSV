@@ -6,7 +6,7 @@ class Places_Model extends CI_Model
   const kind_table              = 'place_kind';
   const kind_join_claus         = 'place.kind = place_kind.id_kind';
   const adresses_table          = 'adresses';
-  const adresses_join_claus     = 'place.adresse = adresses.id_adresse';
+  const adresses_join_claus     = 'adresses.place_Id = place.id_lieu';
   const citys_table             = 'citys';
   const citys_join_claus        = 'adresses.city = citys.id_city';
 
@@ -14,6 +14,8 @@ class Places_Model extends CI_Model
   function __construct(){
     parent::__construct();
   }
+
+//=selections opérations
   function getAll(){
     $this->db->select('*');
     $this->db->from(self::places_table);
@@ -55,16 +57,16 @@ class Places_Model extends CI_Model
 
     return $place;
   }
-
   function _addAdress(&$place){
-    $id = $place['adresse'];
-    if(null == $id)
-      return;
+    $id = $place['id_lieu'];
     $this->db->select('*');
     $this->db->from(self::adresses_table);
     $this->db->join(self::citys_table, self::citys_join_claus);
-    $this->db->where('id_adresse', $id);
+    $this->db->where('place_Id', $id);
     $query = $this->db->get();
+    if ($query->num_rows() != 1){
+        return $place['adresse'] = NULL;
+    }
     $raw = $query->result_array();
     $place['adresse'] = $raw[0];
   }
@@ -86,9 +88,89 @@ class Places_Model extends CI_Model
     $raw = $query->result_array();
     return $raw;
   }
-  function insert($place){
-
+  function getAllKinds(){
+    $this->db->select('*');
+    $this->db->from(self::kind_table);
+    $this->db->order_by("descr", "ASC");
+    $query =$this->db->get();
+    $raw = $query->result_array();
+    return $raw;
   }
+//======end=============
+
+
+//==places opérations==
+  function insert($name, $kind){
+    $insertRow = array(
+      'Name' => $name,
+      'kind' => $kind
+      );
+   $this->db->insert(self::places_table, $insertRow);
+   return $this->db->insert_id();
+  }
+  function setPlaceActivation($id,$activated){
+    $this->db->where('id_lieu', $id);
+    $partialRow = array('actived' => $activated);
+    $this->db->update(self::places_table, $partialRow);
+  }
+  function update($place){
+    $id = $place['id_lieu'];
+    $line = array(
+      'Name' => $place['Name'],
+      'kind' => $place['kind']
+    );
+    $this->db->where('id_lieu', $id);
+    $this->db->update(self::places_table, $line);
+  }
+//======end=============
+
+
+//==kinds opérations====
+  function insertKind($name){
+    $inserted = array('descr' => $name);
+    return $this->db->insert(self::kind_table, $inserted);
+  }
+  function updateKind($kind){
+    $line = array(
+      'descr'         => $kind['descr'],
+      'kind_actived'  => $kind['kind_actived']
+    );
+    $this->db->where('id_kind', $kind['id_kind']);
+    $this->db->update(self::kind_table, $line);
+  }
+//======end=============
+
+
+//==adresses opérations=
+  function insertAdress($placeId, $line_1, $line_2, $cityId){
+    if($cityId == 0)
+      return;
+    $adresse = array(
+      'place_Id' => $placeId,
+      'line_1' => $line_1,
+      'line_2' => $line_2,
+      'city'   => $cityId
+    );
+    return $this->db->insert(self::adresses_table, $adresse);
+  }
+  function removeAdress($placeId){
+    $this->db->where('place_Id', $placeId);
+    $this->db->delete(self::adresses_table);
+  }
+  function updateAdress($adresse){
+    $id = $adresse['place_Id'];
+    $line = array(
+      'line_1' => $adresse['line_1'],
+      'line_2' => $adresse['line_2'],
+      'city' => $adresse['city']
+    );
+    $this->db->where('place_Id', $id);
+    $this->db->update(self::adresses_table, $line);
+  }
+//======end=============
+
+
+//==cities opérations===
   function activateCityByNpa($npa){
     $this->activateCityRange($npa, $npa);
   }
@@ -111,196 +193,6 @@ class Places_Model extends CI_Model
     $this->db->simple_query("UPDATE `citys` SET `activated` = '0'
         WHERE name ='$name';");
   }
-  /*
-  function getOldByIntervenant($id){
-    $this->db->select('*');
-    $this->db->from(self::intervention_Table);
-    $this->db->join(self::kind_Table, self::kind_join_claus);
-    $this->db->join(self::place_Table, self::place_join_claus);
-    $this->db->where('date <', 'CURRENT_DATE()', FALSE);
-    $this->db->where('intervenant_id', $id);
-    $this->db->where('parent', null);
-    $this->db->order_by("date", "desc");
-    $query = $this->db->get();
-    $raw = $query->result_array();
-    foreach ($raw as $key => $row) {
-      unset($raw[$key]['intervenant_id']);
-      unset($raw[$key]['duration']);
-      unset($raw[$key]['extraCost']);
-      unset($raw[$key]['distance']);
-      unset($raw[$key]['parent']);
-      unset($raw[$key]['person_id']);
-      unset($raw[$key]['kind_id']);
-      unset($raw[$key]['kind']);
-      unset($raw[$key]['adresse']);
-      unset($raw[$key]['actived']);
-      if($raw[$key]['id_kind']==4)
-        $raw[$key]['subClass']='demarche';
-      else
-        $raw[$key]['subClass']='meeting';
-    }
-    return $raw;
-  }
-  function getFuturs(){
-    $this->db->select('*');
-    $this->db->from(self::intervention_Table);
-    $this->db->join(self::kind_Table, self::kind_join_claus);
-    $this->db->join(self::intervenant_Table, self::intervenant_join_claus);
-    $this->db->join(self::place_Table, self::place_join_claus);
-    $this->db->where('date >=', 'CURRENT_DATE()', FALSE);
-    $this->db->where('parent', null);
-    $this->db->order_by("date", "desc");
-    $query = $this->db->get();
-    $raw = $query->result_array();
-    foreach ($raw as $key => $row) {
-      unset($raw[$key]['intervenant_id']);
-      unset($raw[$key]['duration']);
-      unset($raw[$key]['extraCost']);
-      unset($raw[$key]['distance']);
-      unset($raw[$key]['parent']);
-      unset($raw[$key]['person_id']);
-      unset($raw[$key]['kind_id']);
-      unset($raw[$key]['kind']);
-      unset($raw[$key]['adresse']);
-      unset($raw[$key]['actived']);
-      unset($raw[$key]['password']);
-      unset($raw[$key]['email']);
-      unset($raw[$key]['activated']);
-      unset($raw[$key]['banned']);
-      unset($raw[$key]['ban_reason']);
-      unset($raw[$key]['new_password_key']);
-      unset($raw[$key]['new_password_requested']);
-      unset($raw[$key]['new_email']);
-      unset($raw[$key]['new_email_key']);
-      unset($raw[$key]['last_ip']);
-      unset($raw[$key]['last_login']);
-      unset($raw[$key]['created']);
-      unset($raw[$key]['modified']);
-      unset($raw[$key]['group_id']);
-      if($raw[$key]['id_kind']==4)
-        $raw[$key]['subClass']='demarche';
-      else
-        $raw[$key]['subClass']='meeting';
-    }
-    return $raw;
-  }
-  function getOld(){
-    $this->db->select('*');
-    $this->db->from(self::intervention_Table);
-    $this->db->join(self::kind_Table, self::kind_join_claus);
-    $this->db->join(self::intervenant_Table, self::intervenant_join_claus);
-    $this->db->join(self::place_Table, self::place_join_claus);
-    $this->db->where('date <', 'CURRENT_DATE()', FALSE);
-    $this->db->where('parent', null);
-    $this->db->order_by("date", "desc");
-    $query = $this->db->get();
-    $raw = $query->result_array();
-    foreach ($raw as $key => $row) {
-      unset($raw[$key]['intervenant_id']);
-      unset($raw[$key]['duration']);
-      unset($raw[$key]['extraCost']);
-      unset($raw[$key]['distance']);
-      unset($raw[$key]['parent']);
-      unset($raw[$key]['person_id']);
-      unset($raw[$key]['kind_id']);
-      unset($raw[$key]['kind']);
-      unset($raw[$key]['adresse']);
-      unset($raw[$key]['actived']);
-      unset($raw[$key]['password']);
-      unset($raw[$key]['email']);
-      unset($raw[$key]['activated']);
-      unset($raw[$key]['banned']);
-      unset($raw[$key]['ban_reason']);
-      unset($raw[$key]['new_password_key']);
-      unset($raw[$key]['new_password_requested']);
-      unset($raw[$key]['new_email']);
-      unset($raw[$key]['new_email_key']);
-      unset($raw[$key]['last_ip']);
-      unset($raw[$key]['last_login']);
-      unset($raw[$key]['created']);
-      unset($raw[$key]['modified']);
-      unset($raw[$key]['group_id']);
-      if($raw[$key]['id_kind']==4)
-        $raw[$key]['subClass']='demarche';
-      else
-        $raw[$key]['subClass']='meeting';
-    }
-    return $raw;
-  }
+//======end=============
 
-
-  function _delete(&$intervention){
-    $this->db->where('id_intrevention',$intervention['id_intrevention']);
-    $this->db->delete(self::intervention_Table);
-
-  }
-  function _populate(&$intervention){
-    $this->_addIntervenant($intervention);
-    $this->_addKind($intervention);
-    $this->_addPlace($intervention);
-    $this->_addMaterial($intervention);
-    $this->_addThematics($intervention);
-    $this->_addPersons($intervention);
-  }
-  function _addIntervenant(&$intervention){
-    $intervention['intervenant'] =
-        $this->intervenant_model->getIntervenantById($intervention['intervenant_id']);
-  }
-  function _addKind(&$intervention){
-    $this->db->where('id_kind', $intervention['kind_id']);
-    $query = $this->db->get('intrevention_kinds');
-    $kind = $query->result_array(0);
-    $intervention['kind'] = $kind[0];
-  }
-  function _addPlace(&$intervention){
-    $intervention['place'] =
-        $this->place_model->getById($intervention['place_id']);
-  }
-  function _addMaterial(&$intervention){
-    $this->db->where('intrevention_id', $intervention['id_intrevention']);
-    $query = $this->db->get(self::material_LinkTable);
-    $rows = $query->result_array();
-    $materialsForInter= array();
-    foreach ($rows as $key => $row) {
-      $materialsForInter[$row['material_id']]=$row['quantity'];
-    }
-    $intervention['materials']=$materialsForInter;
-  }
-  function _addThematics(&$intervention){
-    $this->db->where('intervention_id', $intervention['id_intrevention']);
-    $query = $this->db->get('intervention_has_thematics');
-    $rows = $query->result_array();
-    $thematics= array();
-    foreach ($rows as $key => $row) {
-        array_push($thematics, $row['thematic_id']);
-    }
-    $intervention['thematics']=$thematics;
-  }
-  function _updateThematics($interventionId, $thematicsIdsArray){
-
-    $this->db->where('intervention_id',$interventionId);
-    $this->db->delete(self::thematics_LinkTable);
-    foreach ($thematicsIdsArray as $key => $value) {
-      $row = array(
-        'intervention_id' => $interventionId,
-        'thematic_id' => $value
-      );
-      $this->db->insert(self::thematics_LinkTable, $row);
-    }
-  }
-  function _updateMaterials($interventionId, $materialsArray){
-    $this->db->where('intrevention_id',$interventionId);
-    $this->db->delete(self::material_LinkTable);
-    foreach ($materialsArray as $key => $value) {
-      if($value >0){
-        $row = array(
-          'intrevention_id' => $interventionId,
-          'material_id' => $key ,
-          'quantity' => $value
-        );
-        $this->db->insert(self::material_LinkTable, $row);
-      }
-    }
-  }
-*/
 }

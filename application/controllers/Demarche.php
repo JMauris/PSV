@@ -106,7 +106,7 @@ class Demarche extends CI_Controller
 
 
     $places       = $this->places_model->getAll();
-    $intervenant = $this->intervenant_model->getIntervenantById($user);
+    $intervenant  = $this->intervenant_model->getIntervenantById($user);
     $intervenants = array($intervenant['id']=> $intervenant['username']);
     $thematics    = $this->thematics_model->getTree();
     $materials    = $this->material_model->getAll();

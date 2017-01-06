@@ -53,6 +53,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <li <?php if ($class == 'meeting') {
                 echo 'class="active"';
               }?>><a href=<?php echo base_url(). index_page(). '/' . 'meeting/';?>>Individuel</a></li>
+              <li <?php if ($class == 'places') {
+                echo 'class="active"';
+              }?>><a href=<?php echo base_url(). index_page(). '/' . 'places/';?>>Lieux</a></li>
               <?php
               if($groupId==500){
                 ?>

@@ -47,7 +47,7 @@
 			<div class="col-xs-6 hidden-xl hidden-lg hidden-md hidden-sm">
 				<?php
 				echo'<br/>';
-					echo anchor('/intervention/createLieu/', 'créer un nouveau lieu', "class='btn btn-default'");
+					echo anchor(base_url(). index_page(). '/' . 'places/create/', 'créer un nouveau lieu', "class='btn btn-default'");
 				?>
 			</div>
 		</div>
@@ -59,7 +59,7 @@
 			</div>
 			<div class="col-sm-4 hidden-xs">
 				<?php
-					echo anchor('', 'créer un nouveau lieu', "class='btn btn-default'");
+					echo anchor(base_url(). index_page(). '/' . 'places/create/', 'créer un nouveau lieu', "class='btn btn-default'");
 				?>
 			</div>
 	</div>

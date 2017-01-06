@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Dim 18 Décembre 2016 à 23:36
+-- Généré le :  Ven 06 Janvier 2017 à 15:20
 -- Version du serveur :  10.1.16-MariaDB
 -- Version de PHP :  5.6.24
 
@@ -27,11 +27,19 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `adresses` (
-  `id_adresse` int(11) NOT NULL,
+  `place_Id` int(11) NOT NULL,
   `line_1` varchar(45) NOT NULL,
   `line_2` varchar(45) DEFAULT NULL,
   `city` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `adresses`
+--
+
+INSERT INTO `adresses` (`place_Id`, `line_1`, `line_2`, `city`) VALUES
+(2, 'Rue des Finettes 13', '', 6),
+(3, 'rts', 'se', 222);
 
 -- --------------------------------------------------------
 
@@ -52,7 +60,7 @@ CREATE TABLE `age_groups` (
 INSERT INTO `age_groups` (`id_ages_goup`, `name`, `activated`) VALUES
 (1, 'mineurs', 1),
 (2, '18-25', 1),
-(3, '26-35', 1),
+(3, '26-35', 0),
 (4, '36-50', 1),
 (5, '51-65', 1),
 (6, '66+', 1);
@@ -65,9 +73,524 @@ INSERT INTO `age_groups` (`id_ages_goup`, `name`, `activated`) VALUES
 
 CREATE TABLE `citys` (
   `id_city` int(11) NOT NULL,
-  `npa` int(11) DEFAULT NULL,
-  `name` varchar(45) DEFAULT NULL
+  `npa` int(11) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `activated` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `citys`
+--
+
+INSERT INTO `citys` (`id_city`, `npa`, `name`, `activated`) VALUES
+(6, 3922, 'Ackersand', 0),
+(7, 3951, 'Agarn', 0),
+(8, 3955, 'Albinen', 0),
+(9, 1905, 'Allesse', 0),
+(10, 3963, 'Aminona', 0),
+(11, 3973, 'Anchettes', 0),
+(12, 1972, 'Anzère', 0),
+(13, 1994, 'Aproz', 0),
+(14, 1974, 'Arbaz', 0),
+(15, 1957, 'Ardon', 0),
+(16, 1966, 'Argnoud (Ayent)', 0),
+(17, 1986, 'Arolla', 0),
+(18, 1991, 'Arvillard (Salins)', 0),
+(19, 1914, 'Auddes-sur-Riddes', 0),
+(20, 3938, 'Ausserberg', 0),
+(21, 3995, 'Ausserbinn', 0),
+(22, 1976, 'Aven', 0),
+(23, 1966, 'Ayent', 0),
+(24, 3961, 'Ayer', 0),
+(25, 1996, 'Baar (Nendaz)', 0),
+(26, 1934, 'Bagnes', 0),
+(27, 3937, 'Baltschieder', 0),
+(28, 1996, 'Basse-Nendaz', 0),
+(29, 3914, 'Belalp', 0),
+(30, 3997, 'Bellwald', 0),
+(31, 3999, 'Belvedere (Furka)', 0),
+(32, 3900, 'Berisal', 0),
+(33, 3991, 'Betten', 0),
+(34, 3992, 'Bettmeralp', 0),
+(35, 1996, 'Beuson', 0),
+(36, 3989, 'Biel VS', 0),
+(37, 1996, 'Bieudron', 0),
+(38, 3996, 'Binn', 0),
+(39, 1996, 'Bioley-de-Brignon', 0),
+(40, 3903, 'Birgisch', 0),
+(41, 3983, 'Bister', 0),
+(42, 3982, 'Bitsch', 0),
+(43, 3914, 'Blatten b. Naters', 0),
+(44, 3919, 'Blatten(Lötschen)', 0),
+(45, 1966, 'Blignoud (Ayent)', 0),
+(46, 3989, 'Blitzingen', 0),
+(47, 3975, 'Bluche-Randogne', 0),
+(48, 1966, 'Botyre (Ayent)', 0),
+(49, 1946, 'Bourg-St-Bernard', 0),
+(50, 1946, 'Bourg-St-Pierre', 0),
+(51, 1897, 'Bouveret', 0),
+(52, 1932, 'Bovernier', 0),
+(53, 1967, 'Bramois', 0),
+(54, 1944, 'Branche', 0),
+(55, 1926, 'Branson', 0),
+(56, 3957, 'Bratsch', 0),
+(57, 3983, 'Breiten', 0),
+(58, 3966, 'Briey', 0),
+(59, 3900, 'Brig', 0),
+(61, 3981, 'Brig Ausgänge', 0),
+(63, 3900, 'Brig Paketbasis', 0),
+(65, 3900, 'Brigerbad', 0),
+(66, 1996, 'Brignon', 0),
+(67, 3900, 'Brigue', 0),
+(68, 1934, 'Bruson', 0),
+(69, 3935, 'Bürchen', 0),
+(70, 1987, 'Cerise', 0),
+(71, 3966, 'Chalais', 0),
+(72, 1933, 'Chamoille', 0),
+(73, 1955, 'Chamoson', 0),
+(74, 1874, 'Champéry', 0),
+(75, 1938, 'Champex', 0),
+(76, 1971, 'Champlan', 0),
+(77, 1873, 'Champoussin', 0),
+(78, 1947, 'Champsec', 0),
+(79, 3976, 'Champzabé', 0),
+(80, 3961, 'Chandolin', 0),
+(81, 1965, 'Chandolin-Savièse', 0),
+(82, 1945, 'Chandonne (Liddes)', 0),
+(83, 1906, 'Charrat', 0),
+(84, 1926, 'Châtaignier', 0),
+(85, 1964, 'Châteauneuf (Cont)', 0),
+(86, 1962, 'Châtroz', 0),
+(87, 3978, 'Chelin', 0),
+(88, 1872, 'Chemex', 0),
+(89, 1927, 'Chemin', 0),
+(90, 1927, 'Chemin-Dessous', 0),
+(91, 1927, 'Chemin-Dessus', 0),
+(92, 3971, 'Chermignon', 0),
+(93, 3971, 'Chermignon-Bas', 0),
+(94, 1945, 'Chez Petit(Liddes)', 0),
+(95, 1937, 'Chez-les-Addy', 0),
+(96, 1937, 'Chez-les-Giroud', 0),
+(97, 1937, 'Chez-les-Reuses', 0),
+(98, 1926, 'Chiboz', 0),
+(99, 3965, 'Chippis', 0),
+(100, 1871, 'Choëx', 0),
+(101, 1993, 'Clèbes (Veysonnaz)', 0),
+(102, 1868, 'Collombey', 0),
+(103, 1903, 'Collonges', 0),
+(104, 1971, 'Coméraz(Grimisuat)', 0),
+(105, 1937, 'Commeire', 0),
+(106, 1996, 'Condémines', 0),
+(107, 1964, 'Conthey', 0),
+(108, 1975, 'Conthey-Bourg', 0),
+(109, 3974, 'Conzor', 0),
+(110, 1996, 'Coor', 0),
+(111, 3960, 'Corin-de-la-Crête', 0),
+(112, 1934, 'Cotterg(Le Châble)', 0),
+(113, 3963, 'Crans-Montana', 0),
+(114, 1941, 'Cries (Vollèges)', 0),
+(115, 3979, 'Daillet', 0),
+(116, 1976, 'Daillon', 0),
+(117, 1890, 'Dailly', 0),
+(118, 3973, 'Darnona', 0),
+(119, 1891, 'Daviaz', 0),
+(120, 3993, 'Deisch', 0),
+(121, 1976, 'Derborence', 0),
+(122, 3963, 'Diogne', 0),
+(123, 1950, 'Diolly', 0),
+(124, 1905, 'Dorénaz', 0),
+(125, 1945, 'Dranse (Liddes)', 0),
+(126, 1965, 'Drône VS', 0),
+(127, 1912, 'Dugny (Leytron)', 0),
+(128, 1908, 'Ecône', 0),
+(129, 3939, 'Eggerberg', 0),
+(130, 3984, 'Eggishorn', 0),
+(131, 3943, 'Eischoll', 0),
+(132, 1969, 'Eison', 0),
+(133, 3909, 'Eisten', 0),
+(134, 3919, 'Eisten (Lötschen)', 0),
+(135, 3926, 'Embd', 0),
+(136, 3948, 'Ems VS', 0),
+(137, 1890, 'Epinassey', 0),
+(138, 1976, 'Erde', 0),
+(139, 3979, 'Erdesson', 0),
+(140, 3947, 'Ergisch', 0),
+(141, 3995, 'Ernen', 0),
+(142, 3957, 'Erschmatt', 0),
+(143, 1941, 'Etiez', 0),
+(144, 1982, 'Euseigne', 0),
+(145, 1902, 'Evionnaz', 0),
+(146, 1983, 'Evolène', 0),
+(147, 3931, 'Eyholz', 0),
+(148, 3919, 'Fafleralp', 0),
+(149, 3961, 'Fang', 0),
+(150, 3916, 'Ferden', 0),
+(151, 1984, 'Ferpècle', 0),
+(152, 3956, 'Feschel', 0),
+(153, 1996, 'Fey (Nendaz)', 0),
+(154, 3984, 'Fiesch', 0),
+(155, 3984, 'Fieschertal', 0),
+(156, 3983, 'Filet', 0),
+(157, 1925, 'Finhaut', 0),
+(158, 1948, 'Fionnay', 0),
+(159, 3978, 'Flanthey', 0),
+(160, 1945, 'Fontaine Dessous', 0),
+(161, 1945, 'Fontaine Dessus', 0),
+(162, 1934, 'Fontenelle', 0),
+(163, 1945, 'Fornex(Liddes)', 0),
+(164, 1966, 'Fortunau (Ayent)', 0),
+(165, 1926, 'Fully', 0),
+(166, 3997, 'Fürgangen', 0),
+(167, 3907, 'Gabi (Simplon)', 0),
+(168, 3945, 'Gampel', 0),
+(169, 3900, 'Gamsen', 0),
+(170, 3924, 'Gasenried', 0),
+(171, 3904, 'Geimen', 0),
+(172, 3981, 'Geschinen', 0),
+(173, 3945, 'Getwing', 0),
+(174, 1925, 'Giétroz', 0),
+(175, 3999, 'Gletsch', 0),
+(176, 3902, 'Glis', 0),
+(177, 3998, 'Gluringen', 0),
+(178, 3907, 'Gondo', 0),
+(179, 3917, 'Goppenstein', 0),
+(180, 3983, 'Goppisberg', 0),
+(181, 3920, 'Gornergrat', 0),
+(182, 3925, 'Grächen', 0),
+(183, 3989, 'Grafschaft', 0),
+(184, 1946, 'Grand-St-Bernard', 0),
+(185, 1922, 'Granges (Salvan)', 0),
+(186, 3977, 'Granges VS', 0),
+(187, 1965, 'Granois (Savièse)', 0),
+(188, 3983, 'Greich', 0),
+(189, 3993, 'Grengiols', 0),
+(190, 3961, 'Grimentz', 0),
+(191, 1971, 'Grimisuat', 0),
+(192, 3999, 'Grimsel Passhöhe', 0),
+(193, 3979, 'Grône', 0),
+(194, 3946, 'Gruben', 0),
+(195, 1955, 'Grugnay (Chamoson)', 0),
+(196, 3933, 'Gspon', 0),
+(197, 1920, 'Gueuroz', 1),
+(198, 3956, 'Guttet', 0),
+(199, 3956, 'Guttet-Feschel', 0),
+(200, 1997, 'Haute-Nendaz', 0),
+(201, 3927, 'Herbriggen', 0),
+(202, 1987, 'Hérémence', 0),
+(203, 3949, 'Hohtenn', 0),
+(204, 1977, 'Icogne', 0),
+(205, 1893, 'Illarsaz', 0),
+(206, 3953, 'Inden', 0),
+(207, 1914, 'Isérables', 0),
+(208, 1937, 'Issert', 0),
+(209, 3979, 'Itravers', 0),
+(210, 3945, 'Jeizinen', 0),
+(211, 3801, 'Jungfraujoch', 0),
+(212, 3922, 'Kalpetran', 0),
+(213, 3917, 'Kippel', 0),
+(214, 1902, 'La Balmaz', 0),
+(215, 1920, 'La Bâtiaz', 1),
+(216, 1921, 'La Caffe', 0),
+(217, 1991, 'La Courtaz', 0),
+(218, 1923, 'La Creusaz', 0),
+(219, 1937, 'La Douay', 0),
+(220, 1921, 'La Fontaine', 0),
+(221, 1985, 'La Forclaz VS', 0),
+(222, 1920, 'La Forclaz(Trient)', 1),
+(223, 1944, 'La Fouly VS', 0),
+(224, 1933, 'La Garde', 0),
+(225, 1982, 'La Luette', 0),
+(226, 1947, 'La Montoz', 0),
+(227, 1950, 'La Muraz', 0),
+(228, 1966, 'La Place (Ayent)', 0),
+(229, 1902, 'La Rasse VS', 0),
+(230, 1937, 'La Rosière', 0),
+(231, 1985, 'La Sage', 0),
+(232, 1943, 'La Seiloz', 0),
+(233, 1950, 'La Sionne', 0),
+(234, 1992, 'La Vernaz', 0),
+(235, 3931, 'Lalden', 0),
+(236, 1983, 'Lana (Evolène)', 0),
+(237, 3994, 'Lax', 0),
+(240, 1997, 'Le Bleusy', 0),
+(241, 1932, 'Le Borgeaud', 0),
+(242, 1921, 'Le Brocard', 0),
+(243, 1921, 'Le Cergneux VS', 0),
+(244, 1934, 'Le Châble VS', 0),
+(245, 1921, 'Le Chanton', 0),
+(246, 1987, 'Le Chargeur', 0),
+(247, 1925, 'Le Châtelard VS', 0),
+(248, 1921, 'Le Fays', 0),
+(249, 1947, 'Le Fregnoley', 0),
+(250, 1947, 'Le Martinet', 0),
+(251, 1948, 'Le Morgnes', 0),
+(252, 1976, 'Le Nez', 0),
+(253, 1991, 'Le Parfay', 0),
+(254, 1948, 'Le Planchamp', 0),
+(255, 1991, 'Le Saillen', 0),
+(256, 1934, 'Le Sapey', 0),
+(257, 1923, 'Le Trétien', 0),
+(258, 1978, 'Lens', 0),
+(259, 1992, 'Les Agettes', 0),
+(260, 1943, 'Les Arlaches', 0),
+(261, 1906, 'Les Chênes', 0),
+(262, 1988, 'Les Collons', 0),
+(263, 1873, 'Les Crosets', 0),
+(264, 1897, 'Les Evouettes', 0),
+(265, 1871, 'Les Giettes', 0),
+(266, 1984, 'Les Haudères', 0),
+(267, 1929, 'Les Jeurs', 0),
+(268, 1923, 'Les Marécottes', 0),
+(269, 1988, 'Les Masses', 0),
+(271, 1992, 'Les Mayens-de-Sion', 0),
+(272, 1945, 'Les Moulins VS', 0),
+(273, 1868, 'Les Neyres', 0),
+(274, 1947, 'Les Places', 0),
+(275, 3960, 'Les Pontis', 0),
+(276, 1981, 'Les Prasses', 0),
+(277, 1921, 'Les Rappes', 0),
+(278, 1932, 'Les Valettes', 0),
+(279, 1955, 'Les Vérines', 0),
+(280, 3953, 'Leuk Stadt', 0),
+(281, 3954, 'Leukerbad', 0),
+(282, 1942, 'Levron', 0),
+(283, 1912, 'Leytron', 0),
+(284, 1945, 'Liddes', 0),
+(285, 1969, 'Liez (St-Martin)', 0),
+(286, 3960, 'Loc', 0),
+(287, 3953, 'Loèche-la-Ville', 0),
+(288, 3954, 'Loèche-les-Bains', 0),
+(289, 1948, 'Lourtier', 0),
+(290, 3979, 'Loye', 0),
+(291, 1966, 'Luc (Ayent)', 0),
+(292, 1987, 'Mâche', 0),
+(293, 1963, 'Magnot', 0),
+(294, 1937, 'Maligue', 0),
+(295, 1950, 'Maragnénaz', 0),
+(296, 1920, 'Martigny', 1),
+(297, 1921, 'Martigny-Combe', 0),
+(298, 1921, 'Martigny-Croix', 0),
+(299, 3994, 'Martisberg', 0),
+(300, 1968, 'Mase', 0),
+(301, 1869, 'Massongex', 0),
+(302, 3905, 'Mattmark', 0),
+(303, 3927, 'Mattsand', 0),
+(304, 1934, 'Mayens-de-Bruson', 0),
+(305, 1911, 'Mayens-de-Chamoson', 0),
+(306, 1976, 'Mayens-de-Conthey', 0),
+(307, 1965, 'Mayens-de-la-Zour', 0),
+(308, 1968, 'Mayens-de-Mase', 0),
+(309, 1976, 'Mayens-de-My', 0),
+(310, 1973, 'Mayens-de-Nax', 0),
+(311, 1918, 'Mayens-de-Riddes', 0),
+(312, 1907, 'Mayens-de-Saxon', 0),
+(313, 3961, 'Mayoux', 0),
+(314, 1926, 'Mazembroz', 0),
+(315, 1936, 'Médières', 0),
+(316, 1891, 'Mex VS', 0),
+(317, 3972, 'Miège', 0),
+(318, 1904, 'Miéville', 0),
+(319, 1896, 'Miex', 0),
+(320, 1991, 'Misériez (Salins)', 0),
+(321, 3961, 'Mission', 0),
+(322, 3961, 'Moiry VS', 0),
+(323, 1950, 'Molignon', 0),
+(324, 3974, 'Mollens VS', 0),
+(325, 1934, 'Montagnier', 0),
+(326, 1912, 'Montagnon(Leytron)', 0),
+(327, 3963, 'Montana', 0),
+(328, 1965, 'Monteiller-Savièse', 0),
+(329, 1870, 'Monthey', 0),
+(332, 1870, 'Monthey Fil Colis', 0),
+(333, 1950, 'Montorge', 0),
+(334, 3983, 'Mörel', 0),
+(335, 1875, 'Morgins', 0),
+(336, 3961, 'Mottec', 0),
+(337, 3995, 'Mühlebach (Goms)', 0),
+(338, 3903, 'Mund', 0),
+(339, 3985, 'Münster VS', 0),
+(340, 1893, 'Muraz (Collombey)', 0),
+(341, 3960, 'Muraz (Sierre)', 0),
+(342, 3904, 'Naters', 0),
+(343, 1973, 'Nax', 0),
+(344, 1955, 'Némiaz (Chamoson)', 0),
+(345, 3945, 'Niedergampel', 0),
+(346, 3942, 'Niedergesteln', 0),
+(347, 3989, 'Niederwald', 0),
+(348, 3960, 'Niouc', 0),
+(349, 3976, 'Noës', 0),
+(350, 3948, 'Oberems', 0),
+(351, 3981, 'Obergesteln', 0),
+(352, 3999, 'Oberwald', 0),
+(353, 3971, 'Ollon VS', 0),
+(354, 1965, 'Ormône (Savièse)', 0),
+(355, 1937, 'Orsières', 0),
+(356, 1911, 'Ovronnaz', 0),
+(357, 1945, 'Palasuit (Liddes)', 0),
+(358, 1945, 'Petit Vichères', 0),
+(359, 3961, 'Pinsec', 0),
+(360, 1874, 'Planachaux', 0),
+(361, 1996, 'Plan-Baar', 0),
+(362, 1921, 'Plan-Cerisier', 0),
+(363, 3972, 'Planige', 0),
+(364, 1976, 'Pomeiron', 0),
+(365, 1962, 'Pont-de-la-Morge', 0),
+(366, 1897, 'Port-Valais', 0),
+(367, 1991, 'Pradurant', 0),
+(368, 1965, 'Prafirmin', 0),
+(369, 1987, 'Pralong', 0),
+(370, 3979, 'Pramagnon', 0),
+(371, 1947, 'Prarreyer', 0),
+(372, 1937, 'Prassurny', 0),
+(373, 1991, 'Pravidondaz', 0),
+(374, 1944, 'Prayon', 0),
+(375, 1943, 'Praz-de-Fort', 0),
+(376, 1982, 'Praz-Jean', 0),
+(377, 1976, 'Premploz', 0),
+(378, 1912, 'Produit (Leytron)', 0),
+(379, 1987, 'Prolin', 0),
+(380, 3928, 'Randa', 0),
+(381, 3975, 'Randogne', 0),
+(382, 3942, 'Raron', 0),
+(383, 1928, 'Ravoire', 0),
+(384, 3966, 'Réchy', 0),
+(385, 3998, 'Reckingen VS', 0),
+(386, 1937, 'Reppaz', 0),
+(387, 1899, 'Revereulaz', 0),
+(388, 1908, 'Riddes', 0),
+(389, 3919, 'Ried (Lötschen)', 0),
+(390, 3911, 'Ried-Brig', 0),
+(391, 3987, 'Riederalp', 0),
+(392, 3986, 'Ried-Mörel', 0),
+(393, 1987, 'Riod', 0),
+(394, 3989, 'Ritzingen', 0),
+(395, 1945, 'Rive Haute(Liddes)', 0),
+(396, 3913, 'Rosswald', 0),
+(397, 3901, 'Rothwald', 0),
+(398, 1965, 'Roumaz (Savièse)', 0),
+(399, 3905, 'Saas Almagell', 0),
+(400, 3908, 'Saas Balen', 0),
+(401, 3908, 'Saas Bidermatten', 0),
+(402, 3906, 'Saas Fee', 0),
+(403, 3910, 'Saas Grund', 0),
+(404, 1996, 'Saclentz', 0),
+(405, 1913, 'Saillon', 0),
+(406, 1965, 'Saint-Germain', 0),
+(407, 1966, 'Saint-Romain', 0),
+(408, 1943, 'Saleinaz', 0),
+(409, 3970, 'Salgesch', 0),
+(410, 1991, 'Salins', 0),
+(411, 1922, 'Salvan', 0),
+(412, 1907, 'Sapinhaut', 0),
+(413, 1948, 'Sarreyer', 0),
+(414, 1890, 'Savatan', 0),
+(415, 1965, 'Savièse', 0),
+(416, 1926, 'Saxé', 0),
+(417, 1907, 'Saxon', 0),
+(418, 1966, 'Saxonne (Ayent)', 0),
+(419, 3920, 'Schwarzsee', 0),
+(420, 3989, 'Selkingen', 0),
+(421, 1933, 'Sembrancher', 0),
+(422, 1975, 'Sensine', 0),
+(424, 3960, 'Sierre / Siders', 0),
+(425, 3960, 'Sierre Fil. Colis', 0),
+(426, 3961, 'Sierre Sorties', 0),
+(427, 1966, 'Signèse', 0),
+(428, 3907, 'Simplon Dorf', 0),
+(429, 3907, 'Simplon Hospiz', 0),
+(430, 3900, 'Simplon Kulm', 0),
+(431, 1950, 'Sion', 0),
+(438, 1950, 'Sitten', 0),
+(439, 1997, 'Siviez', 0),
+(440, 1937, 'Som-la-Proz', 0),
+(441, 1928, 'Sommet-des-Vignes', 0),
+(442, 1997, 'Sornard', 0),
+(443, 1937, 'Soulalex', 0),
+(444, 3961, 'Soussillon', 0),
+(445, 3936, 'St. German', 0),
+(446, 3924, 'St. Niklaus VS', 0),
+(447, 3922, 'Stalden VS', 0),
+(448, 3933, 'Staldenried', 0),
+(449, 3978, 'St-Clément', 0),
+(450, 3940, 'Steg VS', 0),
+(451, 3995, 'Steinhaus', 0),
+(452, 1898, 'St-Gingolph', 0),
+(453, 3961, 'St-Jean VS', 0),
+(454, 1958, 'St-Léonard', 0),
+(455, 3961, 'St-Luc', 0),
+(456, 1969, 'St-Martin VS', 0),
+(457, 1890, 'St-Maurice', 0),
+(458, 1891, 'St-Maurice Sorties', 0),
+(459, 3974, 'St-Maurice-Laques', 0),
+(460, 1955, 'St-Pierre-Clages', 0),
+(461, 1971, 'St-Raphaël', 0),
+(462, 1975, 'St-Séverin', 0),
+(463, 1969, 'Suen (St-Martin)', 0),
+(464, 3952, 'Susten', 0),
+(465, 1896, 'Tanay', 0),
+(466, 3929, 'Täsch', 0),
+(467, 3912, 'Termen', 0),
+(468, 1988, 'Thyon', 0),
+(469, 1988, 'Thyon-Les Collons', 0),
+(470, 3923, 'Törbel', 0),
+(471, 1899, 'Torgon', 0),
+(472, 1907, 'Tovassière', 0),
+(473, 1929, 'Trient', 0),
+(474, 1969, 'Trogne (St-Martin)', 0),
+(475, 1872, 'Troistorrents', 0),
+(476, 3983, 'Tunetschalp', 0),
+(477, 1991, 'Turin (Salins)', 0),
+(478, 3946, 'Turtmann', 0),
+(479, 3988, 'Ulrichen', 0),
+(480, 3944, 'Unterbäch VS', 0),
+(481, 3948, 'Unterems', 0),
+(482, 1958, 'Uvrier', 0),
+(483, 3978, 'Vaas', 0),
+(484, 3979, 'Val-de-Réchy', 0),
+(485, 3978, 'Valençon', 0),
+(486, 3953, 'Varen', 0),
+(487, 1933, 'Vens(Sembrancher)', 0),
+(488, 3973, 'Venthône', 0),
+(489, 1936, 'Verbier', 0),
+(490, 3967, 'Vercorin', 0),
+(491, 1937, 'Verlonnaz', 0),
+(492, 1961, 'Vernamiège', 0),
+(493, 1904, 'Vernayaz', 0),
+(494, 1891, 'Vérossaz', 0),
+(495, 1947, 'Versegères', 0),
+(496, 1963, 'Vétroz', 0),
+(497, 1981, 'Vex', 0),
+(498, 3968, 'Veyras', 0),
+(499, 1993, 'Veysonnaz', 0),
+(500, 1945, 'Vichères (Liddes)', 0),
+(501, 3930, 'Viège', 0),
+(502, 1966, 'Villa (Ayent)', 0),
+(503, 1985, 'Villaz', 0),
+(504, 1934, 'Villette', 0),
+(505, 1918, 'Villy VS', 0),
+(506, 1895, 'Vionnaz', 0),
+(507, 1906, 'Vison', 0),
+(508, 3930, 'Visp', 0),
+(509, 3932, 'Visperterminen', 0),
+(510, 3961, 'Vissoie', 0),
+(511, 1941, 'Vollèges', 0),
+(512, 1896, 'Vouvry', 0),
+(513, 1962, 'Vuisse', 0),
+(514, 3919, 'Weissenried', 0),
+(515, 3918, 'Wiler (Lötschen)', 0),
+(516, 1981, 'Ypresses', 0),
+(517, 3934, 'Zeneggen', 0),
+(518, 3920, 'Zermatt', 0),
+(519, 1966, 'Zeuzier', 0),
+(520, 3961, 'Zinal', 0),
+(521, 3907, 'Zwischbergen', 0),
+(522, 1974, 'Mayens-d''Arbaz', 0),
+(524, 1873, 'Val-d''Illiez', 0),
+(525, 1922, 'Van-d''en-Bas', 0),
+(528, 1922, 'Van-d''en-Haut', 0),
+(529, 3982, 'Z''Matt', 0),
+(530, 1905, 'Champex-d''Allesse', 0),
+(531, 1992, 'Crête-à-l''Oeil', 0);
 
 -- --------------------------------------------------------
 
@@ -102,8 +625,8 @@ CREATE TABLE `genders` (
 INSERT INTO `genders` (`id_gender`, `name`, `activated`) VALUES
 (1, 'ne se reconait dans aucun genre', 1),
 (2, 'homme', 1),
-(3, 'femme', 0),
-(4, 'homme >> femme', 1),
+(3, 'femme', 1),
+(4, 'homme >> femme', 0),
 (5, 'femme >> hommme', 1);
 
 -- --------------------------------------------------------
@@ -126,9 +649,8 @@ INSERT INTO `intervention_has_persons` (`intervention_id`, `person_id`) VALUES
 (3, 3),
 (3, 4),
 (3, 5),
-(3, 6),
-(3, 7),
 (3, 8),
+(3, 16),
 (15, 10),
 (16, 13),
 (16, 15);
@@ -165,7 +687,13 @@ INSERT INTO `intervention_has_thematics` (`intervention_id`, `thematic_id`) VALU
 (26, 15),
 (26, 16),
 (27, 10),
-(27, 11);
+(27, 11),
+(39, 6),
+(39, 9),
+(39, 12),
+(39, 16),
+(40, 14),
+(40, 17);
 
 -- --------------------------------------------------------
 
@@ -191,22 +719,23 @@ CREATE TABLE `intreventions` (
 --
 
 INSERT INTO `intreventions` (`id_intrevention`, `intervenant_id`, `date`, `place_id`, `duration`, `extraCost`, `distance`, `kind_id`, `parent`, `person_id`) VALUES
-(3, 2, '2016-12-29', 1, 15, 12, 25, 4, NULL, NULL),
-(13, 3, '0000-00-00', 1, 0, 0, 0, 4, NULL, NULL),
-(14, 3, '0000-00-00', 1, 0, 0, 0, 4, NULL, NULL),
+(3, 2, '2016-12-29', 1, 0, 12, 25, 4, NULL, NULL),
 (15, 1, '2016-12-21', 1, 0, 0, 0, 4, NULL, NULL),
-(16, 2, '2017-08-09', 1, 45, 0, 0, 4, NULL, NULL),
+(16, 2, '2017-01-02', 1, 75, 0, 0, 4, NULL, NULL),
 (17, 1, '2016-12-01', 1, 0, 0, 0, 4, NULL, NULL),
 (22, 1, '2016-12-21', 1, 0, 0, 0, 3, 15, 10),
 (23, 2, '2017-08-09', 1, 0, 0, 0, 3, NULL, 11),
 (26, 2, '2017-08-09', 1, 30, 0, 0, 3, 16, 13),
-(27, 1, '2016-12-19', 0, 0, 0, 0, 3, NULL, 2),
+(27, 1, '2016-12-19', 1, 0, 0, 0, 3, NULL, 2),
 (28, 1, '2016-12-08', 1, 0, 0, 0, 1, NULL, NULL),
-(32, 1, '2016-12-18', 0, 0, 0, 0, 4, NULL, NULL),
-(33, 1, '2016-12-18', 0, 0, 0, 0, 4, NULL, NULL),
-(34, 1, '2016-12-18', 0, 0, 0, 0, 4, NULL, NULL),
-(35, 1, '2016-12-19', 0, 0, 0, 0, 4, NULL, NULL),
-(36, 1, '2016-12-18', 0, 0, 0, 0, 1, NULL, NULL);
+(32, 1, '2016-12-18', 1, 0, 0, 0, 4, NULL, NULL),
+(33, 1, '2016-12-18', 1, 0, 0, 0, 4, NULL, NULL),
+(34, 1, '2016-12-18', 1, 0, 0, 0, 4, NULL, NULL),
+(35, 1, '2016-12-19', 1, 0, 0, 0, 4, NULL, NULL),
+(36, 1, '2016-12-18', 1, 0, 0, 0, 1, NULL, NULL),
+(39, 2, '2016-12-29', 1, 15, 0, 0, 3, 3, 3),
+(40, 2, '2016-12-29', 1, 20, 0, 0, 3, 3, 2),
+(45, 2, '2017-01-31', 1, 0, 0, 0, 4, NULL, NULL);
 
 --
 -- Déclencheurs `intreventions`
@@ -364,7 +893,8 @@ INSERT INTO `persons` (`id_Person`, `name`, `declared_origine_id`, `age_group_id
 (12, '', 11, 1, 2, 2),
 (13, '', 11, 2, 2, 1),
 (14, '', 11, 1, 5, 1),
-(15, '', 8, 1, 1, 1);
+(15, '', 8, 1, 1, 1),
+(16, '', 2, 6, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -376,7 +906,6 @@ CREATE TABLE `place` (
   `id_lieu` int(11) NOT NULL,
   `Name` varchar(25) NOT NULL,
   `kind` int(11) NOT NULL,
-  `adresse` int(11) DEFAULT NULL,
   `actived` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -384,9 +913,10 @@ CREATE TABLE `place` (
 -- Contenu de la table `place`
 --
 
-INSERT INTO `place` (`id_lieu`, `Name`, `kind`, `adresse`, `actived`) VALUES
-(0, 'non renseigné', 1, NULL, 1),
-(1, 'perle d''asie', 1, NULL, 1);
+INSERT INTO `place` (`id_lieu`, `Name`, `kind`, `actived`) VALUES
+(1, '-Non précisé', 1, 0),
+(2, 'Cher moi', 1, 1),
+(3, 'test2', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -396,15 +926,18 @@ INSERT INTO `place` (`id_lieu`, `Name`, `kind`, `adresse`, `actived`) VALUES
 
 CREATE TABLE `place_kind` (
   `id_kind` int(11) NOT NULL,
-  `descr` varchar(45) DEFAULT NULL
+  `descr` varchar(45) DEFAULT NULL,
+  `kind_actived` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `place_kind`
 --
 
-INSERT INTO `place_kind` (`id_kind`, `descr`) VALUES
-(1, 'autres');
+INSERT INTO `place_kind` (`id_kind`, `descr`, `kind_actived`) VALUES
+(1, '-Autres', 1),
+(2, 'Salon', 1),
+(3, 'Associations', 1);
 
 -- --------------------------------------------------------
 
@@ -497,8 +1030,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `group_id`) VALUES
 (1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-18 20:14:51', '2016-11-29 17:54:13', '2016-12-18 19:14:51', 300),
-(2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-18 20:16:20', '2016-11-29 19:32:15', '2016-12-18 19:16:20', 500),
-(3, 'titi', '$2a$08$iBHekq9MdoJOGJEI04xaMeYcEzbvcz5OS8caVDsIZGJDPxJcRPgVi', 'titi@titi.titi', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-01 14:03:10', '2016-12-01 14:02:43', '2016-12-01 13:03:10', 300);
+(2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-06 10:25:45', '2016-11-29 19:32:15', '2017-01-06 09:25:45', 500),
+(3, 'titi', '$2a$08$iBHekq9MdoJOGJEI04xaMeYcEzbvcz5OS8caVDsIZGJDPxJcRPgVi', 'titi@titi.titi', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-03 11:49:52', '2016-12-01 14:02:43', '2017-01-03 10:49:52', 300);
 
 -- --------------------------------------------------------
 
@@ -544,7 +1077,7 @@ INSERT INTO `user_profiles` (`id`, `user_id`, `country`, `website`) VALUES
 -- Index pour la table `adresses`
 --
 ALTER TABLE `adresses`
-  ADD PRIMARY KEY (`id_adresse`),
+  ADD PRIMARY KEY (`place_Id`),
   ADD KEY `fk_Adresse_Ville1_idx` (`city`);
 
 --
@@ -557,7 +1090,8 @@ ALTER TABLE `age_groups`
 -- Index pour la table `citys`
 --
 ALTER TABLE `citys`
-  ADD PRIMARY KEY (`id_city`);
+  ADD PRIMARY KEY (`id_city`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Index pour la table `ci_sessions`
@@ -645,8 +1179,7 @@ ALTER TABLE `persons`
 --
 ALTER TABLE `place`
   ADD PRIMARY KEY (`id_lieu`),
-  ADD KEY `fk_Lieu_TypeDeLieu1_idx` (`kind`),
-  ADD KEY `fk_Lieu_Adresse1_idx` (`adresse`);
+  ADD KEY `fk_Lieu_TypeDeLieu1_idx` (`kind`);
 
 --
 -- Index pour la table `place_kind`
@@ -690,11 +1223,6 @@ ALTER TABLE `user_profiles`
 --
 
 --
--- AUTO_INCREMENT pour la table `adresses`
---
-ALTER TABLE `adresses`
-  MODIFY `id_adresse` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT pour la table `age_groups`
 --
 ALTER TABLE `age_groups`
@@ -703,7 +1231,7 @@ ALTER TABLE `age_groups`
 -- AUTO_INCREMENT pour la table `citys`
 --
 ALTER TABLE `citys`
-  MODIFY `id_city` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_city` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=532;
 --
 -- AUTO_INCREMENT pour la table `genders`
 --
@@ -713,7 +1241,7 @@ ALTER TABLE `genders`
 -- AUTO_INCREMENT pour la table `intreventions`
 --
 ALTER TABLE `intreventions`
-  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 --
 -- AUTO_INCREMENT pour la table `intrevention_kinds`
 --
@@ -738,17 +1266,17 @@ ALTER TABLE `origines`
 -- AUTO_INCREMENT pour la table `persons`
 --
 ALTER TABLE `persons`
-  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT pour la table `place`
 --
 ALTER TABLE `place`
-  MODIFY `id_lieu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_lieu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `place_kind`
 --
 ALTER TABLE `place_kind`
-  MODIFY `id_kind` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_kind` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `sexuality`
 --
@@ -829,7 +1357,6 @@ ALTER TABLE `persons`
 -- Contraintes pour la table `place`
 --
 ALTER TABLE `place`
-  ADD CONSTRAINT `fk_Lieu_Adresse1` FOREIGN KEY (`adresse`) REFERENCES `adresses` (`id_adresse`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Lieu_TypeDeLieu1` FOREIGN KEY (`kind`) REFERENCES `place_kind` (`id_kind`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --

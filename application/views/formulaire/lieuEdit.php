@@ -1,8 +1,8 @@
 
 <?php //setUp
-	$this->output->enable_profiler(true);
+	//$this->output->enable_profiler(true);
 
-	$isCreate= ($place== null);
+	$isCreate= (false == isset($place));
 
 	$addAdressButtonDiv='addAdress';
 	$adresseDivId = 'adresseDiv';
@@ -35,10 +35,17 @@
 
 ?>
 <div class="container-fluid">
-	<?php echo form_open('Places/create'); ?>
+	<?php
+		if($isCreate)
+			echo form_open('places/create');
+		else
+			echo form_open('places/edit/'.$place['id_lieu']);
+	?>
 	<div class="form-group row">
 		<div class ="col-xs-6">
 			<?php
+				if(false == $isCreate)
+					echo form_hidden('place[id_lieu]',$place['id_lieu']);
 				$value = '';
 				if(false == $isCreate)
 					$value=$place['Name'];
@@ -72,7 +79,7 @@
 				$adressAction['value']='update';
 
 			echo form_input($adressAction);
-			echo form_hidden('$adressActionId','update');
+			//echo form_hidden('$adressActionId','update');
 		?>
 		<div class="form-group row">
 			<div class="col-xs-3">
