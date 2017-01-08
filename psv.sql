@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 06 Janvier 2017 à 15:20
+-- Généré le :  Lun 09 Janvier 2017 à 00:18
 -- Version du serveur :  10.1.16-MariaDB
 -- Version de PHP :  5.6.24
 
@@ -19,6 +19,63 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `psv`
 --
+
+DELIMITER $$
+--
+-- Procédures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_calledForIndirect` (IN `indirectId` INTEGER)  BEGIN
+	select user.id as user_id, user.username
+    from user, indirect_has_called link
+    where link.user_id = user.id
+    and link.indirect_id = indirectId;
+    
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_getFutur` ()  BEGIN
+SELECT * FROM psv.indirect
+	where date >= CURRENT_DATE();
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_getFuturByOwner` (IN `ownerId` INTEGER)  BEGIN
+	SELECT * FROM psv.indirect
+	where date >= CURRENT_DATE()
+    and owner = ownerId;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_getOld` ()  BEGIN
+SELECT * FROM psv.indirect
+	where date < CURRENT_DATE();
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_getOldByOwner` (IN `ownerId` INTEGER)  BEGIN
+SELECT * FROM psv.indirect
+	where date < CURRENT_DATE()
+    and owner = ownerId;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect__calledForIndirect` (IN `indirectId` INTEGER)  BEGIN
+	select user.id as user_id, user.username
+    from user, indirect_has_called link
+    where link.user_id = user.id
+    and link.indirect_id = indirectId;
+    
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect__prestationsForIndirect` (IN `indirectId` INTEGER)  BEGIN
+	select prestation.id_prestation as prest_id ,prestation.prestation_descr  as descr, link.duration
+		from indirect_has_prestations link , prestation
+		where link.prestation_id = prestation.id_prestation
+		and link.indirect_id = indirectId;
+
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -60,7 +117,7 @@ CREATE TABLE `age_groups` (
 INSERT INTO `age_groups` (`id_ages_goup`, `name`, `activated`) VALUES
 (1, 'mineurs', 1),
 (2, '18-25', 1),
-(3, '26-35', 0),
+(3, '26-35', 1),
 (4, '36-50', 1),
 (5, '51-65', 1),
 (6, '66+', 1);
@@ -367,7 +424,7 @@ INSERT INTO `citys` (`id_city`, `npa`, `name`, `activated`) VALUES
 (293, 1963, 'Magnot', 0),
 (294, 1937, 'Maligue', 0),
 (295, 1950, 'Maragnénaz', 0),
-(296, 1920, 'Martigny', 1),
+(296, 1920, 'Martigny', 0),
 (297, 1921, 'Martigny-Combe', 0),
 (298, 1921, 'Martigny-Croix', 0),
 (299, 3994, 'Martisberg', 0),
@@ -499,7 +556,7 @@ INSERT INTO `citys` (`id_city`, `npa`, `name`, `activated`) VALUES
 (428, 3907, 'Simplon Dorf', 0),
 (429, 3907, 'Simplon Hospiz', 0),
 (430, 3900, 'Simplon Kulm', 0),
-(431, 1950, 'Sion', 0),
+(431, 1950, 'Sion', 1),
 (438, 1950, 'Sitten', 0),
 (439, 1997, 'Siviez', 0),
 (440, 1937, 'Som-la-Proz', 0),
@@ -626,8 +683,69 @@ INSERT INTO `genders` (`id_gender`, `name`, `activated`) VALUES
 (1, 'ne se reconait dans aucun genre', 1),
 (2, 'homme', 1),
 (3, 'femme', 1),
-(4, 'homme >> femme', 0),
+(4, 'homme >> femme', 1),
 (5, 'femme >> hommme', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `indirect`
+--
+
+CREATE TABLE `indirect` (
+  `id_indirect` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `place` int(11) NOT NULL,
+  `owner` int(11) NOT NULL,
+  `extraCost` int(11) DEFAULT '0',
+  `distance` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `indirect`
+--
+
+INSERT INTO `indirect` (`id_indirect`, `date`, `place`, `owner`, `extraCost`, `distance`) VALUES
+(1, '2017-01-31', 3, 2, 15, 10),
+(2, '2017-01-10', 3, 2, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `indirect_has_called`
+--
+
+CREATE TABLE `indirect_has_called` (
+  `indirect_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `indirect_has_called`
+--
+
+INSERT INTO `indirect_has_called` (`indirect_id`, `user_id`) VALUES
+(1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `indirect_has_prestations`
+--
+
+CREATE TABLE `indirect_has_prestations` (
+  `indirect_id` int(11) NOT NULL,
+  `prestation_id` int(11) NOT NULL,
+  `duration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `indirect_has_prestations`
+--
+
+INSERT INTO `indirect_has_prestations` (`indirect_id`, `prestation_id`, `duration`) VALUES
+(1, 1, 90),
+(1, 3, 30);
 
 -- --------------------------------------------------------
 
@@ -914,9 +1032,9 @@ CREATE TABLE `place` (
 --
 
 INSERT INTO `place` (`id_lieu`, `Name`, `kind`, `actived`) VALUES
-(1, '-Non précisé', 1, 0),
-(2, 'Cher moi', 1, 1),
-(3, 'test2', 2, 0);
+(1, '-Non précisé', 1, 1),
+(2, 'Cher moi', 3, 1),
+(3, 'test2', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -942,6 +1060,52 @@ INSERT INTO `place_kind` (`id_kind`, `descr`, `kind_actived`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `prestation`
+--
+
+CREATE TABLE `prestation` (
+  `id_prestation` int(11) NOT NULL,
+  `prestation_group` int(11) NOT NULL,
+  `prestation_descr` varchar(200) NOT NULL,
+  `isActiv` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `prestation`
+--
+
+INSERT INTO `prestation` (`id_prestation`, `prestation_group`, `prestation_descr`, `isActiv`) VALUES
+(1, 1, 'contacts avec les médias et les journalistes ;', 1),
+(2, 1, 'interviews accordées (journaux, radio, TV) ;', 1),
+(3, 1, 'publication d’articles (en dehors de la revue / du site internet propres à l’organisation) ;', 1),
+(4, 1, 'conférences, exposés ;', 1),
+(5, 2, 'revues de l’organisation (publications périodiques) ou collaboration à une revue publiée en ', 1),
+(6, 2, 'circulaires paraissant périodiquement ;', 1),
+(7, 2, 'brochures d’information ;', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `prestation-group`
+--
+
+CREATE TABLE `prestation-group` (
+  `id_presstationGroup` int(11) NOT NULL,
+  `presstationGroup_descr` varchar(200) NOT NULL,
+  `isActiv` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `prestation-group`
+--
+
+INSERT INTO `prestation-group` (`id_presstationGroup`, `presstationGroup_descr`, `isActiv`) VALUES
+(1, '9.1 Information générale des médias et du public', 1),
+(2, '9.2 Médias et publications accessibles au public appartenant au mandataire', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `sexuality`
 --
 
@@ -957,7 +1121,8 @@ CREATE TABLE `sexuality` (
 
 INSERT INTO `sexuality` (`id_sexuality`, `name`, `activated`) VALUES
 (1, 'hétérosexuel', 1),
-(2, 'homosexuel', 1);
+(2, 'homosexuel', 1),
+(3, 'Nouvelle', 1);
 
 -- --------------------------------------------------------
 
@@ -1029,9 +1194,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `group_id`) VALUES
-(1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-18 20:14:51', '2016-11-29 17:54:13', '2016-12-18 19:14:51', 300),
-(2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-06 10:25:45', '2016-11-29 19:32:15', '2017-01-06 09:25:45', 500),
-(3, 'titi', '$2a$08$iBHekq9MdoJOGJEI04xaMeYcEzbvcz5OS8caVDsIZGJDPxJcRPgVi', 'titi@titi.titi', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-03 11:49:52', '2016-12-01 14:02:43', '2017-01-03 10:49:52', 300);
+(1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-18 20:14:51', '2016-11-29 17:54:13', '2017-01-08 22:41:47', 300),
+(2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-08 19:31:12', '2016-11-29 19:32:15', '2017-01-08 18:31:12', 500),
+(3, 'titota', '$2a$08$iBHekq9MdoJOGJEI04xaMeYcEzbvcz5OS8caVDsIZGJDPxJcRPgVi', 'titi@titi.titi', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-03 11:49:52', '2016-12-01 14:02:43', '2017-01-06 18:01:00', 300);
 
 -- --------------------------------------------------------
 
@@ -1104,6 +1269,30 @@ ALTER TABLE `ci_sessions`
 --
 ALTER TABLE `genders`
   ADD PRIMARY KEY (`id_gender`);
+
+--
+-- Index pour la table `indirect`
+--
+ALTER TABLE `indirect`
+  ADD PRIMARY KEY (`id_indirect`),
+  ADD KEY `indirect_owner_idx` (`owner`),
+  ADD KEY `indirect_place_idx` (`place`);
+
+--
+-- Index pour la table `indirect_has_called`
+--
+ALTER TABLE `indirect_has_called`
+  ADD PRIMARY KEY (`indirect_id`,`user_id`),
+  ADD KEY `indirect_has_caller_called_idx` (`user_id`),
+  ADD KEY `indirect_has_called_indirectId_idx` (`indirect_id`);
+
+--
+-- Index pour la table `indirect_has_prestations`
+--
+ALTER TABLE `indirect_has_prestations`
+  ADD PRIMARY KEY (`indirect_id`,`prestation_id`),
+  ADD KEY `indirect_has_prestation_prestation_idx` (`prestation_id`),
+  ADD KEY `indirect_has_prestation_indirect_idx` (`indirect_id`);
 
 --
 -- Index pour la table `intervention_has_persons`
@@ -1188,6 +1377,19 @@ ALTER TABLE `place_kind`
   ADD PRIMARY KEY (`id_kind`);
 
 --
+-- Index pour la table `prestation`
+--
+ALTER TABLE `prestation`
+  ADD PRIMARY KEY (`id_prestation`),
+  ADD KEY `prestation_group_idx` (`prestation_group`);
+
+--
+-- Index pour la table `prestation-group`
+--
+ALTER TABLE `prestation-group`
+  ADD PRIMARY KEY (`id_presstationGroup`);
+
+--
 -- Index pour la table `sexuality`
 --
 ALTER TABLE `sexuality`
@@ -1238,6 +1440,11 @@ ALTER TABLE `citys`
 ALTER TABLE `genders`
   MODIFY `id_gender` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
+-- AUTO_INCREMENT pour la table `indirect`
+--
+ALTER TABLE `indirect`
+  MODIFY `id_indirect` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT pour la table `intreventions`
 --
 ALTER TABLE `intreventions`
@@ -1278,10 +1485,20 @@ ALTER TABLE `place`
 ALTER TABLE `place_kind`
   MODIFY `id_kind` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT pour la table `prestation`
+--
+ALTER TABLE `prestation`
+  MODIFY `id_prestation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT pour la table `prestation-group`
+--
+ALTER TABLE `prestation-group`
+  MODIFY `id_presstationGroup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT pour la table `sexuality`
 --
 ALTER TABLE `sexuality`
-  MODIFY `id_sexuality` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_sexuality` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `thematics`
 --
@@ -1306,6 +1523,27 @@ ALTER TABLE `user_profiles`
 --
 ALTER TABLE `adresses`
   ADD CONSTRAINT `fk_Adresse_Ville1` FOREIGN KEY (`city`) REFERENCES `citys` (`id_city`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `indirect`
+--
+ALTER TABLE `indirect`
+  ADD CONSTRAINT `indirect_owner` FOREIGN KEY (`owner`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `indirect_place` FOREIGN KEY (`place`) REFERENCES `place` (`id_lieu`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `indirect_has_called`
+--
+ALTER TABLE `indirect_has_called`
+  ADD CONSTRAINT `indirect_has_called_indirectId` FOREIGN KEY (`indirect_id`) REFERENCES `indirect` (`id_indirect`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `indirect_has_caller_called` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `indirect_has_prestations`
+--
+ALTER TABLE `indirect_has_prestations`
+  ADD CONSTRAINT `indirect_has_prestation_indirect` FOREIGN KEY (`indirect_id`) REFERENCES `indirect` (`id_indirect`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `indirect_has_prestation_prestation` FOREIGN KEY (`prestation_id`) REFERENCES `prestation` (`id_prestation`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `intervention_has_persons`
@@ -1358,6 +1596,12 @@ ALTER TABLE `persons`
 --
 ALTER TABLE `place`
   ADD CONSTRAINT `fk_Lieu_TypeDeLieu1` FOREIGN KEY (`kind`) REFERENCES `place_kind` (`id_kind`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `prestation`
+--
+ALTER TABLE `prestation`
+  ADD CONSTRAINT `prestation_group` FOREIGN KEY (`prestation_group`) REFERENCES `prestation-group` (`id_presstationGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `thematics`
