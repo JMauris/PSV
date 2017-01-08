@@ -96,7 +96,7 @@
 		<?php echo form_close(); ?>
 	</div>
 	<div id="kindEditor">
-		<?php echo form_open('/places/updateKinds/');?>
+		<?php echo form_open('/admin/citiesGroupEdit/');?>
 			<div class="row">
 				<table class="table table-hover">
 					<thead>

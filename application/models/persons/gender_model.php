@@ -29,8 +29,7 @@ class Gender_Model extends CI_Model
     }
     return $genders;
   }
-  function update($gender)
-  {
+  function update($gender){
     $oldGender = $this->getById($gender['id_gender']);
     $genderRow = array(
       'id_gender'=>$oldGender['id_gender'],
@@ -46,8 +45,7 @@ class Gender_Model extends CI_Model
     $this->db->update(self::TABLE_NAME, $genderRow);
 
   }
-  function insert_gender($newGender)
-  {
+  function insert_gender($newGender){
     $this->name = $newGender;
    $this->db->insert(self::TABLE_NAME,$this);
 

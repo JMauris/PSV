@@ -171,6 +171,12 @@ class Places_Model extends CI_Model
 
 
 //==cities opérations===
+  function unactivCity($id){
+    echo "\n unactiv ".$id."\n";
+    $line = array('activated' => 0);
+    $this->db->where('id_city', $id);
+    $this->db->update(self::citys_table, $line);
+  }
   function activateCityByNpa($npa){
     $this->activateCityRange($npa, $npa);
   }
