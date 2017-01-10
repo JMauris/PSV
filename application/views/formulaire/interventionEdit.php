@@ -1,23 +1,15 @@
 <?php //setup
-	$this->output->enable_profiler(true);
-	{ // convert $places for dropDown use
-		$tmp = array(''=>'');
-		foreach ($places as $key => $place)
-			$tmp[$place['id_lieu']] =$place['descr']." - ".$place['Name'];
-		$places = $tmp;
-	}
-
-
-	$intervenantsDropDown = array();{
-		$intervenantsDropDown[$intervention['intervenant']['id']]=$intervention['intervenant']['username'];
-		foreach ($intervenants as $id => $name)
-			$intervenantsDropDown[$id]= $name;
-	}
-
-	$placeDropDown = array();{
-		$placeDropDown[$intervention['place']['id_lieu']]=$intervention['place']['Name'];
-			foreach ($places as $id => $name)
-				$placeDropDown[$id]= $name;
+	//$this->output->enable_profiler(true);
+	$totalDuration = $intervention['duration'];
+	{
+		foreach ($intervention['interventions'] as $key => $value)
+			$totalDuration = $totalDuration + $value['duration'];
+		$minutes = $totalDuration%60;
+		$totalDuration = $totalDuration- $minutes;
+		$totalDuration = $totalDuration/60;
+		if($minutes<10)
+			$minutes= "0".$minutes;
+		$totalDuration = $totalDuration.":".$minutes;
 	}
 
 	$dropDownDuration = array(
@@ -41,10 +33,13 @@
 		'240' => '4:00',
 		'310' => '4:30',
 	);
+	?>
+		<body class="container-fluid collectiveContener">
+			<?php
 echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 
 		?>
-	<div class="container-fluid">
+
 		<br/>
 		<div class="row text-center">
 				<h2>Informations générales</h2>
@@ -59,7 +54,7 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 				echo form_label('Intervenant');
 				echo "<br/>";
 				if($this->session->userdata['groupId']==500){
-						echo form_dropdown('intervention[intervenant_id]', $intervenantsDropDown, $intervention['intervenant_id']);
+						echo form_dropdown('intervention[intervenant_id]', $intervenants, $intervention['intervenant_id']);
 				}else{
 					echo form_label($intervention['intervenant']['username']);
 					echo form_hidden('intervention[intervenant_id]', $intervention['intervenant_id']);
@@ -82,13 +77,20 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 
 					echo form_label('Lieu');
 					echo "<br/>";
-					echo form_dropdown('intervention[place_id]', $placeDropDown, $intervention['place_id']);
+					echo form_dropdown('intervention[place_id]', $places, $intervention['place_id']);
 				?>
 			</div>
 			<div class="col-sm-4">
 				<?php
-					echo form_label('Durée');
+					echo form_label('Durée - groupe seul');
 					echo form_dropdown('intervention[duration]', $dropDownDuration, $intervention['duration']);
+				?>
+			</div>
+			<div class="col-sm-4">
+				<?php
+					echo form_label('Durée totale');
+					echo "<br/>";
+					echo form_label($totalDuration);
 				?>
 			</div>
 			<div class="col-sm-4">
@@ -220,28 +222,24 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 			<div class="col-sm-2 col-xs-6">
 				<?php
 				echo form_label('Origine');
-				$origins['0']="";
 				echo form_dropdown('intervention[persons][added][origine_id]', $origins, 0);
 				 ?>
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				 <?php
 				echo form_label('Genre');
-				$genders['0']="";
 				echo form_dropdown('intervention[persons][added][gender_id]', $genders, 0);
 				 ?>
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				 <?php
 				echo form_label('Orinentation');
-				$sexuality['0']="";
 				echo form_dropdown('intervention[persons][added][sexuality_id]', $sexuality, 0);
 				 ?>
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				 <?php
 				echo form_label("Groupe d'age");
-				 $ageGroups['0']= "";
 				echo form_dropdown('intervention[persons][added][ageGroup_id]', $ageGroups, 0);
 				 ?>
 			</div>
@@ -253,7 +251,7 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 					 'name'	=> 'intervention[persons][added][quantity]',
 					 'class'	=> 'form-control',
 					 'type'  => 'number',
-					 'value' => 1);
+					 'value' => 0);
 				 echo form_label('Nombre');
 				 echo form_input($quantityInput);
 				 ?>
@@ -266,31 +264,33 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 			</div>
 		</div>
 		<div class="form-group row">
-			<?php
-
-				foreach ($intervention['persons'] as $key => $person) {
-					$personId=$person['id_Person'];
-					$personDivId = 'PersDetail_'.$key;
+				<?php
+					foreach ($intervention['persons'] as $key => $person) {
+						$personId=$person['id_Person'];
+						$hasInerMeeting =isset($intervention['interventions'][$personId]);
+						$personDivId = 'PersDetail_'.$key;
+						$infoId = 'PersDetail_info'.$key;
+						$quickActionName='intervention[persons]['.$key.'][quickAction]';
+						$quickAction = array(
+							'type'  => 'hidden',
+							'name'  => $quickActionName,
+							'id'    => $quickActionName,
+							'value' => 'none');//remove
+						echo form_input($quickAction);
+						echo form_hidden('intervention[persons]['.$key.'][id_Person]',$personId);
+						if(isset($intervention['interventions'][$personId]))
+							echo form_hidden(
+								'intervention[interventions]['.$personId.'][id_intrevention]',
+								$intervention['interventions'][$personId]['id_intrevention']);
 					?>
 					<div class="in-intervention-meeting" id="<?php echo($personDivId); ?>" data-toggle="modal" data-target="#editModal_<?php echo($personId);?>">
-
 						<div class="form-group row">
-							<h4>Persone n°<?php echo($key+1); ?> #<?php echo($personId); ?></h4>
-							<?php
-							$quickActionName='intervention[persons]['.$key.'][quickAction]';
-							$quickAction = array(
-				        'type'  => 'hidden',
-				        'name'  => $quickActionName,
-				        'id'    => $quickActionName,
-				        'value' => 'none');//remove
-							echo form_input($quickAction);
-							echo form_hidden('intervention[persons]['.$key.'][id_Person]',$personId);
-							if(isset($intervention['interventions'][$personId]))
-								echo form_hidden(
-									'intervention[interventions]['.$personId.'][id_intrevention]',
-									$intervention['interventions'][$personId]['id_intrevention']);
-
-							?>
+							<div class="col-sm-8 col-xs-6">
+								<h4>Persone n°<?php echo($key+1); ?> #<?php echo($personId); ?></h4>
+							</div>
+							<div class="col-sm-4 col-xs-6">
+								<h5 id="<?php echo $infoId; ?>"><?php if ($hasInerMeeting): ?>A Beneficié d'un entretient personnel<?php endif; ?></h5>
+							</div>
 						</div>
 						<div class="form-group row">
 							<?php
@@ -408,7 +408,6 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 											</div>
 										</div>
 										<?php //setUp for iner metting
-											$hasInerMeeting =isset($intervention['interventions'][$personId]);
 											$themaDivID='editModal_'.$personId.'_MeetingThemaDiv';
 											$themaButtonAddDivID='editModal_'.$personId.'_AddMeetingButtonDiv';
 											$personButtonDeleteDivID='editModal_'.$personId.'_RemovePersonButtonDiv';

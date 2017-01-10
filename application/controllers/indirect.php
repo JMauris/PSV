@@ -24,7 +24,7 @@ class Indirect extends CI_Controller
   function index(){
     //indirect_model
     $userId = $this->tank_auth->get_user_id();
-    $places = $this->places_model->getAll();
+    $places = $this->placekinds_model->getSelector();
     $intervenant = $this->intervenant_model->getIntervenantById($userId);
     $intervenants = array($intervenant['id']=> $intervenant['username']);
     $prestations = $this->prestation_model->getTree();
@@ -67,7 +67,7 @@ class Indirect extends CI_Controller
 
     $iduser = $this->tank_auth->get_user_id();
     $indirect = $this->indirect_model->getById($id);
-    $places       = $this->places_model->getAll();
+    $places = $this->placekinds_model->getSelector();
     $intervenant = $this->intervenant_model->getIntervenantById($iduser);
     $intervenants = $this->intervenant_model->getAllIntervenant();
     $prestations = $this->prestation_model->getTree();

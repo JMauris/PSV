@@ -21,13 +21,13 @@ class Meeting extends CI_Controller
 
   function index()
   {
-    //$this->output->enable_profiler(true);
+    ////$this->output->enable_profiler(true);
 
     $user = $this->tank_auth->get_user_id();
 
     $past = $this->meetings_model->getOldByIntervenant($user);
     $futur = $this->meetings_model->getFutursByIntervenant($user);
-    $places = $this->places_model->getAll();
+    $places = $this->placekinds_model->getSelector();
 
     $intervenant = $this->intervenant_model->getIntervenantById($user);
     $intervenants = array($intervenant['id']=> $intervenant['username']);
@@ -57,7 +57,7 @@ class Meeting extends CI_Controller
   }
 
   function edit($id){
-    //$this->output->enable_profiler(true);
+    ////$this->output->enable_profiler(true);
     $user = $this->tank_auth->get_user_id();
     $intervention = $this->input->post('intervention');
     if (null !== $intervention){
@@ -68,7 +68,9 @@ class Meeting extends CI_Controller
             redirect('/intervention');
             return;
           }
-      if($intervention['person_id']==0){
+      if($intervention['clientType'] == "named")
+        $intervention['person_id']= $this->person_model->resolveName($intervention['person']['name']);
+      elseif($intervention['person_id']==0){
         $intervention['person_id']=
           $this->person_model->insertPerson(
             "",
@@ -79,6 +81,7 @@ class Meeting extends CI_Controller
         );
       }else
         $this->person_model->update($intervention['person']);
+      //var_dump($intervention);
       $this->meetings_model->update($intervention);
     }
 
@@ -91,7 +94,7 @@ class Meeting extends CI_Controller
       }
 
 
-    $places       = $this->places_model->getAll();
+    $places = $this->placekinds_model->getSelector();
     $intervenant = $this->intervenant_model->getIntervenantById($user);
     $intervenants = array($intervenant['id']=> $intervenant['username']);
     $thematics    = $this->thematics_model->getTree();
@@ -134,9 +137,9 @@ class Meeting extends CI_Controller
     $date           = $this->input->post('date');
     $kind_id           = $this->input->post('moyen');
     $place_id       = $this->input->post('place');
-    $this->meetings_model->insert($intervenant_id, $date, $place_id, $kind_id);
+    $newId = $this->meetings_model->insert($intervenant_id, $date, $place_id, $kind_id);
 
-    redirect('meeting');
+    redirect('meeting/edit/'.$newId);
   }
 
 

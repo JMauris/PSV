@@ -14,8 +14,8 @@ class Places_Model extends CI_Model
   function __construct(){
     parent::__construct();
   }
-
-//=selections opérations
+  //====================Selection=================================
+  //==places opérations==
   function getAll(){
     $this->db->select('*');
     $this->db->from(self::places_table);
@@ -57,19 +57,6 @@ class Places_Model extends CI_Model
 
     return $place;
   }
-  function _addAdress(&$place){
-    $id = $place['id_lieu'];
-    $this->db->select('*');
-    $this->db->from(self::adresses_table);
-    $this->db->join(self::citys_table, self::citys_join_claus);
-    $this->db->where('place_Id', $id);
-    $query = $this->db->get();
-    if ($query->num_rows() != 1){
-        return $place['adresse'] = NULL;
-    }
-    $raw = $query->result_array();
-    $place['adresse'] = $raw[0];
-  }
   function getCitys(){
     $this->db->select('*');
     $this->db->from(self::citys_table);
@@ -96,10 +83,8 @@ class Places_Model extends CI_Model
     $raw = $query->result_array();
     return $raw;
   }
-//======end=============
-
-
-//==places opérations==
+  //====================Insertion=================================
+  //==places opérations==
   function insert($name, $kind){
     $insertRow = array(
       'Name' => $name,
@@ -108,6 +93,13 @@ class Places_Model extends CI_Model
    $this->db->insert(self::places_table, $insertRow);
    return $this->db->insert_id();
   }
+  //==kinds opérations====
+  function insertKind($name){
+    $inserted = array('descr' => $name);
+    return $this->db->insert(self::kind_table, $inserted);
+  }
+  //====================Update====================================
+  //==places opérations==
   function setPlaceActivation($id,$activated){
     $this->db->where('id_lieu', $id);
     $partialRow = array('actived' => $activated);
@@ -122,14 +114,7 @@ class Places_Model extends CI_Model
     $this->db->where('id_lieu', $id);
     $this->db->update(self::places_table, $line);
   }
-//======end=============
-
-
-//==kinds opérations====
-  function insertKind($name){
-    $inserted = array('descr' => $name);
-    return $this->db->insert(self::kind_table, $inserted);
-  }
+  //==kinds opérations====
   function updateKind($kind){
     $line = array(
       'descr'         => $kind['descr'],
@@ -138,10 +123,7 @@ class Places_Model extends CI_Model
     $this->db->where('id_kind', $kind['id_kind']);
     $this->db->update(self::kind_table, $line);
   }
-//======end=============
-
-
-//==adresses opérations=
+  //==adresses opérations=
   function insertAdress($placeId, $line_1, $line_2, $cityId){
     if($cityId == 0)
       return;
@@ -167,10 +149,7 @@ class Places_Model extends CI_Model
     $this->db->where('place_Id', $id);
     $this->db->update(self::adresses_table, $line);
   }
-//======end=============
-
-
-//==cities opérations===
+  //==cities opérations===
   function unactivCity($id){
     echo "\n unactiv ".$id."\n";
     $line = array('activated' => 0);
@@ -199,6 +178,21 @@ class Places_Model extends CI_Model
     $this->db->simple_query("UPDATE `citys` SET `activated` = '0'
         WHERE name ='$name';");
   }
-//======end=============
+  //====================Delete====================================
+  //====================Internal==================================
+
+  function _addAdress(&$place){
+    $id = $place['id_lieu'];
+    $this->db->select('*');
+    $this->db->from(self::adresses_table);
+    $this->db->join(self::citys_table, self::citys_join_claus);
+    $this->db->where('place_Id', $id);
+    $query = $this->db->get();
+    if ($query->num_rows() != 1){
+        return $place['adresse'] = NULL;
+    }
+    $raw = $query->result_array();
+    $place['adresse'] = $raw[0];
+  }
 
 }

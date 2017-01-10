@@ -1,5 +1,5 @@
 <?php //setUp
-	//$this->output->enable_profiler(true);
+	////$this->output->enable_profiler(true);
 ?>
 <div class="container">
 	<h3>Lieux</h3>

@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">PSV</a>
+          <a class="navbar-brand" href="<?php echo base_url(); ?>">PSV<?php if ($is_logged): echo " - ".$username; endif; ?></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -41,72 +41,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $class = $this->router->fetch_class();
             $method = $this->router->fetch_method();
             ?>
-              <li <?php if ($class == 'welcome') {
-                echo 'class="active"';
-              }?>><a href=<?php echo base_url(); ?>>Accueil</a></li>
-            <?php
-            if ($is_logged) {
-              ?>
-              <li <?php if ($class == 'demarche') {
-                echo 'class="active"';
-              }?>><a href=<?php echo base_url(). index_page(). '/' . 'demarche/';?>>Collectif</a></li>
-              <li <?php if ($class == 'meeting') {
-                echo 'class="active"';
-              }?>><a href=<?php echo base_url(). index_page(). '/' . 'meeting/';?>>Individuel</a></li>
-              <li <?php if ($class == 'indirect') {
-                echo 'class="active"';
-              }?>><a href=<?php echo base_url(). index_page(). '/' . 'indirect/';?>>Indirect</a></li>
-              <li <?php if ($class == 'places') {
-                echo 'class="active"';
-              }?>><a href=<?php echo base_url(). index_page(). '/' . 'places/';?>>Lieux</a></li>
-              <?php
-              if($groupId==500){
-                ?>
-                <li <?php if ($class == 'admin') {
-                  echo 'class="active"';
-                }?>><a href=<?php echo base_url(). index_page(). '/' . 'admin/';?>>Administration</a></li>
-                <?php
-              }
-            }
-            else {
-            ?>
-              <li <?php if ($class == 'auth' && $method == 'login') {
-                echo 'class="active"';
-              }?>><a href=<?php echo base_url() .index_page(). '/'. 'auth'; ?>>Se connecter</a></li>
-              <!-- <li class="dropdown <?php if ($class == 'auth' && ($method == 'register' || $method == 'register_transp')) {
-                echo 'active';
-              }?>">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Register <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li <?php if ($class == 'auth' && $method == 'register') {
-                    echo 'class="active"';
-                  }?>><a href="/teemw/index.php/auth/register">User</a></li>
-                  <li <?php if ($class == 'auth' && $method == 'register_transp') {
-                    echo 'class="active"';
-                  }?>><a href="/teemw/index.php/auth/register_transp">Transport</a></li>
-                </ul>
-              </li> -->
-            <?php
-            }
-            ?>
+            <?php if ($is_logged): ?>
+              <li <?php if ($class == 'demarche'): ?>class="active"<?php endif; ?>>
+                <a href=<?php echo base_url(). index_page(). '/' . 'demarche/';?>>Collectif</a>
+              </li>
+              <li <?php if ($class == 'meeting'): ?>class="active"<?php endif; ?>>
+                <a href=<?php echo base_url(). index_page(). '/' . 'meeting/';?>>Individuel</a>
+              </li>
+              <li <?php if ($class == 'indirect'): ?>class="active"<?php endif; ?>>
+                <a href=<?php echo base_url(). index_page(). '/' . 'indirect/';?>>Indirect</a>
+              </li>
+
+            <?php else: ?>
+              <li <?php if ($class == 'auth' && $method == 'login'): ?>class="active"<?php endif; ?>>
+                <a href=<?php echo base_url() .index_page(). '/'. 'auth'; ?>>Se connecter</a>
+              </li>
+            <?php endif; ?>
           </ul>
-          <!-- <form class="navbar-form" role="search">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Rechercher une annonce" name="q">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                </div>
-            </div>
-          </form> -->
-          <?php
-            if($is_logged) {
-              ?>
+          <?php  if($is_logged): ?>
               <ul class="nav navbar-nav navbar-right">
-                <li><a href=<?php echo base_url() . index_page(). '/' . 'auth/logout'; ?>>Se déconnecter</a></li>
-              </ul>
-              <?php
-            }
-          ?>
+                <?php if ($groupId==500): ?>
+                  <li <?php if ($class == 'admin'): ?>class="active"<?php endif; ?>>
+                    <a href=<?php echo base_url(). index_page(). '/' . 'admin/';?>>Administration</a>
+                  </li>
+                <?php endif; ?>
+                <li>
+                  <a href=<?php echo base_url() . index_page(). '/' . 'auth/logout'; ?>>Se déconnecter</a>
+                </li>
+            </ul>
+          <?php endif; ?>
         </div><!--/.nav-collapse -->
       </div>
     </nav>

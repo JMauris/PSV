@@ -118,7 +118,7 @@ class Indirect_Model extends CI_Model
   }
   function _populatePlace(&$indirect){
     $indirect['place'] =
-        $this->places_model->getById($indirect['place']);
+        $this->placekinds_model->getById($indirect['place']);
   }
   function _populateOwner(&$indirect){
     $indirect['owner_id']= $indirect['owner'];

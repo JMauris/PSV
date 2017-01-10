@@ -13,8 +13,9 @@ class Gender_Model extends CI_Model
     parent::__construct();
   }
 
-
+  //====================Selection=================================
   function getAllFullGender(){
+    $this->db->order_by("position", "asc");
     $query=$this->db->get(self::TABLE_NAME);
 
     $genders=array();
@@ -23,36 +24,29 @@ class Gender_Model extends CI_Model
     $gender=array(
       'id_gender'=>$row['id_gender'],
       'name'=>$row['name'],
+      'position'=>$row['position'],
       'activated'=>$row['activated']
     );
     $genders[$row['id_gender']]= $gender;
     }
     return $genders;
   }
-  function update($gender){
-    $oldGender = $this->getById($gender['id_gender']);
-    $genderRow = array(
-      'id_gender'=>$oldGender['id_gender'],
-      'name'=>$oldGender['name'],
-      'activated'=>$oldGender['activated']
-    );
+  function getSelector(){
+    $this->db->where('activated', 1);
+    $this->db->order_by("position", "asc");
+    $query =$this->db->get(self::TABLE_NAME);
 
-    foreach($genderRow as $key => $value){
-      if(true == isset($gender[$key]))
-        $genderRow[$key] = $gender[$key];
+    $activs = array();
+    $rows = $query->result_array();
+    foreach ($rows as $key => $row) {
+      $activs[$row['id_gender']]= $row['name'];
     }
-    $this->db->where('id_gender', $gender['id_gender']);
-    $this->db->update(self::TABLE_NAME, $genderRow);
-
-  }
-  function insert_gender($newGender){
-    $this->name = $newGender;
-   $this->db->insert(self::TABLE_NAME,$this);
-
+    return $activs;
   }
   function getActivs(){
 
 		$this->db->where('activated', 1);
+    $this->db->order_by("position", "asc");
     $query =$this->db->get(self::TABLE_NAME);
 
     $activs = array();
@@ -78,4 +72,38 @@ class Gender_Model extends CI_Model
       );
 
   }
+  //====================Insertion=================================
+  function insert_gender($newGender){
+    $this->name = $newGender;
+   $this->db->insert(self::TABLE_NAME,$this);
+
+  }
+  //====================Update====================================
+  function update($gender){
+    $oldGender = $this->getById($gender['id_gender']);
+    $genderRow = array(
+      'id_gender'=>$oldGender['id_gender'],
+      'name'=>$oldGender['name'],
+      'position'=>$oldGender['position'],
+      'activated'=>$oldGender['activated']
+    );
+
+    foreach($genderRow as $key => $value){
+      if(true == isset($gender[$key]))
+        $genderRow[$key] = $gender[$key];
+    }
+    if($genderRow['position']<1)
+      $genderRow['position']=1;
+    $this->db->where('id_gender', $gender['id_gender']);
+    $this->db->update(self::TABLE_NAME, $genderRow);
+
+  }
+  function setDefaultName($name){
+    $set = array('name' => $name);
+    $this->db->where('id_gender', 0);
+    $this->db->update(self::TABLE_NAME, $set);
+  }
+  //====================Delete====================================
+
+
 }

@@ -6,6 +6,7 @@ class Meetings_Model extends Intervention_Model
   function __construct() {
     parent::__construct();
   }
+//====================Selection=================================
   function getFutursByIntervenant($id){
     $this->db->where('date >=', 'CURRENT_DATE()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
@@ -103,6 +104,7 @@ class Meetings_Model extends Intervention_Model
     }
     return $interventions;
   }
+//====================Insertion=================================
   function insert($intervenant_id, $date, $place_id, $kind_id){
     $date= fromUiToSystem($date);
     $insertRow = array(
@@ -114,6 +116,7 @@ class Meetings_Model extends Intervention_Model
      $this->db->insert(self::intervention_Table, $insertRow);
      return $this->db->insert_id();
   }
+//====================Update====================================
   function update($meeting){
     if(isset($meeting['date']))
       $meeting['date']= fromUiToSystem($meeting['date']);
@@ -141,6 +144,8 @@ class Meetings_Model extends Intervention_Model
     if(true == isset($meeting['materials']))
       parent::_updateMaterials( $meeting['id_intrevention'],$meeting['materials']);
   }
+//====================Delete====================================
+//====================Internal==================================
   function _populate(&$meeting){
     parent::_populate($meeting);
   }

@@ -1,23 +1,27 @@
 <?php //setup
-	$this->output->enable_profiler(true);
-	{ // convert $places for dropDown use
-		$tmp = array(''=>'');
-		foreach ($places as $key => $place)
-			$tmp[$place['id_lieu']] =$place['descr']." - ".$place['Name'];
-		$places = $tmp;
+	//$this->output->enable_profiler(true);
+
+	$isAnnonim = true;
+	if(false == isset($intervention['person'])){
+		$intervention['person']['origine_id']=0;
+		$intervention['person']['gender_id']=0;
+		$intervention['person']['sexuality_id']=0;
+		$intervention['person']['ageGroup_id']=0;
 	}
+	$clientName = '';
+	if(isset($intervention['person']['name']))
+		if($intervention['person']['name']){
+			$isAnnonim = false;
+			$clientName = $intervention['person']['name'];
+		}
 
-$intervenantsDropDown = array();{
-	$intervenantsDropDown[$intervention['intervenant']['id']]=$intervention['intervenant']['username'];
-	foreach ($intervenants as $id => $name)
-		$intervenantsDropDown[$id]= $name;
+
+	$intervenantsDropDown = array();{
+		$intervenantsDropDown[$intervention['intervenant']['id']]=$intervention['intervenant']['username'];
+		foreach ($intervenants as $id => $name)
+			$intervenantsDropDown[$id]= $name;
 }
 
-$placeDropDown = array();{
-	$placeDropDown[$intervention['place']['id_lieu']]=$intervention['place']['Name'];
-		foreach ($places as $id => $name)
-			$placeDropDown[$id]= $name;
-}
 
 $dropDownDuration = array(
 	'0' => '',
@@ -40,6 +44,9 @@ $dropDownDuration = array(
 	'240' => '4:00',
 	'310' => '4:30',
 );
+?>
+<body class="individualContener">
+<?php
 echo form_open('meeting/edit/'. $intervention['id_intrevention']);
 
 		?>
@@ -87,10 +94,9 @@ echo form_open('meeting/edit/'. $intervention['id_intrevention']);
 			</div>
 			<div class="col-sm-4">
 				<?php
-
 					echo form_label('Lieu');
 					echo "<br/>";
-					echo form_dropdown('intervention[place_id]', $placeDropDown, $intervention['place_id']);
+					echo form_dropdown('intervention[place_id]', $places, $intervention['place']['id_kind']);
 				?>
 			</div>
 			<div class="col-sm-4">
@@ -131,74 +137,90 @@ echo form_open('meeting/edit/'. $intervention['id_intrevention']);
 		<div class="row text-center">
 			<h2>presonne rencontrée</h2>
 		</div>
-		<div class="form-group row">
-			<?php
+		<?php
+			$annonimeDivId = "annonimePerson";
+			$namedDivId = "namedPerson";
+			$typeInputId = "intervention[clientType]";
 
-				$choices = array(
-					'origins' => array(),
-					'genders' =>  array(),
-					'sexuality' =>  array(),
-					'ageGroups' => array()
-				);
-				if($intervention['person_id']==null){
-					$intervention['person_id']=0;
-					$intervention['person']= array(
-						"id_Person"		=> 0,
-		        "name"				=> "",
-		        "origine_id"	=> 0,
-		        "ageGroup_id"	=> 0,
-		        "gender_id"		=> 0,
-		        "sexuality_id"=> 0,
-		        "origine"			=> "",
-		      	"ageGroup"		=> "",
-		        "gender"			=> "",
-		        "sexuality"		=> ""
-					);
-				}
-				echo form_hidden('intervention[person_id]',
+			echo form_hidden('intervention[person_id]',
+				$intervention['person_id']);
+			echo form_hidden('intervention[person][id_Person]',
 					$intervention['person_id']);
-				echo form_hidden('intervention[person][id_Person]',
-						$intervention['person_id']);
-				$choices['origins'][$intervention['person']['origine_id']]
-						= $intervention['person']['origine'];
-				$choices['genders'][$intervention['person']['gender_id']]
-						= $intervention['person']['gender'];
-				$choices['sexuality'][$intervention['person']['sexuality_id']]
-						= $intervention['person']['sexuality'];
-				$choices['ageGroups'][$intervention['person']['ageGroup_id']]
-						= $intervention['person']['ageGroup'];
-				foreach ($origins as $id => $value)
-					$choices['origins'][$id]=$value;
-				foreach ($genders as $id => $value)
-					$choices['genders'][$id]=$value;
-				foreach ($sexuality as $id => $value)
-					$choices['sexuality'][$id]=$value;
-				foreach ($ageGroups as $id => $value)
-					$choices['ageGroups'][$id]=$value;
-			?>
-			<div class="col-sm-3 col-xs-6">';
-				<?php
-					echo form_label('Origine');
-					echo form_dropdown('intervention[person][origine_id]', 	$choices['origins'], $intervention['person']['origine_id']);
-					?>
+			$typeInputData = array(
+				'type'  => 'hidden',
+				'name'  => $typeInputId,
+				'id'    => $typeInputId,
+				'value' => 'annonyme');//named
+			if(false==$isAnnonim)
+				$typeInputData['value']='named';
+			echo form_input($typeInputData);
+		?>
+		<div class="row form-group">
+			<div id="<?php echo  $annonimeDivId?>" <?php if (false==$isAnnonim):?>style="display:none;"<?php endif; ?>>
+				<div class="col-xs-12">
+					<?php
+						$script="document.getElementById('$namedDivId').style.display = 'inline';
+							document.getElementById('$annonimeDivId').style.display = 'none';
+							document.getElementById('$typeInputId').value = 'named';
+							";
+					 ?>
+					<button type="button" class="btn btn-info btn-lg btn-block" onclick="<?php echo($script);?>">
+						Dossier
+					</button>
+				</div>
+				<div class="col-sm-3 col-xs-6">
+					<?php
+						echo form_label('Origine');
+						echo form_dropdown('intervention[person][origine_id]', 	$origins, $intervention['person']['origine_id']);
+						?>
+				</div>
+				<div class="col-sm-3 col-xs-6">
+					<?php
+						echo form_label('Genre');
+						echo form_dropdown('intervention[person][gender_id]', $genders, $intervention['person']['gender_id']);
+						?>
+				</div>
+				<div class="col-sm-3 col-xs-6">
+					<?php
+						echo form_label('Orinentation');
+						echo form_dropdown('intervention[person][sexuality_id]', 	$sexuality, $intervention['person']['sexuality_id']);
+						?>
+				</div>
+				<div class="col-sm-3 col-xs-6">
+					<?php
+						echo form_label("Groupe d'age");
+						echo form_dropdown('intervention[person][ageGroup_id]', $ageGroups, $intervention['person']['ageGroup_id']);
+						?>
+				</div>
 			</div>
-			<div class="col-sm-3 col-xs-6">
-				<?php
-					echo form_label('Genre');
-					echo form_dropdown('intervention[person][gender_id]', 	$choices['genders'], $intervention['person']['gender_id']);
-					?>
-			</div>
-			<div class="col-sm-3 col-xs-6">
-				<?php
-					echo form_label('Orinentation');
-					echo form_dropdown('intervention[person][sexuality_id]', 	$choices['sexuality'], $intervention['person']['sexuality_id']);
-					?>
-			</div>
-			<div class="col-sm-3 col-xs-6">
-				<?php
-					echo form_label("Groupe d'age");
-					echo form_dropdown('intervention[person][ageGroup_id]', 	$choices['ageGroups'], $intervention['person']['ageGroup_id']);
-					?>
+			<div id="<?php echo  $namedDivId?>" <?php if ($isAnnonim):?>style="display:none;"<?php endif; ?>>
+				<div class="col-xs-12">
+					<?php
+						$script="document.getElementById('$annonimeDivId').style.display = 'inline';
+							document.getElementById('$namedDivId').style.display = 'none';
+							document.getElementById('$typeInputId').value = 'annonyme';
+							";
+					 ?>
+					<button type="button" class="btn btn-info btn-lg btn-block" onclick="<?php echo($script);?>">
+						Annonyme
+					</button>
+				</div>
+				<div class="col-xs-4">
+					<?php
+						echo form_label('Identifiant');
+						?>
+				</div>
+				<div class="col-xs-8">
+					<?php
+						$input= array(
+							'id' 		=> 'intervention[person][name]',
+							'name'	=> 'intervention[person][name]',
+							'class'	=> 'form-control',
+							'value' => $clientName);
+
+						echo form_input($input);
+						?>
+				</div>
 			</div>
 		</div>
 		<div class="row text-center">

@@ -1,6 +1,6 @@
 
 <?php //setUp
-	//$this->output->enable_profiler(true);
+	////$this->output->enable_profiler(true);
 
 	$isCreate= (false == isset($place));
 

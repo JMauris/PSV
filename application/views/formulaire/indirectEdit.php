@@ -1,14 +1,9 @@
 <?php //setup
-	//$this->output->enable_profiler(true);
+	////$this->output->enable_profiler(true);
 	//var_dump($indirect);
 
 
-	{ // convert $places for dropDown use
-		$tmp = array(''=>'');
-		foreach ($places as $key => $place)
-			$tmp[$place['id_lieu']] =$place['descr']." - ".$place['Name'];
-		$places = $tmp;
-	}
+
 
 	$ownerDropDown = array();{
 		$ownerDropDown[$indirect['owner']['id']]=$indirect['owner']['username'];
@@ -16,11 +11,6 @@
 			$ownerDropDown[$id]= $name;
 	}
 
-	$placeDropDown = array();{
-		$placeDropDown[$indirect['place']['id_lieu']]=$indirect['place']['Name'];
-			foreach ($places as $id => $name)
-				$placeDropDown[$id]= $name;
-	}
 
 	$dropDownDuration = array(
 		'0' => 'Durée',
@@ -43,6 +33,9 @@
 		'240' => '4:00',
 		'310' => '4:30',
 	);
+?>
+<body class="indirectContener">
+<?php
 	echo form_open('indirect/edit/'. $indirect['id_indirect']);
 
 		?>
@@ -82,7 +75,7 @@
 							<?php // place input
 								echo form_label('Lieu');
 								echo "<br/>";
-								echo form_dropdown('indirect[place]', $placeDropDown, $indirect['place']['id_lieu']);
+								echo form_dropdown('indirect[place]', $places, $indirect['place']['id_kind']);
 							?>
 						</div>
 						<div class="col-sm-4">

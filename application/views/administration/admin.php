@@ -1,3 +1,13 @@
+<?php //setup
+  $genreDefault = $genres['0']['name'];
+  unset($genres['0']);
+  $sexualityDefault = $sexualitys['0']['name'];
+  unset($sexualitys['0']);
+  $ageGroupDefault = $ageGroups['0']['name'];
+  unset($ageGroups['0']);
+  $placeKindDefault = $placeKinds['0']['descr'];
+  unset($placeKinds['0']);
+ ?>
 <script>
 var intervenant;
 function myFunction(val) {
@@ -65,6 +75,7 @@ foreach ($intervenants as $key => $value) {
 
 </form>
 </div>
+	<div style="height: 60px;"> </div>
 <!-- =====================gender================================================================================ -->
   <div class="container">
     <h3>Genre</h3>
@@ -88,38 +99,68 @@ foreach ($intervenants as $key => $value) {
         </div>
       <?php echo form_close(); ?>
     </div>
+    <div id="gender_defaultEdit">
+      <h4>Description - Valeur par défaut</h4>
+      <?php echo form_open('/admin/gender_defaultEdit');?>
+        <div class="row">
+          <div  class="col-xs-8">
+            <?php
+              $input= array(
+                'id' 		=> 'defaultGenre',
+                'name'	=> 'defaultGenre',
+                'class'	=> 'form-control',
+                'value' => $genreDefault
+              );
+                echo form_input($input);
+            ?>
+          </div>
+          <div class="col-xs-4">
+            <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+          </div>
+        </div>
+      <?php echo form_close(); ?>
+    </div>
     <div id="gender_edit">
+
       <?php echo form_open('/admin/gender_edit/');?>
         <div class="row">
           <table class="table table-hover">
             <thead>
               <tr>
                 <th>Nom</th>
+                <th>Position</th>
                 <th>Actif</th>
               </tr>
             </thead>
             <tbody>
-              <?php foreach ($genres as $key => $value) {
-                ?>
-                  <tr class="<?php if($value['activated']==0):?>active<?php else:?>info<?php endif?>">
-                    <td>
-                      <?php
-                        echo form_hidden('genres['.$value['id_gender'].'][id_gender]',$value['id_gender']);
-              					$input= array(
-              						'id' 		=> 'genres['.$value['id_gender'].'][name]',
-              						'name'	=> 'genres['.$value['id_gender'].'][name]',
-              						'class'	=> 'form-control',
-              						'value' => $value['name']);
-              						echo form_input($input);
-                      ?>
-                    </td>
-                    <td>
-                      <?php echo form_checkbox('genres['.$value['id_gender'].'][activated]',1,$value['activated']);?>
-                    </td>
-                  </tr>
-                <?php
-              }
-                ?>
+              <?php foreach ($genres as $key => $value): ?>
+                <tr class="<?php if($value['activated']==0):?>active<?php else:?>info<?php endif?>">
+                  <td>
+                    <?php
+                      echo form_hidden('genres['.$value['id_gender'].'][id_gender]',$value['id_gender']);
+            					$input= array(
+            						'id' 		=> 'genres['.$value['id_gender'].'][name]',
+            						'name'	=> 'genres['.$value['id_gender'].'][name]',
+            						'class'	=> 'form-control',
+            						'value' => $value['name']);
+            						echo form_input($input);
+                    ?>
+                  </td>
+                  <td>
+                    <?php
+                      $input= array(
+                        'id' 		=> 'genres['.$value['id_gender'].'][position]',
+                        'name'	=> 'genres['.$value['id_gender'].'][position]',
+                        'class'	=> 'form-control',
+                        'value' => $value['position']);
+                        echo form_input($input);
+                    ?>
+                  </td>
+                  <td>
+                    <?php echo form_checkbox('genres['.$value['id_gender'].'][activated]',1,$value['activated']);?>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
             </tbody>
           </table>
         </div>
@@ -127,6 +168,7 @@ foreach ($intervenants as $key => $value) {
       <?php echo form_close(); ?>
     </div>
   </div>
+  <div style="height: 60px;"> </div>
 <!-- =====================sexualitys================================================================================ -->
 <div class="container">
   <h3>Sexualité</h3>
@@ -150,6 +192,27 @@ foreach ($intervenants as $key => $value) {
       </div>
     <?php echo form_close(); ?>
   </div>
+  <div id="sexuality_defaultEdit">
+    <h4>Description - Valeur par défaut</h4>
+    <?php echo form_open('/admin/sexuality_defaultEdit');?>
+      <div class="row">
+        <div  class="col-xs-8">
+          <?php
+            $input= array(
+              'id' 		=> 'defaultSexuality',
+              'name'	=> 'defaultSexuality',
+              'class'	=> 'form-control',
+              'value' => $sexualityDefault
+            );
+              echo form_input($input);
+          ?>
+        </div>
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
+      </div>
+    <?php echo form_close(); ?>
+  </div>
   <div id="sexuality_edit">
     <?php echo form_open('/admin/sexuality_edit/');?>
       <div class="row">
@@ -157,12 +220,12 @@ foreach ($intervenants as $key => $value) {
           <thead>
             <tr>
               <th>Nom</th>
+              <th>Position</th>
               <th>Actif</th>
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($sexualitys as $key => $value) {
-              ?>
+            <?php foreach ($sexualitys as $key => $value):?>
                 <tr class="<?php if($value['activated']==0):?>active<?php else:?>info<?php endif?>">
                   <td>
                     <?php
@@ -176,12 +239,20 @@ foreach ($intervenants as $key => $value) {
                     ?>
                   </td>
                   <td>
+                    <?php
+                      $input= array(
+                        'id' 		=> 'sexualitys['.$value['id_sexuality'].'][position]',
+                        'name'	=> 'sexualitys['.$value['id_sexuality'].'][position]',
+                        'class'	=> 'form-control',
+                        'value' => $value['position']);
+                        echo form_input($input);
+                    ?>
+                  </td>
+                  <td>
                     <?php echo form_checkbox('sexualitys['.$value['id_sexuality'].'][activated]',1,$value['activated']);?>
                   </td>
                 </tr>
-              <?php
-            }
-              ?>
+            <?php endforeach; ?>
           </tbody>
         </table>
       </div>
@@ -189,10 +260,11 @@ foreach ($intervenants as $key => $value) {
     <?php echo form_close(); ?>
   </div>
 </div>
+<div style="height: 60px;"> </div>
 <!-- =====================Age group================================================================================= -->
 <div class="container">
   <h3>Groupe d'age</h3>
-  <div id="ageGroup_add">
+  <div id="gender_add">
     <?php echo form_open('/admin/ageGroup_add');?>
       <div class="row">
         <div  class="col-xs-8">
@@ -207,43 +279,73 @@ foreach ($intervenants as $key => $value) {
           ?>
         </div>
         <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', "Créer une nouvelle classe d'age","class='btn btn-lg btn-primary btn-block"); ?>
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau groupe',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
   </div>
-  <div id="ageGroup_edit">
+  <div id="ageGroup_defaultEdit">
+    <h4>Description - Valeur par défaut</h4>
+    <?php echo form_open('/admin/ageGroup_defaultEdit');?>
+      <div class="row">
+        <div  class="col-xs-8">
+          <?php
+            $input= array(
+              'id' 		=> 'defaultAgeGroup',
+              'name'	=> 'defaultAgeGroup',
+              'class'	=> 'form-control',
+              'value' => $ageGroupDefault
+            );
+              echo form_input($input);
+          ?>
+        </div>
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
+      </div>
+    <?php echo form_close(); ?>
+  </div>
+  <div id="gender_edit">
+
     <?php echo form_open('/admin/ageGroup_edit/');?>
       <div class="row">
         <table class="table table-hover">
           <thead>
             <tr>
               <th>Nom</th>
+              <th>Position</th>
               <th>Actif</th>
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($ageGroups as $key => $value) {
-              ?>
-                <tr class="<?php if($value['activated']==0):?>active<?php else:?>info<?php endif?>">
-                  <td>
-                    <?php
-                      echo form_hidden('ageGroups['.$value['id_ages_goup'].'][id_ages_goup]',$value['id_ages_goup']);
-                      $input= array(
-                        'id' 		=> 'ageGroups['.$value['id_ages_goup'].'][name]',
-                        'name'	=> 'ageGroups['.$value['id_ages_goup'].'][name]',
-                        'class'	=> 'form-control',
-                        'value' => $value['name']);
-                        echo form_input($input);
-                    ?>
-                  </td>
-                  <td>
-                    <?php echo form_checkbox('ageGroups['.$value['id_ages_goup'].'][activated]',1,$value['activated']);?>
-                  </td>
-                </tr>
-              <?php
-            }
-              ?>
+            <?php foreach ($ageGroups as $key => $value): ?>
+              <tr class="<?php if($value['activated']==0):?>active<?php else:?>info<?php endif?>">
+                <td>
+                  <?php
+                    echo form_hidden('ageGroups['.$value['id_ages_goup'].'][id_ages_goup]',$value['id_ages_goup']);
+                    $input= array(
+                      'id' 		=> 'ageGroups['.$value['id_ages_goup'].'][name]',
+                      'name'	=> 'ageGroups['.$value['id_ages_goup'].'][name]',
+                      'class'	=> 'form-control',
+                      'value' => $value['name']);
+                      echo form_input($input);
+                  ?>
+                </td>
+                <td>
+                  <?php
+                    $input= array(
+                      'id' 		=> 'ageGroups['.$value['id_ages_goup'].'][position]',
+                      'name'	=> 'ageGroups['.$value['id_ages_goup'].'][position]',
+                      'class'	=> 'form-control',
+                      'value' => $value['position']);
+                      echo form_input($input);
+                  ?>
+                </td>
+                <td>
+                  <?php echo form_checkbox('ageGroups['.$value['id_ages_goup'].'][activated]',1,$value['activated']);?>
+                </td>
+              </tr>
+            <?php endforeach; ?>
           </tbody>
         </table>
       </div>
@@ -251,58 +353,101 @@ foreach ($intervenants as $key => $value) {
     <?php echo form_close(); ?>
   </div>
 </div>
-
-
-<h3>Groupe d'age</h3>
-
-<?php
-  echo form_open('/admin/');
-echo form_label("Créer un nouveau groupe d'age");
-echo form_input( "newGroupAge");
-echo form_submit('submit_Profil', 'Ajouté',"class='btn btn-lg btn-primary '");
-echo form_close();
-  echo form_open('/admin/');
-?>
+<div style="height: 60px;"> </div>
+<!-- =====================place kind============================================================================ -->
 <div class="container">
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nom</th>
-        <th>Actif</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php foreach ($ageGroups as $key => $value)
-      {
-        if($value['activated']==0)
-        {
-            echo '<tr class="active">';
-        }else
-          {
-              echo '<tr class="info">';
-          }
-
-        echo  '<td>';
-        echo form_hidden('ageGroups['.$value['id_ages_goup'].'][id_ages_goup]',$value['id_ages_goup']);
-        echo '</td>';
-
-        echo  '<td>';
-        echo form_input('ageGroups['.$value['id_ages_goup'].'][name]',$value['name']);
-        echo '</td>';
-
-        echo  '<td>';
-        echo form_checkbox('ageGroups['.$value['id_ages_goup'].'][activated]',1,$value['activated']);
-        echo '</td>
-              </tr>';
-      } ?>
-    </tbody>
-    </table>
-    <?php
-        echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");
-     ?>
-     </form>
+  <h3>Type de lieu</h3>
+  <div id="placeKind_add">
+    <?php echo form_open('/admin/placeKind_add');?>
+      <div class="row">
+        <div  class="col-xs-8">
+          <?php
+            $input= array(
+              'id' 		=> 'addedPlaceKind',
+              'name'	=> 'addedPlaceKind',
+              'class'	=> 'form-control',
+              'value' => "Nouveau type de lieu"
+            );
+              echo form_input($input);
+          ?>
+        </div>
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau type',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
+      </div>
+    <?php echo form_close(); ?>
   </div>
+  <div id="placeKind_defaultEdit">
+    <h4>Description - Valeur par défaut</h4>
+    <?php echo form_open('/admin/placeKind_defaultEdit');?>
+      <div class="row">
+        <div  class="col-xs-8">
+          <?php
+            $input= array(
+              'id' 		=> 'defaultPlaceKind',
+              'name'	=> 'defaultPlaceKind',
+              'class'	=> 'form-control',
+              'value' => $placeKindDefault
+            );
+              echo form_input($input);
+          ?>
+        </div>
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
+      </div>
+    <?php echo form_close(); ?>
+  </div>
+  <div id="placeKind_edit">
+
+    <?php echo form_open('/admin/placeKind_edit/');?>
+      <div class="row">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Position</th>
+              <th>Actif</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($placeKinds as $key => $value): ?>
+              <tr class="<?php if($value['kind_actived']==0):?>active<?php else:?>info<?php endif?>">
+                <td>
+                  <?php
+                    echo form_hidden('$placeKinds['.$value['id_kind'].'][id_kind]',$value['id_kind']);
+                    $input= array(
+                      'id' 		=> 'placeKinds['.$value['id_kind'].'][descr]',
+                      'name'	=> 'placeKinds['.$value['id_kind'].'][descr]',
+                      'class'	=> 'form-control',
+                      'value' => $value['descr']);
+                      echo form_input($input);
+                  ?>
+                </td>
+                <td>
+                  <?php
+                    $input= array(
+                      'id' 		=> 'placeKinds['.$value['id_kind'].'][position]',
+                      'name'	=> 'placeKinds['.$value['id_kind'].'][position]',
+                      'class'	=> 'form-control',
+                      'value' => $value['position']);
+                      echo form_input($input);
+                  ?>
+                </td>
+                <td>
+                  <?php echo form_checkbox('placeKinds['.$value['id_kind'].'][kind_actived]',1,$value['kind_actived']);?>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+      <?php	echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");?>
+    <?php echo form_close(); ?>
+  </div>
+</div>
+<div style="height: 60px;"> </div>
+
 <!-- =====================cities================================================================================ -->
   <div class="container">
   	<h3>Villes</h3>
@@ -384,4 +529,4 @@ echo form_close();
   			<?php	echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");?>
   		<?php echo form_close(); ?>
   	</div>
-  </div>
+</div>

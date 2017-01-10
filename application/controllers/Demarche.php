@@ -14,20 +14,16 @@ class Demarche extends CI_Controller
     $this->load->library('form_validation');
     $iduser = $this->tank_auth->get_user_id();
     $user=$this->intervenant_model->getIntervenantById($iduser);
-    if (!$this->tank_auth->is_logged_in()) {
-      redirect('');
-    }
-
   }
 
 
   function index()
   {
-    //$this->output->enable_profiler(true);
+    ////$this->output->enable_profiler(true);
     $user = $this->tank_auth->get_user_id();
     $past = $this->demarches_model->getOldByIntervenant($user);
     $futur = $this->demarches_model->getFutursByIntervenant($user);
-    $places = $this->places_model->getAll();
+    $places = $this->placekinds_model->getSelector();
     $intervenant = $this->intervenant_model->getIntervenantById($user);
     $intervenants = array($intervenant['id']=> $intervenant['username']);
 
@@ -64,10 +60,10 @@ class Demarche extends CI_Controller
 
         $potentialyAdded = $intervention['persons']['added'];
         unset($intervention['persons']['added']);
-        if(  ( 0 != $potentialyAdded['origine_id'])
-          && ( 0 != $potentialyAdded['gender_id'])
-          && ( 0 != $potentialyAdded['sexuality_id'])
-          && ( 0 != $potentialyAdded['ageGroup_id'])
+        if(  ( 0 >= $potentialyAdded['origine_id'])
+          && ( 0 >= $potentialyAdded['gender_id'])
+          && ( 0 >= $potentialyAdded['sexuality_id'])
+          && ( 0 >= $potentialyAdded['ageGroup_id'])
           )
           for ($i=0; $i < $potentialyAdded['quantity'] ; $i++) {
             $inserted = $this->person_model->getById(
@@ -85,6 +81,9 @@ class Demarche extends CI_Controller
 
           {
             $nullMeetings = array();
+            if(false == isset($intervention['interventions']))
+              $intervention['interventions']= array();
+
             foreach ($intervention['interventions'] as $key => $meeting)
               if( 0 >= $meeting['duration'])
                 array_push($nullMeetings, $key);
@@ -105,7 +104,7 @@ class Demarche extends CI_Controller
       }
 
 
-    $places       = $this->places_model->getAll();
+    $places = $this->placekinds_model->getSelector();
     $intervenant  = $this->intervenant_model->getIntervenantById($user);
     $intervenants = array($intervenant['id']=> $intervenant['username']);
     $thematics    = $this->thematics_model->getTree();
@@ -142,9 +141,9 @@ class Demarche extends CI_Controller
     $date           = $this->input->post('date');
     $place_id       = $this->input->post('place');
     $kind_id        = 4;
-    $this->demarches_model->insert($intervenant_id, $date, $place_id, $kind_id);
+    $newId = $this->demarches_model->insert($intervenant_id, $date, $place_id, $kind_id);
 
-    //redirect('demarche');
+    redirect('demarche/edit/'.$newId);
   }
 
 

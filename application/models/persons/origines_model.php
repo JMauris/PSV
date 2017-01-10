@@ -17,8 +17,9 @@ class Origines_Model extends CI_Model
   }
   function getFlatTree(){
     $mock = array('id' => 0,
-                  'text' => '');
+                  'text' => 'Origine');
     $respons = array();
+    $respons['0']="Originie non déclarée";
     $this->populateFlat($respons,$mock,'');
 
     return $respons;

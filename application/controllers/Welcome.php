@@ -28,6 +28,7 @@ class Welcome extends CI_Controller
 	      'futur' => $futur,
 	      'past' => $past
 	     );
+			 //var_dump($data);
 	    $this->load->view('dashBoard/general',$data);
 
 /*

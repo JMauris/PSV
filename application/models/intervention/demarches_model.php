@@ -5,6 +5,8 @@ class Demarches_Model extends Intervention_Model
   function __construct(){
     parent::__construct();
   }
+
+//====================Selection=================================
   function getFutursByIntervenant($id){
     $this->db->where('date >=', 'CURRENT_DATE()', FALSE);
     $this->db->where('intervenant_id =', $id, FALSE);
@@ -78,6 +80,7 @@ class Demarches_Model extends Intervention_Model
 
     return $demarche;
   }
+//====================Insertion=================================
   function insert($intervenant_id, $date, $place_id, $kind_id){
     $date= fromUiToSystem($date);
     $insertRow = array(
@@ -86,8 +89,10 @@ class Demarches_Model extends Intervention_Model
       'place_id' => $place_id,
       'kind_id' => $kind_id
      );
-     return $this->db->insert(self::intervention_Table, $insertRow);
+     $this->db->insert(self::intervention_Table, $insertRow);
+     return $this->db->insert_id();
   }
+//====================Update====================================
   function update($demarche){
     if(isset($demarche['date']))
       $demarche['date']=fromUiToSystem($demarche['date']);
@@ -118,12 +123,19 @@ class Demarches_Model extends Intervention_Model
     if(true == isset($demarche['persons']))
       $this->_updatePersons( $demarche['id_intrevention'],$demarche['persons']);
 
+    $dateSet = array('date' => $demarcheRow['date']);
+    $this->db->where('parent', $demarcheRow['id_intrevention']);
+    $this->db->update('intreventions', $dateSet);
   }
+//====================Delete====================================
+
+//====================Internal==================================
+
   function _populate(&$demarche){
     parent::_populate($demarche);
     $this->_addMeet($demarche);
-    foreach ($demarche['interventions'] as $key => $intervention)
-      $demarche['duration']= $demarche['duration']+$intervention['duration'];
+    //foreach ($demarche['interventions'] as $key => $intervention)
+    //  $demarche['duration']= $demarche['duration']+$intervention['duration'];
   }
   function _addPersons(&$intervention){
     $intervention['persons'] =

@@ -6,7 +6,7 @@ var_dump($thematics);
 <h2>Test</h2>
 
 <?php
-//$this->output->enable_profiler(true);
+////$this->output->enable_profiler(true);
 echo form_open('test');
   $selctedThema = array();
   $labelExtraTopLevel = array('style' => 'font-weight:700');

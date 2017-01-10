@@ -8,10 +8,22 @@ class Intervenant_Model extends CI_Model
     parent::__construct();
   }
 
+  function getSelector(){
+    $this->db->where('activated', 1);
+    //$this->db->where('group_id', 300);
+    $query =$this->db->get('users');
+
+    $intervenants = array();
+    $rows = $query->result_array();
+    foreach ($rows as $key => $row) {
+      $intervenants[$row['id']]= $row['username'];
+    }
+    return $intervenants;
+  }
   function getAllIntervenant(){
 
 		$this->db->where('activated', 1);
-    $this->db->where('group_id', 300);
+    //$this->db->where('group_id', 300);
     $query =$this->db->get('users');
 
     $intervenants = array();

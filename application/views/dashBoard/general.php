@@ -3,43 +3,42 @@
   $divType = '<div class="col-sm-3 col-xs-6 element">'."\n";
 	if($this->session->userdata['groupId']==500)
     $divType='<div class="col-md-2 col-sm-4 col-xs-6 element">'."\n";
-
+	$divClass = "col-sm-4 col-xs-6 element";
+	if($this->session->userdata['groupId']==500)
+    $divClass="col-sm-3 col-xs-6 element";
 
 	$allInterventions = array(
 		'Les éléments à venir' => $futur,
 		'Les éléments passés' => $past
 	 );
-	 foreach ($allInterventions as $title => $interventions) {
-	 	echo " <h2>".$title."</h2>"."\n";
-		foreach ($interventions as $key => $intervention) {
-			echo '<div class="container '.$intervention['subClass'].'">'."\n";
-			  echo $divType;
-					echo form_label($intervention['date']);
-				echo "</div>"."\n";
-        if($this->session->userdata['groupId']==500){
-					echo $divType;
-						echo form_label("PROGRAMME");
-			    echo "</div>"."\n";
-          echo $divType;
-            echo form_label($intervention['username']);
-          echo "</div>"."\n";
-				}
-			  echo $divType;
-					echo form_label($intervention['Name']);
-				echo "</div>"."\n";
+	 ?>
+	 <?php foreach ($allInterventions as $title => $interventions): ?>
+	 	<h2><?php echo $title;?></h2>
+		<?php foreach ($interventions as $key => $intervention): ?>
+			<div class="container dashboardRow<?php if ($intervention['subClass']=='meeting'): echo' individualContener'; endif;?><?php if ($intervention['subClass']=='demarche'): echo' collectiveContener'; endif;?>">
+				<div class="<?php echo $divClass; ?>">
+					<?php echo form_label($intervention['date']); ?>
+				</div>
+				<?php if ($this->session->userdata['groupId']==500): ?>
+					<div class="<?php echo $divClass; ?>">
+						<?php echo form_label($intervention['username']); ?>
+					</div>
+				<?php endif; ?>
+				<div class="<?php echo $divClass; ?>">
+					<?php echo form_label($intervention['descr']); ?>
+				</div>
+				<div class="<?php echo $divClass; ?>">
+				</div>
+				<div class="<?php echo $divClass; ?>">
+					<?php
+						echo anchor(
+							$intervention['subClass']."/edit/" . $intervention["id_intrevention"],
+							'éditer - completer',
+							"class='btn btn-default'");
+					?>
+				</div>
+			</div>
+		<?php endforeach; ?>
 
-			  echo $divType;
-					echo form_label($intervention['descr']);
-				echo "</div>"."\n";
-			  echo $divType;
-					echo anchor(
-						$intervention['subClass']."/edit/" . $intervention["id_intrevention"],
-						'éditer - completer',
-						"class='btn btn-default'");
-				echo "</div>"."\n";
-			echo "</div>"."\n";
-
-		}
-	 }
-?>
-<div>
+	 <?php endforeach; ?>
+	<div>

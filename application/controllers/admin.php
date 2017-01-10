@@ -30,6 +30,7 @@ class Admin extends CI_Controller
     $genres= $this->gender_model->getAllFullGender();
     $sexualitys= $this->sexuality_model->getAllFullSexuality();
     $ageGroups= $this->agegroup_model->getAllFullAgeGroup();
+    $placeKinds = $this->placekinds_model->getAllFullKinds();
 
     $roles = array(
       '300' => 'user' ,
@@ -43,9 +44,10 @@ class Admin extends CI_Controller
       'sexualitys'=>$sexualitys,
       'ageGroups'=>$ageGroups,
       'roles' => $roles,
+      'placeKinds'=>$placeKinds,
       'cities'=> $cities
      );
-
+     //var_dump($data);
     $this->load->view('administration/admin',$data);
 
   }
@@ -72,7 +74,12 @@ class Admin extends CI_Controller
       if('Nouveau Genre' !=$addedGender)
         if('' !=$addedGender)
           $this->gender_model->insert_gender($addedGender);
-    $this->output->enable_profiler(true);
+    redirect('admin');
+  }
+  function gender_defaultEdit(){
+    $genreDefault = $this->input->post('defaultGenre');
+    if(null != $genreDefault)
+      $this->gender_model->setDefaultName($genreDefault);
     redirect('admin');
   }
   function gender_edit(){
@@ -97,7 +104,13 @@ class Admin extends CI_Controller
         if('' !=$newSexuality)
           $this->sexuality_model->insert_sexuality($newSexuality);
 
-    $this->output->enable_profiler(true);
+    //$this->output->enable_profiler(true);
+    redirect('admin');
+  }
+  function sexuality_defaultEdit(){
+    $sexualityDefault = $this->input->post('defaultSexuality');
+    if(null !== $sexualityDefault)
+      $this->sexuality_model->setDefaultName($sexualityDefault);
     redirect('admin');
   }
   function sexuality_edit(){
@@ -109,7 +122,7 @@ class Admin extends CI_Controller
           $this->sexuality_model->update($sexuality);
       }
 
-    $this->output->enable_profiler(true);
+    //$this->output->enable_profiler(true);
     redirect('admin');
   }
 //===========end===========================================
@@ -123,7 +136,13 @@ class Admin extends CI_Controller
         if('' !=$addedAgeGroup)
           $this->agegroup_model->insert_AgeGroup($addedAgeGroup);
 
-    $this->output->enable_profiler(true);
+    ////$this->output->enable_profiler(true);
+    redirect('admin');
+  }
+  function ageGroup_defaultEdit(){
+    $ageGroupDefault = $this->input->post('defaultAgeGroup');
+    if(null !== $ageGroupDefault)
+      $this->agegroup_model->setDefaultName($ageGroupDefault);
     redirect('admin');
   }
   function ageGroup_edit(){
@@ -134,9 +153,44 @@ class Admin extends CI_Controller
             $ageGroup['activated']=0;
           $this->agegroup_model->update($ageGroup);
       }
+    ////$this->output->enable_profiler(true);
     redirect('admin');
   }
 //===========end===========================================
+
+
+
+//===========PlaceKind=====================================
+function placeKind_add(){
+  $addedPlaceKind = $this->input->post('addedPlaceKind');
+  if(null !== $addedPlaceKind)
+    if("Nouveau type de lieu" !=$addedPlaceKind)
+      if('' !=$addedPlaceKind)
+        $this->placekinds_model->insert($addedPlaceKind);
+
+  ////$this->output->enable_profiler(true);
+  redirect('admin');
+}
+function placeKind_defaultEdit(){
+  $placeKindDefault = $this->input->post('defaultPlaceKind');
+  if(null !== $placeKindDefault)
+    $this->placekinds_model->setDefaultName($placeKindDefault);
+  redirect('admin');
+}
+function placeKind_edit(){
+  $kinds = $this->input->post('placeKinds');
+  if(null !== $kinds)
+    foreach ($kinds as $key => $kind) {
+      $kind['id_kind']=$key;
+      if(false ==(isset($kind['kind_actived'])))
+        $kind['kind_actived']=0;
+      $this->placekinds_model->update($kind);
+    }
+  ////$this->output->enable_profiler(true);
+  redirect('admin');
+}
+//===========end===========================================
+
 
 
 //===========cities========================================
@@ -146,21 +200,21 @@ class Admin extends CI_Controller
       foreach ($cities as $key => $city)
         if('unactiv' == $city['action'])
           $this->places_model->unactivCity($key);
-    $this->output->enable_profiler(true);
+    ////$this->output->enable_profiler(true);
     redirect('admin');
   }
   function cities_activByNPA(){
     $npa = $this->input->post('activatedNPA');
     if(null != $npa)
       $this->places_model->activateCityByNpa($npa);
-    $this->output->enable_profiler(true);
+    ////$this->output->enable_profiler(true);
     redirect('admin');
   }
   function cities_activByName(){
     $name = $this->input->post('activatedName');
     if(null != $name)
       $this->places_model->activateCityByName($name);
-    $this->output->enable_profiler(true);
+    ////$this->output->enable_profiler(true);
     redirect('admin');
   }
 

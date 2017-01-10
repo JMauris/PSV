@@ -72,6 +72,19 @@ class Person_Model extends CI_Model
     }
     return $persons;
   }
+  function resolveName($name){
+    $id;
+    $this->db->where('name', $name);
+    $query =$this->db->get(self::TABLE_NAME);
+
+    if ($query->num_rows() != 1){
+      $insertRow = array('name' => $name);
+      $this->db->insert(self::TABLE_NAME, $insertRow);
+      return $this->db->insert_id();
+    }
+    $row = $query->row(0);
+    return $row->id_Person;
+  }
   function update($person){
     $this->db->where('id_Person', $person['id_Person']);
     $query =$this->db->get(self::TABLE_NAME);

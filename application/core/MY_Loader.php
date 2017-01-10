@@ -21,6 +21,7 @@ class MY_Loader extends CI_Loader {
 		$CI =& get_instance();
 		$vars['content_view'] = $view;
 		$vars['is_logged'] = $CI->tank_auth->is_logged_in();
+		$vars['username'] = $CI->tank_auth->get_username();
 		$vars['groupId'] = $CI->tank_auth->get_groupId();
 		//$vars['is_brooker'] = $CI->brookerModel->isValidBrooker($CI->session->userdata["user_id"]);
 

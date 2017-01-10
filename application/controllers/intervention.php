@@ -23,7 +23,7 @@ class Intervention extends CI_Controller
 
   function index()
   {
-    //$this->output->enable_profiler(true);
+    ////$this->output->enable_profiler(true);
     $user = $this->tank_auth->get_user_id();
     $past = $this->demarches_model->getOldByIntervenant($user);
     $futur = $this->demarches_model->getFutursByIntervenant($user);
@@ -49,7 +49,7 @@ class Intervention extends CI_Controller
   }
 
   function edit($id){
-    //$this->output->enable_profiler(true);
+    ////$this->output->enable_profiler(true);
     $user = $this->tank_auth->get_user_id();
     $intervention = $this->input->post('intervention');
     if (null !== $intervention){
@@ -84,6 +84,7 @@ class Intervention extends CI_Controller
           }
 
         $this->demarches_model->update($intervention);
+        redirect('/intervention');
     }
 
 
@@ -100,9 +101,9 @@ class Intervention extends CI_Controller
     $intervenants = array($intervenant['id']=> $intervenant['username']);
     $thematics    = $this->thematics_model->getTree();
     $materials    = $this->material_model->getAll();
-    $genders      = $this->gender_model->getActivs();
-    $sexuality    = $this->sexuality_model->getActivs();
-    $ageGroups    =$this->agegroup_model->getActivs();
+    $genders      = $this->gender_model->getSelector();
+    $sexuality    = $this->sexuality_model->getSelector();
+    $ageGroups    =$this->agegroup_model->getSelector();
     $origins      = $this->origines_model->getFlatTree();
 
     if($this->tank_auth->get_groupId()==500){
@@ -131,9 +132,9 @@ class Intervention extends CI_Controller
     $date           = $this->input->post('date');
     $place_id       = $this->input->post('place');
     $kind_id        = 4;
-    $this->demarches_model->insert($intervenant_id, $date, $place_id, $kind_id);
+    $newId = $this->demarches_model->insert($intervenant_id, $date, $place_id, $kind_id);
 
-    redirect('intervention');
+    redirect('intervention/'.$newId);
   }
 
   function createLieu()

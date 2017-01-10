@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 09 Janvier 2017 à 00:18
+-- Généré le :  Mer 11 Janvier 2017 à 00:36
 -- Version du serveur :  10.1.16-MariaDB
 -- Version de PHP :  5.6.24
 
@@ -75,6 +75,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect__prestationsForIndirect` (
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `interventions_updateChildDate` (IN `id` INT)  BEGIN
+	update intreventions set date = (select date from intreventions where id_intrevention = id) where parent = id;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -90,14 +94,6 @@ CREATE TABLE `adresses` (
   `city` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `adresses`
---
-
-INSERT INTO `adresses` (`place_Id`, `line_1`, `line_2`, `city`) VALUES
-(2, 'Rue des Finettes 13', '', 6),
-(3, 'rts', 'se', 222);
-
 -- --------------------------------------------------------
 
 --
@@ -107,20 +103,22 @@ INSERT INTO `adresses` (`place_Id`, `line_1`, `line_2`, `city`) VALUES
 CREATE TABLE `age_groups` (
   `id_ages_goup` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
-  `activated` tinyint(1) NOT NULL DEFAULT '1'
+  `activated` tinyint(1) NOT NULL DEFAULT '1',
+  `position` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `age_groups`
 --
 
-INSERT INTO `age_groups` (`id_ages_goup`, `name`, `activated`) VALUES
-(1, 'mineurs', 1),
-(2, '18-25', 1),
-(3, '26-35', 1),
-(4, '36-50', 1),
-(5, '51-65', 1),
-(6, '66+', 1);
+INSERT INTO `age_groups` (`id_ages_goup`, `name`, `activated`, `position`) VALUES
+(0, 'Groupe d''age', 1, 0),
+(1, 'mineurs', 1, 1),
+(2, '18-25', 1, 2),
+(3, '26-35', 1, 3),
+(4, '36-50', 1, 4),
+(5, '51-65', 1, 5),
+(6, '66+', 1, 6);
 
 -- --------------------------------------------------------
 
@@ -672,19 +670,21 @@ CREATE TABLE `ci_sessions` (
 CREATE TABLE `genders` (
   `id_gender` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
-  `activated` tinyint(1) NOT NULL DEFAULT '1'
+  `activated` tinyint(1) NOT NULL DEFAULT '1',
+  `position` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `genders`
 --
 
-INSERT INTO `genders` (`id_gender`, `name`, `activated`) VALUES
-(1, 'ne se reconait dans aucun genre', 1),
-(2, 'homme', 1),
-(3, 'femme', 1),
-(4, 'homme >> femme', 1),
-(5, 'femme >> hommme', 1);
+INSERT INTO `genders` (`id_gender`, `name`, `activated`, `position`) VALUES
+(0, 'Genre', 1, 0),
+(1, 'ne se reconait dans aucun genre', 1, 1),
+(2, 'homme', 1, 2),
+(3, 'femme', 1, 3),
+(4, 'homme >> femme', 1, 4),
+(5, 'femme >> hommme', 1, 5);
 
 -- --------------------------------------------------------
 
@@ -701,14 +701,6 @@ CREATE TABLE `indirect` (
   `distance` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `indirect`
---
-
-INSERT INTO `indirect` (`id_indirect`, `date`, `place`, `owner`, `extraCost`, `distance`) VALUES
-(1, '2017-01-31', 3, 2, 15, 10),
-(2, '2017-01-10', 3, 2, 0, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -719,13 +711,6 @@ CREATE TABLE `indirect_has_called` (
   `indirect_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `indirect_has_called`
---
-
-INSERT INTO `indirect_has_called` (`indirect_id`, `user_id`) VALUES
-(1, 1);
 
 -- --------------------------------------------------------
 
@@ -739,14 +724,6 @@ CREATE TABLE `indirect_has_prestations` (
   `duration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `indirect_has_prestations`
---
-
-INSERT INTO `indirect_has_prestations` (`indirect_id`, `prestation_id`, `duration`) VALUES
-(1, 1, 90),
-(1, 3, 30);
-
 -- --------------------------------------------------------
 
 --
@@ -758,21 +735,6 @@ CREATE TABLE `intervention_has_persons` (
   `person_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `intervention_has_persons`
---
-
-INSERT INTO `intervention_has_persons` (`intervention_id`, `person_id`) VALUES
-(3, 2),
-(3, 3),
-(3, 4),
-(3, 5),
-(3, 8),
-(3, 16),
-(15, 10),
-(16, 13),
-(16, 15);
-
 -- --------------------------------------------------------
 
 --
@@ -783,35 +745,6 @@ CREATE TABLE `intervention_has_thematics` (
   `intervention_id` int(11) NOT NULL,
   `thematic_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `intervention_has_thematics`
---
-
-INSERT INTO `intervention_has_thematics` (`intervention_id`, `thematic_id`) VALUES
-(3, 2),
-(3, 3),
-(3, 4),
-(3, 6),
-(3, 8),
-(3, 9),
-(3, 11),
-(3, 12),
-(3, 14),
-(3, 15),
-(16, 11),
-(16, 12),
-(26, 3),
-(26, 15),
-(26, 16),
-(27, 10),
-(27, 11),
-(39, 6),
-(39, 9),
-(39, 12),
-(39, 16),
-(40, 14),
-(40, 17);
 
 -- --------------------------------------------------------
 
@@ -831,29 +764,6 @@ CREATE TABLE `intreventions` (
   `parent` int(11) DEFAULT NULL,
   `person_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `intreventions`
---
-
-INSERT INTO `intreventions` (`id_intrevention`, `intervenant_id`, `date`, `place_id`, `duration`, `extraCost`, `distance`, `kind_id`, `parent`, `person_id`) VALUES
-(3, 2, '2016-12-29', 1, 0, 12, 25, 4, NULL, NULL),
-(15, 1, '2016-12-21', 1, 0, 0, 0, 4, NULL, NULL),
-(16, 2, '2017-01-02', 1, 75, 0, 0, 4, NULL, NULL),
-(17, 1, '2016-12-01', 1, 0, 0, 0, 4, NULL, NULL),
-(22, 1, '2016-12-21', 1, 0, 0, 0, 3, 15, 10),
-(23, 2, '2017-08-09', 1, 0, 0, 0, 3, NULL, 11),
-(26, 2, '2017-08-09', 1, 30, 0, 0, 3, 16, 13),
-(27, 1, '2016-12-19', 1, 0, 0, 0, 3, NULL, 2),
-(28, 1, '2016-12-08', 1, 0, 0, 0, 1, NULL, NULL),
-(32, 1, '2016-12-18', 1, 0, 0, 0, 4, NULL, NULL),
-(33, 1, '2016-12-18', 1, 0, 0, 0, 4, NULL, NULL),
-(34, 1, '2016-12-18', 1, 0, 0, 0, 4, NULL, NULL),
-(35, 1, '2016-12-19', 1, 0, 0, 0, 4, NULL, NULL),
-(36, 1, '2016-12-18', 1, 0, 0, 0, 1, NULL, NULL),
-(39, 2, '2016-12-29', 1, 15, 0, 0, 3, 3, 3),
-(40, 2, '2016-12-29', 1, 20, 0, 0, 3, 3, 2),
-(45, 2, '2017-01-31', 1, 0, 0, 0, 4, NULL, NULL);
 
 --
 -- Déclencheurs `intreventions`
@@ -881,17 +791,6 @@ CREATE TABLE `intrevention_has_material` (
   `material_id` int(11) NOT NULL,
   `quantity` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `intrevention_has_material`
---
-
-INSERT INTO `intrevention_has_material` (`intrevention_id`, `material_id`, `quantity`) VALUES
-(3, 1, 2),
-(3, 2, 4),
-(16, 2, 1),
-(27, 3, 3),
-(3, 4, 14);
 
 -- --------------------------------------------------------
 
@@ -987,10 +886,10 @@ INSERT INTO `origines` (`id_origine`, `name`, `parent_id`) VALUES
 CREATE TABLE `persons` (
   `id_Person` int(11) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
-  `declared_origine_id` int(11) NOT NULL,
-  `age_group_id` int(11) NOT NULL,
-  `gender_id` int(11) NOT NULL,
-  `sexuality_id` int(11) NOT NULL
+  `declared_origine_id` int(11) NOT NULL DEFAULT '0',
+  `age_group_id` int(11) NOT NULL DEFAULT '0',
+  `gender_id` int(11) NOT NULL DEFAULT '0',
+  `sexuality_id` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -998,21 +897,11 @@ CREATE TABLE `persons` (
 --
 
 INSERT INTO `persons` (`id_Person`, `name`, `declared_origine_id`, `age_group_id`, `gender_id`, `sexuality_id`) VALUES
-(2, '', 11, 2, 1, 2),
-(3, '', 11, 2, 2, 2),
-(4, '', 11, 2, 3, 2),
-(5, '', 11, 1, 2, 1),
-(6, '', 11, 1, 2, 1),
-(7, '', 11, 1, 2, 1),
-(8, '', 11, 1, 2, 1),
-(9, '', 3, 1, 4, 1),
-(10, '', 5, 2, 2, 2),
-(11, '', 11, 1, 2, 1),
-(12, '', 11, 1, 2, 2),
-(13, '', 11, 2, 2, 1),
-(14, '', 11, 1, 5, 1),
-(15, '', 8, 1, 1, 1),
-(16, '', 2, 6, 2, 1);
+(46, '', 11, 1, 1, 2),
+(47, '', 0, 0, 0, 0),
+(48, '', 0, 0, 0, 0),
+(49, '', 0, 0, 0, 0),
+(50, 'client', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1032,7 +921,7 @@ CREATE TABLE `place` (
 --
 
 INSERT INTO `place` (`id_lieu`, `Name`, `kind`, `actived`) VALUES
-(1, '-Non précisé', 1, 1),
+(1, '-Non précisé', 2, 1),
 (2, 'Cher moi', 3, 1),
 (3, 'test2', 2, 1);
 
@@ -1045,17 +934,20 @@ INSERT INTO `place` (`id_lieu`, `Name`, `kind`, `actived`) VALUES
 CREATE TABLE `place_kind` (
   `id_kind` int(11) NOT NULL,
   `descr` varchar(45) DEFAULT NULL,
-  `kind_actived` tinyint(1) NOT NULL DEFAULT '1'
+  `kind_actived` tinyint(1) NOT NULL DEFAULT '1',
+  `position` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `place_kind`
 --
 
-INSERT INTO `place_kind` (`id_kind`, `descr`, `kind_actived`) VALUES
-(1, '-Autres', 1),
-(2, 'Salon', 1),
-(3, 'Associations', 1);
+INSERT INTO `place_kind` (`id_kind`, `descr`, `kind_actived`, `position`) VALUES
+(0, 'Autres', 1, 0),
+(1, 'Aire d''autoroute', 1, 1),
+(2, 'Salon', 0, 2),
+(3, 'Associations', 1, 3),
+(4, 'Nouveau ty', 1, 4);
 
 -- --------------------------------------------------------
 
@@ -1112,17 +1004,18 @@ INSERT INTO `prestation-group` (`id_presstationGroup`, `presstationGroup_descr`,
 CREATE TABLE `sexuality` (
   `id_sexuality` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `activated` tinyint(1) NOT NULL DEFAULT '1'
+  `activated` tinyint(1) NOT NULL DEFAULT '1',
+  `position` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `sexuality`
 --
 
-INSERT INTO `sexuality` (`id_sexuality`, `name`, `activated`) VALUES
-(1, 'hétérosexuel', 1),
-(2, 'homosexuel', 1),
-(3, 'Nouvelle', 1);
+INSERT INTO `sexuality` (`id_sexuality`, `name`, `activated`, `position`) VALUES
+(0, 'Sexualité', 1, 0),
+(1, 'hétérosexuel', 1, 2),
+(2, 'homosexuel', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1194,8 +1087,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `group_id`) VALUES
-(1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2016-12-18 20:14:51', '2016-11-29 17:54:13', '2017-01-08 22:41:47', 300),
-(2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-08 19:31:12', '2016-11-29 19:32:15', '2017-01-08 18:31:12', 500),
+(1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-10 17:02:32', '2016-11-29 17:54:13', '2017-01-10 16:02:32', 300),
+(2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-10 17:09:12', '2016-11-29 19:32:15', '2017-01-10 16:09:12', 500),
 (3, 'titota', '$2a$08$iBHekq9MdoJOGJEI04xaMeYcEzbvcz5OS8caVDsIZGJDPxJcRPgVi', 'titi@titi.titi', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-03 11:49:52', '2016-12-01 14:02:43', '2017-01-06 18:01:00', 300);
 
 -- --------------------------------------------------------
@@ -1428,7 +1321,7 @@ ALTER TABLE `user_profiles`
 -- AUTO_INCREMENT pour la table `age_groups`
 --
 ALTER TABLE `age_groups`
-  MODIFY `id_ages_goup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_ages_goup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `citys`
 --
@@ -1438,7 +1331,7 @@ ALTER TABLE `citys`
 -- AUTO_INCREMENT pour la table `genders`
 --
 ALTER TABLE `genders`
-  MODIFY `id_gender` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_gender` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT pour la table `indirect`
 --
@@ -1448,7 +1341,7 @@ ALTER TABLE `indirect`
 -- AUTO_INCREMENT pour la table `intreventions`
 --
 ALTER TABLE `intreventions`
-  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 --
 -- AUTO_INCREMENT pour la table `intrevention_kinds`
 --
@@ -1473,7 +1366,7 @@ ALTER TABLE `origines`
 -- AUTO_INCREMENT pour la table `persons`
 --
 ALTER TABLE `persons`
-  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 --
 -- AUTO_INCREMENT pour la table `place`
 --
@@ -1483,7 +1376,7 @@ ALTER TABLE `place`
 -- AUTO_INCREMENT pour la table `place_kind`
 --
 ALTER TABLE `place_kind`
-  MODIFY `id_kind` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_kind` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `prestation`
 --
@@ -1529,7 +1422,7 @@ ALTER TABLE `adresses`
 --
 ALTER TABLE `indirect`
   ADD CONSTRAINT `indirect_owner` FOREIGN KEY (`owner`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `indirect_place` FOREIGN KEY (`place`) REFERENCES `place` (`id_lieu`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `indirect_place` FOREIGN KEY (`place`) REFERENCES `place_kind` (`id_kind`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `indirect_has_called`
@@ -1563,7 +1456,7 @@ ALTER TABLE `intervention_has_thematics`
 -- Contraintes pour la table `intreventions`
 --
 ALTER TABLE `intreventions`
-  ADD CONSTRAINT `fk_Intrevention_Lieu1` FOREIGN KEY (`place_id`) REFERENCES `place` (`id_lieu`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Intrevention_Lieu1` FOREIGN KEY (`place_id`) REFERENCES `place_kind` (`id_kind`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Intrevention_programe1` FOREIGN KEY (`kind_id`) REFERENCES `intrevention_kinds` (`id_kind`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `intreventions_ibfk_1` FOREIGN KEY (`intervenant_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `intreventions_ibfk_2` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id_Person`),
