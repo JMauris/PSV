@@ -1,7 +1,7 @@
 <?php //setup
 ?>
 <body class="individualContener">
-<h2>Créer un nouvel entretient</h2>
+<h2>Créer un nouvel entretien</h2>
 <?php
 
 	echo form_open('meeting/create');
@@ -49,7 +49,7 @@
 		<div class="form-group row">
 			<div class="col-xs-12 ">
 				<?php
-					echo form_submit('submit_Profil', 'Créer un nouvel entretient', "class='btn btn-lg btn-primary btn-block'");
+					echo form_submit('submit_Profil', 'Créer un nouvel entretien', "class='btn btn-lg btn-primary btn-block'");
 				?>
 			</div>
 	</div>
