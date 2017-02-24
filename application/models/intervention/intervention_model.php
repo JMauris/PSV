@@ -6,9 +6,9 @@ class Intervention_Model extends CI_Model
   const interventionTypes       = array(4);
   const intervention_Table      = 'intreventions';
   const kind_Table              = 'intrevention_kinds';
-  const kind_join_claus         = 'intreventions.kind_id = intrevention_kinds.id_kind';
+  const kind_join_claus         = self::intervention_Table.'.kind_id = '.self::kind_Table.'.id_kind';
   const intervenant_Table       = 'users';
-  const intervenant_join_claus  = 'intreventions.intervenant_id = users.id';
+  const intervenant_join_claus  = self::intervention_Table.'.intervenant_id = '.self::intervenant_Table.'.id';
   /*const place_Table             = 'place';
   const place_join_claus        = 'intreventions.place_id = place.id_lieu';*/
   const thematics_LinkTable     = 'intervention_has_thematics';
@@ -27,6 +27,7 @@ class Intervention_Model extends CI_Model
     parent::__construct();
   }
 
+//====================Selection=================================
   function getFutursByIntervenant($id){
     $this->db->select(self::groupSelectClaus);
     $this->db->from(self::intervention_Table);
@@ -121,9 +122,9 @@ class Intervention_Model extends CI_Model
 
 
     $txtz = "SELECT date, duration FROM `intreventions`
-WHERE intervenant_id =".$intervenantId."
-and date BETWEEN  '".($year-1)."-12-31' and  '".($year+1)."-01-01'";
-  var_dump($txtz);
+    WHERE intervenant_id =".$intervenantId."
+    and date BETWEEN  '".($year-1)."-12-31' and  '".($year+1)."-01-01'";
+    var_dump($txtz);
     $botomBound = ($year-1) ."-12-31";
     $upBound = ($year+1) ."-01-01";
 
@@ -139,12 +140,12 @@ and date BETWEEN  '".($year-1)."-12-31' and  '".($year+1)."-01-01'";
     $raw = $query->result_array();
     return $raw;
   }
-
   function _delete(&$intervention){
     $this->db->where('id_intrevention',$intervention['id_intrevention']);
     $this->db->delete(self::intervention_Table);
 
   }
+  //====================Internal==================================
   function _populate(&$intervention){
     $intervention['date']=fromSystemToUi($intervention['date']);
     $this->_addIntervenant($intervention);
@@ -214,5 +215,21 @@ and date BETWEEN  '".($year-1)."-12-31' and  '".($year+1)."-01-01'";
       }
     }
   }
-
+  //====================Reports==================================
+  function getAnnualDirectReport($year, $userId){
+    $queryTxt =
+      "SELECT intervenant_id, date, sum(duration) as duration, kind_id, descr
+      FROM ".self::intervention_Table.", ".self::kind_Table."
+      WHERE
+        ".self::kind_join_claus."
+        AND intervenant_id = ".$userId."
+        AND date BETWEEN  '".($year-1)."-12-31' and  '".($year+1)."-01-01'
+      GROUP BY date
+      ORDER BY date ASC";
+    $query = $this->db->query($queryTxt);
+    $raw = $query->result_array();
+    foreach ($raw as $key => $row)
+      $raw[$key]['date']=fromSystemToUi($row['date']);
+    return $raw;
+  }
 }
