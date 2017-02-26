@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 11 Janvier 2017 à 00:36
+-- Généré le :  Dim 26 Février 2017 à 22:18
 -- Version du serveur :  10.1.16-MariaDB
 -- Version de PHP :  5.6.24
 
@@ -24,6 +24,34 @@ DELIMITER $$
 --
 -- Procédures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `direct_update_Report` ()  BEGIN
+	delete from ola_direct;
+ 
+	insert into ola_direct
+	select
+		id_intrevention, date, duration, 1 as annonyme, intervenant_id
+	FROM intreventions
+	WHERE person_id IS NULL;
+
+	insert into ola_direct
+	select
+		id_intrevention, date, duration, 1 as annonyme, intervenant_id
+	FROM intreventions, persons
+	WHERE 
+		intreventions.person_id = persons.id_Person
+		AND persons.name = '';
+
+
+	insert into ola_direct
+	select
+		id_intrevention, date, duration, 0 as annonyme, intervenant_id
+	FROM intreventions, persons
+	WHERE
+		intreventions.person_id = persons.id_Person
+		AND persons.name <> '';
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_calledForIndirect` (IN `indirectId` INTEGER)  BEGIN
 	select user.id as user_id, user.username
     from user, indirect_has_called link
@@ -56,6 +84,47 @@ SELECT * FROM psv.indirect
 	where date < CURRENT_DATE()
     and owner = ownerId;
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_update_Report` ()  BEGIN
+delete from ola_indirect;
+
+insert into ola_indirect
+	SELECT 
+		id_indirect as indirect_id,
+		owner as user_id,
+		date as date,
+		`prestation-group`.id_presstationGroup as prestGroup_id,
+        prestation_id as prest_id,
+		duration as duration
+	FROM
+		indirect
+		join indirect_has_prestations
+			on indirect.id_indirect = indirect_has_prestations.indirect_id
+		join prestation
+			on indirect_has_prestations.prestation_id = prestation.id_prestation
+		join `prestation-group`
+			on `prestation-group`.id_presstationGroup = prestation.prestation_group;
+
+insert into ola_indirect
+
+	SELECT 
+		id_indirect as indirect_id,
+		user_id as user_id,
+		date as date,
+		`prestation-group`.id_presstationGroup as prestGroup_id,
+		prestation_id as prest_id,
+		duration as duration
+	FROM
+		indirect
+		join indirect_has_called
+			on indirect.id_indirect = indirect_has_called.indirect_id
+		join indirect_has_prestations
+			on indirect.id_indirect = indirect_has_prestations.indirect_id
+		join prestation
+			on indirect_has_prestations.prestation_id = prestation.id_prestation
+		join `prestation-group`
+			on `prestation-group`.id_presstationGroup = prestation.prestation_group;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect__calledForIndirect` (IN `indirectId` INTEGER)  BEGIN
@@ -701,6 +770,15 @@ CREATE TABLE `indirect` (
   `distance` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `indirect`
+--
+
+INSERT INTO `indirect` (`id_indirect`, `date`, `place`, `owner`, `extraCost`, `distance`) VALUES
+(1, '2017-02-26', 0, 2, 0, 0),
+(2, '2017-02-26', 0, 2, 0, 0),
+(3, '2017-02-15', 0, 2, 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -711,6 +789,13 @@ CREATE TABLE `indirect_has_called` (
   `indirect_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `indirect_has_called`
+--
+
+INSERT INTO `indirect_has_called` (`indirect_id`, `user_id`) VALUES
+(1, 1);
 
 -- --------------------------------------------------------
 
@@ -724,6 +809,21 @@ CREATE TABLE `indirect_has_prestations` (
   `duration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `indirect_has_prestations`
+--
+
+INSERT INTO `indirect_has_prestations` (`indirect_id`, `prestation_id`, `duration`) VALUES
+(1, 1, 10),
+(1, 2, 10),
+(1, 3, 5),
+(1, 6, 30),
+(2, 1, 10),
+(2, 3, 15),
+(3, 1, 10),
+(3, 3, 15),
+(3, 5, 50);
+
 -- --------------------------------------------------------
 
 --
@@ -734,6 +834,18 @@ CREATE TABLE `intervention_has_persons` (
   `intervention_id` int(11) NOT NULL,
   `person_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `intervention_has_persons`
+--
+
+INSERT INTO `intervention_has_persons` (`intervention_id`, `person_id`) VALUES
+(2, 51),
+(2, 52),
+(8, 54),
+(8, 55),
+(11, 56),
+(11, 57);
 
 -- --------------------------------------------------------
 
@@ -764,6 +876,22 @@ CREATE TABLE `intreventions` (
   `parent` int(11) DEFAULT NULL,
   `person_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `intreventions`
+--
+
+INSERT INTO `intreventions` (`id_intrevention`, `intervenant_id`, `date`, `place_id`, `duration`, `extraCost`, `distance`, `kind_id`, `parent`, `person_id`) VALUES
+(1, 3, '2017-01-11', 0, 40, 0, 0, 1, NULL, NULL),
+(2, 2, '2017-01-11', 0, 20, 0, 0, 4, NULL, NULL),
+(3, 2, '2017-01-11', 0, 20, 0, 0, 3, 2, 51),
+(4, 2, '2017-02-01', 0, 15, 0, 0, 1, NULL, NULL),
+(6, 2, '2017-02-15', 0, 15, 0, 0, 1, NULL, NULL),
+(7, 2, '2017-02-25', 0, 20, 0, 0, 1, NULL, 53),
+(8, 2, '2017-02-26', 0, 15, 0, 0, 4, NULL, NULL),
+(9, 2, '2017-02-26', 0, 20, 0, 0, 3, 8, 54),
+(10, 2, '2017-02-26', 0, 30, 0, 0, 1, NULL, 53),
+(11, 2, '2017-02-26', 0, 0, 0, 0, 4, NULL, NULL);
 
 --
 -- Déclencheurs `intreventions`
@@ -851,6 +979,70 @@ INSERT INTO `materials` (`id_material`, `descr`, `actived`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `ola_direct`
+--
+
+CREATE TABLE `ola_direct` (
+  `id_intrevention` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `duration` int(11) NOT NULL,
+  `annonyme` tinyint(1) NOT NULL,
+  `intervenant_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `ola_direct`
+--
+
+INSERT INTO `ola_direct` (`id_intrevention`, `date`, `duration`, `annonyme`, `intervenant_id`) VALUES
+(1, '2017-01-11', 40, 1, 3),
+(2, '2017-01-11', 20, 1, 2),
+(3, '2017-01-11', 20, 1, 2),
+(4, '2017-02-01', 15, 1, 2),
+(6, '2017-02-15', 15, 1, 2),
+(7, '2017-02-25', 20, 0, 2),
+(8, '2017-02-26', 15, 1, 2),
+(9, '2017-02-26', 20, 1, 2),
+(10, '2017-02-26', 30, 0, 2),
+(11, '2017-02-26', 0, 1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ola_indirect`
+--
+
+CREATE TABLE `ola_indirect` (
+  `indirect_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `prestGrp` int(11) NOT NULL,
+  `prest_id` int(11) NOT NULL,
+  `duration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `ola_indirect`
+--
+
+INSERT INTO `ola_indirect` (`indirect_id`, `user_id`, `date`, `prestGrp`, `prest_id`, `duration`) VALUES
+(1, 1, '2017-02-26', 1, 1, 10),
+(1, 1, '2017-02-26', 1, 2, 10),
+(1, 1, '2017-02-26', 1, 3, 5),
+(1, 1, '2017-02-26', 2, 6, 30),
+(1, 2, '2017-02-26', 1, 1, 10),
+(1, 2, '2017-02-26', 1, 2, 10),
+(1, 2, '2017-02-26', 1, 3, 5),
+(1, 2, '2017-02-26', 2, 6, 30),
+(2, 2, '2017-02-26', 1, 1, 10),
+(2, 2, '2017-02-26', 1, 3, 15),
+(3, 2, '2017-02-15', 1, 1, 10),
+(3, 2, '2017-02-15', 1, 3, 15),
+(3, 2, '2017-02-15', 2, 5, 50);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `origines`
 --
 
@@ -901,7 +1093,14 @@ INSERT INTO `persons` (`id_Person`, `name`, `declared_origine_id`, `age_group_id
 (47, '', 0, 0, 0, 0),
 (48, '', 0, 0, 0, 0),
 (49, '', 0, 0, 0, 0),
-(50, 'client', 0, 0, 0, 0);
+(50, 'client', 0, 0, 0, 0),
+(51, '', 0, 0, 0, 0),
+(52, '', 0, 0, 0, 0),
+(53, 'jean', 0, 0, 0, 0),
+(54, '', 0, 0, 0, 0),
+(55, '', 0, 0, 0, 0),
+(56, '', 0, 0, 0, 0),
+(57, '', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -959,21 +1158,23 @@ CREATE TABLE `prestation` (
   `id_prestation` int(11) NOT NULL,
   `prestation_group` int(11) NOT NULL,
   `prestation_descr` varchar(200) NOT NULL,
-  `isActiv` tinyint(1) NOT NULL DEFAULT '1'
+  `isActiv` tinyint(1) NOT NULL DEFAULT '1',
+  `position` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `prestation`
 --
 
-INSERT INTO `prestation` (`id_prestation`, `prestation_group`, `prestation_descr`, `isActiv`) VALUES
-(1, 1, 'contacts avec les médias et les journalistes ;', 1),
-(2, 1, 'interviews accordées (journaux, radio, TV) ;', 1),
-(3, 1, 'publication d’articles (en dehors de la revue / du site internet propres à l’organisation) ;', 1),
-(4, 1, 'conférences, exposés ;', 1),
-(5, 2, 'revues de l’organisation (publications périodiques) ou collaboration à une revue publiée en ', 1),
-(6, 2, 'circulaires paraissant périodiquement ;', 1),
-(7, 2, 'brochures d’information ;', 1);
+INSERT INTO `prestation` (`id_prestation`, `prestation_group`, `prestation_descr`, `isActiv`, `position`) VALUES
+(1, 1, 'contacts avec les médias et les journalistes ;', 1, 1),
+(2, 1, 'interviews accordées (journaux, radio, TV) ;', 1, 1),
+(3, 1, 'publication d’articles (en dehors de la revue / du site internet propres à l’organisation) ;', 1, 1),
+(4, 1, 'conférences, exposés ;', 1, 1),
+(5, 2, 'revues de l’organisation (publications périodiques) ou collaboration à une revue publiée en ', 1, 1),
+(6, 2, 'circulaires paraissant périodiquement ;', 1, 1),
+(7, 2, 'brochures d’information ;', 1, 1),
+(8, 2, 'prestotqewdfnaésdméad v', 0, 14);
 
 -- --------------------------------------------------------
 
@@ -984,16 +1185,18 @@ INSERT INTO `prestation` (`id_prestation`, `prestation_group`, `prestation_descr
 CREATE TABLE `prestation-group` (
   `id_presstationGroup` int(11) NOT NULL,
   `presstationGroup_descr` varchar(200) NOT NULL,
-  `isActiv` tinyint(1) NOT NULL DEFAULT '1'
+  `isActiv` tinyint(1) NOT NULL DEFAULT '1',
+  `position` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `prestation-group`
 --
 
-INSERT INTO `prestation-group` (`id_presstationGroup`, `presstationGroup_descr`, `isActiv`) VALUES
-(1, '9.1 Information générale des médias et du public', 1),
-(2, '9.2 Médias et publications accessibles au public appartenant au mandataire', 1);
+INSERT INTO `prestation-group` (`id_presstationGroup`, `presstationGroup_descr`, `isActiv`, `position`) VALUES
+(1, '9.1 Information générale des médias et du public', 1, 1),
+(2, '9.2 Médias et publications accessibles au public appartenant au mandataire', 1, 2),
+(3, 'fdagy', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -1087,8 +1290,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `group_id`) VALUES
-(1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-10 17:02:32', '2016-11-29 17:54:13', '2017-01-10 16:02:32', 300),
-(2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-10 17:09:12', '2016-11-29 19:32:15', '2017-01-10 16:09:12', 500),
+(1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-02-24 13:41:37', '2016-11-29 17:54:13', '2017-02-24 12:41:37', 300),
+(2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-02-26 09:13:48', '2016-11-29 19:32:15', '2017-02-26 08:13:48', 500),
 (3, 'titota', '$2a$08$iBHekq9MdoJOGJEI04xaMeYcEzbvcz5OS8caVDsIZGJDPxJcRPgVi', 'titi@titi.titi', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-03 11:49:52', '2016-12-01 14:02:43', '2017-01-06 18:01:00', 300);
 
 -- --------------------------------------------------------
@@ -1240,6 +1443,21 @@ ALTER TABLE `materials`
   ADD PRIMARY KEY (`id_material`);
 
 --
+-- Index pour la table `ola_direct`
+--
+ALTER TABLE `ola_direct`
+  ADD PRIMARY KEY (`id_intrevention`);
+
+--
+-- Index pour la table `ola_indirect`
+--
+ALTER TABLE `ola_indirect`
+  ADD PRIMARY KEY (`indirect_id`,`user_id`,`prest_id`),
+  ADD KEY `fk_pk_user_idx` (`user_id`),
+  ADD KEY `fk_pk_prest_idx` (`prest_id`),
+  ADD KEY `fk_presGrpt_idx` (`prestGrp`);
+
+--
 -- Index pour la table `origines`
 --
 ALTER TABLE `origines`
@@ -1321,7 +1539,7 @@ ALTER TABLE `user_profiles`
 -- AUTO_INCREMENT pour la table `age_groups`
 --
 ALTER TABLE `age_groups`
-  MODIFY `id_ages_goup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_ages_goup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pour la table `citys`
 --
@@ -1331,17 +1549,17 @@ ALTER TABLE `citys`
 -- AUTO_INCREMENT pour la table `genders`
 --
 ALTER TABLE `genders`
-  MODIFY `id_gender` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_gender` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `indirect`
 --
 ALTER TABLE `indirect`
-  MODIFY `id_indirect` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_indirect` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `intreventions`
 --
 ALTER TABLE `intreventions`
-  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT pour la table `intrevention_kinds`
 --
@@ -1366,7 +1584,7 @@ ALTER TABLE `origines`
 -- AUTO_INCREMENT pour la table `persons`
 --
 ALTER TABLE `persons`
-  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 --
 -- AUTO_INCREMENT pour la table `place`
 --
@@ -1381,17 +1599,17 @@ ALTER TABLE `place_kind`
 -- AUTO_INCREMENT pour la table `prestation`
 --
 ALTER TABLE `prestation`
-  MODIFY `id_prestation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_prestation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT pour la table `prestation-group`
 --
 ALTER TABLE `prestation-group`
-  MODIFY `id_presstationGroup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_presstationGroup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `sexuality`
 --
 ALTER TABLE `sexuality`
-  MODIFY `id_sexuality` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_sexuality` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `thematics`
 --
@@ -1468,6 +1686,21 @@ ALTER TABLE `intreventions`
 ALTER TABLE `intrevention_has_material`
   ADD CONSTRAINT `intrevention_has_material_ibfk_1` FOREIGN KEY (`intrevention_id`) REFERENCES `intreventions` (`id_intrevention`) ON DELETE NO ACTION,
   ADD CONSTRAINT `intrevention_has_material_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `materials` (`id_material`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `ola_direct`
+--
+ALTER TABLE `ola_direct`
+  ADD CONSTRAINT `pk_fk` FOREIGN KEY (`id_intrevention`) REFERENCES `intreventions` (`id_intrevention`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `ola_indirect`
+--
+ALTER TABLE `ola_indirect`
+  ADD CONSTRAINT `fk_pk_inter` FOREIGN KEY (`indirect_id`) REFERENCES `indirect` (`id_indirect`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_pk_prest` FOREIGN KEY (`prest_id`) REFERENCES `prestation` (`id_prestation`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_pk_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_prestGrp` FOREIGN KEY (`prestGrp`) REFERENCES `prestation-group` (`id_presstationGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `origines`
