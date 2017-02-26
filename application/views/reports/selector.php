@@ -1,5 +1,5 @@
 <?php //setup
-  $this->output->enable_profiler(true);
+  //$this->output->enable_profiler(true);
  ?>
 
 <div class="container">

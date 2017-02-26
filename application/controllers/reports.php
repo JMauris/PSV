@@ -49,10 +49,13 @@ class Reports extends CI_Controller
       $report = array();
       foreach ($raw as $eventDay) {
         $expDate = explode('-',$eventDay['date']); //[0>>day - 1>>month - 2>>year]
+        $value = round ( $eventDay['duration']/15);
+        if( $value == 0)
+          $value = 1;
         $report
             [intval ($expDate[1])] // month
               [intval ($expDate[0])] // day
-                = round ( $eventDay['duration']/4); //rounded value of 15'
+                = round ( $eventDay['duration']/15); //rounded value of 15'
       }
       $this->load->view('reports/reportHeader',$meta);
       switch ($meta['kind']) {

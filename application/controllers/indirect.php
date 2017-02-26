@@ -92,8 +92,7 @@ class Indirect extends CI_Controller
     $added = $this->input->post('added');
     if(0 == $added['owner'])
       redirect('indirect');
-    if(0 == $added['place'])
-      redirect('indirect');
+
     $insertedId = $this->indirect_model->insert($added['owner'], $added['place'], $added['date']);
     redirect('indirect/edit/'.$insertedId);
   }

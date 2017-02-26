@@ -1,10 +1,10 @@
 <?php //setup
-	//$this->output->enable_profiler(true);
+	$this->output->enable_profiler(true);
 ?>
 <body class="indirectContener">
 <div class="container">
 	<h2>Créer</h2>
-  <?php	echo form_open('indirect/');?>
+  <?php	echo form_open('indirect/create');?>
 
   		<br/>
   		<div class="form-group row">

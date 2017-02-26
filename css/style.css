@@ -58,3 +58,16 @@ select {
   width: 100%;
   margin: 3px;
 }
+
+.report-direct{
+  background: #FFCC99;
+}
+.report-direct-row_light{
+  background: #FF99CC;
+}
+.report-direct-row_eavy{
+  background: #CC99FF;
+}
+.report-direct-data_cell{
+  background: #ffffff;
+}
