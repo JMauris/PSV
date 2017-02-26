@@ -7,6 +7,9 @@
   unset($ageGroups['0']);
   $placeKindDefault = $placeKinds['0']['descr'];
   unset($placeKinds['0']);
+  $prestGrpSelector = array();
+  foreach ($prestationGroups as $key => $value)
+    $prestGrpSelector[$value['id_presstationGroup']]=$value['presstationGroup_descr'];
  ?>
 <script>
 var intervenant;
@@ -447,6 +450,164 @@ foreach ($intervenants as $key => $value) {
   </div>
 </div>
 <div style="height: 60px;"> </div>
+
+
+<!-- =====================prestGrp============================================================================ -->
+<div class="container">
+  <h3>Groupe de perstations</h3>
+  <div id="prestGrp_add">
+    <?php echo form_open('/admin/prestGrp_add');?>
+      <div class="row">
+        <div  class="col-xs-8">
+          <?php
+            $input= array(
+              'id' 		=> 'addedPrestGrp',
+              'name'	=> 'addedPrestGrp',
+              'class'	=> 'form-control',
+              'value' => "Nouveau groupe de prestations"
+            );
+              echo form_input($input);
+          ?>
+        </div>
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau groupe',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
+      </div>
+    <?php echo form_close(); ?>
+  </div>
+  <div id="prestGrp_edit">
+    <?php echo form_open('/admin/prestGrp_edit/');?>
+      <div class="row">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Position</th>
+              <th>Actif</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($prestationGroups as $key => $value): ?>
+              <tr class="<?php if($value['isActiv']==0):?>active<?php else:?>info<?php endif?>">
+                <td>
+                  <?php
+                    echo form_hidden('$prestationGroups['.$value['id_presstationGroup'].'][id_presstationGroup]',$value['id_presstationGroup']);
+                    $input= array(
+                      'id' 		=> 'prestationGroups['.$value['id_presstationGroup'].'][presstationGroup_descr]',
+                      'name'	=> 'prestationGroups['.$value['id_presstationGroup'].'][presstationGroup_descr]',
+                      'class'	=> 'form-control',
+                      'value' => $value['presstationGroup_descr']);
+                      echo form_input($input);
+                  ?>
+                </td>
+                <td>
+                  <?php
+                    $input= array(
+                      'id' 		=> 'prestationGroups['.$value['id_presstationGroup'].'][position]',
+                      'name'	=> 'prestationGroups['.$value['id_presstationGroup'].'][position]',
+                      'class'	=> 'form-control',
+                      'value' => $value['position']);
+                      echo form_input($input);
+                  ?>
+                </td>
+                <td>
+                  <?php echo form_checkbox('prestationGroups['.$value['id_presstationGroup'].'][isActiv]',1,$value['isActiv']);?>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+      <?php	echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");?>
+    <?php echo form_close(); ?>
+  </div>
+</div>
+<div style="height: 60px;"> </div>
+
+<!-- =====================prestations============================================================================ -->
+<div class="container">
+  <h3>Prestations</h3>
+  <div id="prest_add">
+    <?php echo form_open('/admin/prest_add');?>
+      <div class="row">
+        <div  class="col-xs-4">
+          <?php
+            echo form_dropdown('addedPrestGrp',$prestGrpSelector);
+          ?>
+        </div>
+        <div  class="col-xs-4">
+          <?php
+            $input= array(
+              'id' 		=> 'addedPrestDescr',
+              'name'	=> 'addedPrestDescr',
+              'class'	=> 'form-control',
+              'value' => "Nouvelle prestation"
+            );
+              echo form_input($input);
+          ?>
+        </div>
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer une nouvelle prestation',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
+      </div>
+    <?php echo form_close(); ?>
+  </div>
+  <div id="prest_edit">
+    <?php echo form_open('/admin/prest_edit/');?>
+    <?php foreach ($prestations as $key => $value): ?>
+          <div class="multiLvl">
+            <div class="<?php if($value['isActiv']==0):?>unactif<?php else:?>actif<?php endif?>">
+              <div class="row">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <?php
+                      echo form_hidden('$prestations['.$value['id_prestation'].'][id_prestation]',$value['id_prestation']);
+                      echo form_dropdown('prestations['.$value['id_prestation'].'][prestation_group]',$prestGrpSelector,$value['prestation_group']);
+                    ?>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <?php
+                      $input= array(
+                        'id' 		=> 'prestations['.$value['id_prestation'].'][prestation_descr]',
+                        'name'	=> 'prestations['.$value['id_prestation'].'][prestation_descr]',
+                        'class'	=> 'form-control',
+                        'value' => $value['prestation_descr']);
+                        echo form_input($input);
+                    ?>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6">
+                    position:
+                    <?php
+                      echo ($value['parent_position']."-");
+                      $input= array(
+                        'id' 		=> 'prestations['.$value['id_prestation'].'][position]',
+                        'name'	=> 'prestations['.$value['id_prestation'].'][position]',
+                        //'class'	=> 'form-control',
+                        'value' => $value['position']);
+                        echo form_input($input);
+                    ?>
+                  </div>
+                  <div class="col-xs-6">
+                    actif:
+                    <?php echo form_checkbox('prestations['.$value['id_prestation'].'][isActiv]',1,$value['isActiv']);?>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      <?php endforeach; ?>
+      <?php	echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");?>
+    <?php echo form_close(); ?>
+  </div>
+</div>
+<div style="height: 60px;"> </div>
+
+
+
 
 <!-- =====================cities================================================================================ -->
   <div class="container">

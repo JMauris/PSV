@@ -22,13 +22,13 @@ class Reports extends CI_Controller
 
   }
   //===========Direct=========================================
-  function direct(){
 
+  function updateCubes(){
+    $this->reports_model->updateCubes();
+    redirect('reports');
   }
-  function index()
-  {
+  function index(){
     $intervenants = $this->intervenant_model->getAllIntervenant();
-
     $selctData = array(
       'intervenants' => $intervenants,
       'reportTypes' => self::reportTypes
@@ -44,25 +44,20 @@ class Reports extends CI_Controller
         'kind'      => $selected['kind'],
         'kindName'  => self::reportTypes[$selected['kind']]
         );
-      $raw = $this->intervention_model->getAnnualDirectReport(
-        $meta['year'], $meta['userId']);
-      $report = array();
-      foreach ($raw as $eventDay) {
-        $expDate = explode('-',$eventDay['date']); //[0>>day - 1>>month - 2>>year]
-        $value = round ( $eventDay['duration']/15);
-        if( $value == 0)
-          $value = 1;
-        $report
-            [intval ($expDate[1])] // month
-              [intval ($expDate[0])] // day
-                = round ( $eventDay['duration']/15); //rounded value of 15'
-      }
+
       $this->load->view('reports/reportHeader',$meta);
       switch ($meta['kind']) {
         case 1:
+            $report = $this->_getDirectReport($meta['year'], $meta['userId']);
             $this->load->view('reports/direct',$data = array('report' => $report));
           break;
+      case 2:
+          $report = $this->_getUnirectReport($meta['year'], $meta['userId']);
+          $this->_addProspretMeta($report);
+          $this->load->view('reports/prospreh',$data = array('report' => $report));
 
+        //  $this->load->view('reports/direct',$data = array('report' => $report));
+        break;
         default:
           # code...
           break;
@@ -71,6 +66,102 @@ class Reports extends CI_Controller
     }
   }
 
+  function _getDirectReport($year, $user){
+    $raw = $this->reports_model->getAnnualDirectReport($year,$user);
+    $report = array();
+    foreach ($raw as $eventDay) {// reakdown
+      //getting type, value depend of type too
+      if( $eventDay['annonyme']==0){
+        $type = "named";
+        $value = round ( $eventDay['duration']/30);
+      }
+      else{
+        $type = "unNamed";
+        $value = round ( $eventDay['duration']/15);
+      }
+      //if ronded value of the intervention is 0, set it to 1
+      if( $value == 0)
+        $value = 1;
+
+      //constructing indexed table
+      $expDate = explode('-',$eventDay['date']); //[0>>day - 1>>month - 2>>year]
+      $report
+        [$type]                     // type
+          [intval ($expDate[1])]    // month
+            [intval ($expDate[0])]  // day
+              = $value;
+    }
+    return $report;
+  }
+  function _getUnirectReport($year, $user){
+    $raw = $this->reports_model->getAnnualProtpretReport($year,$user);
+    $report = array();
+    foreach ($raw as $eventDay) {// reakdown
+      //getting type, value depend of type too
+      $value = $eventDay['duration']/60;
+
+      //constructing indexed table
+      $expDate = explode('-',$eventDay['date']); //[0>>day - 1>>month - 2>>year]
+      $report
+        ['day']                           // report section
+          [intval ($expDate[1])]          // month
+            [intval ($expDate[0])]        // day
+              [$eventDay['prestGrp']]     // prestation group
+                [$eventDay['prest_id']]   // prestation
+                  = $value;
+
+        // determine trimestre
+        $trim =  floor(intval($expDate[1])/4)+1;
+
+        // if tminestr for prestation already set, need addition
+        $summedValue =0;
+        if(isset($report['trim'][$trim][$eventDay['prestGrp']][$eventDay['prest_id']]))
+          $summedValue = $report['trim'][$trim][$eventDay['prestGrp']][$eventDay['prest_id']];
+        $summedValue =$summedValue + $value;
+        $report
+          ['trim']                          // report section
+            [$trim]                         // trim
+                [$eventDay['prestGrp']]     // prestation group
+                  [$eventDay['prest_id']]   // prestation
+                    = $summedValue;
+    }
+    return $report;
+  }
+  function _addProspretMeta(&$report){
+    $prestationsTree = $this->prestation_model->getFullTree();
+
+    // by default, prestations group and prestations are unsed
+    foreach ($prestationsTree as $keyPrestationsTree => $prestationGrp){
+      $prestationsTree[$keyPrestationsTree]['isUsed'] = false;
+      foreach ($prestationGrp['prestations'] as $PrestId => $presDescr){
+        $prest = array(
+          'descr' => $presDescr,
+          'isUsed' => false
+        );
+        $prestationsTree[$keyPrestationsTree]['prestations'][$PrestId] = $prest;
+      }
+    }
+    // those who existe in reports are used
+    foreach ($report['trim'] as $trimNumber => $prestGrp)
+      foreach ($prestGrp as $presGrpId => $preslist){
+        $prestationsTree[$presGrpId]['isUsed']=true;
+        foreach ($preslist as $presId => $unsuedVariable)
+          $prestationsTree[$presGrpId]['prestations'][$presId]['isUsed']=true;
+      }
+    // remove all unused
+    foreach ($prestationsTree as $keyPrestationsTree => $unsuedVariable)
+      if(false == $prestationsTree[$keyPrestationsTree]['isUsed'])
+        unset($prestationsTree[$keyPrestationsTree]);
+      else{
+        foreach ($prestationsTree[$keyPrestationsTree]['prestations'] as $prestId => $unsuedVariable)
+          if(false == $prestationsTree[$keyPrestationsTree]['prestations'][$prestId]['isUsed'])
+            unset($prestationsTree[$keyPrestationsTree]['prestations'][$prestId]);
+          else
+            unset($prestationsTree[$keyPrestationsTree]['prestations'][$prestId]['isUsed']);
+      }
+    // add prestation tree as meta for the reports
+    $report['meta']= $prestationsTree;
+  }
 /*
   function index()
   {

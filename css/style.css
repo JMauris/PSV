@@ -58,6 +58,25 @@ select {
   width: 100%;
   margin: 3px;
 }
+.multiLvl{
+  background-clip:content-box;
+  margin: 5px;
+  padding: 5px;
+  border-radius:15px;
+}
+.multiLvl .actif {
+  background-color: #d9edf7;
+}
+.multiLvl .unactif {
+  background-color: #f5f5f5;
+}
+.multiLvl .row {
+  margin: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
 
 .report-direct{
   background: #FFCC99;
@@ -70,4 +89,17 @@ select {
 }
 .report-direct-data_cell{
   background: #ffffff;
+}
+
+.undirect-Table .groupRow{
+  background-color: silver;
+}
+.undirect-Table .prestRow-even {
+  background-color: #FFFF99;
+}
+.undirect-Table .prestRow-odd {
+  background-color: #FFFFBB;
+}
+.undirect-Table thead{
+  background-color: #99CCFF;
 }

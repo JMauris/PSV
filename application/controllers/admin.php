@@ -31,6 +31,8 @@ class Admin extends CI_Controller
     $sexualitys= $this->sexuality_model->getAllFullSexuality();
     $ageGroups= $this->agegroup_model->getAllFullAgeGroup();
     $placeKinds = $this->placekinds_model->getAllFullKinds();
+    $prestationGroups = $this->prestation_model->getGroups();
+    $prestations = $this->prestation_model->getPrestations();
 
     $roles = array(
       '300' => 'user' ,
@@ -45,6 +47,8 @@ class Admin extends CI_Controller
       'ageGroups'=>$ageGroups,
       'roles' => $roles,
       'placeKinds'=>$placeKinds,
+      'prestationGroups'=>$prestationGroups,
+      'prestations'=>$prestations,
       'cities'=> $cities
      );
      //var_dump($data);
@@ -191,7 +195,57 @@ function placeKind_edit(){
 }
 //===========end===========================================
 
+//===========Prestation group==============================
+function prestGrp_add(){
+  $addedPrestGrp = $this->input->post('addedPrestGrp');
+  if(null !== $addedPrestGrp)
+    if("Nouveau groupe de prestations" !=$addedPrestGrp)
+      if('' !=$addedPrestGrp)
+        $this->prestation_model->addGroup($addedPrestGrp);
 
+  ////$this->output->enable_profiler(true);
+  redirect('admin');
+}
+function prestGrp_edit(){
+  $prestationGroups = $this->input->post('prestationGroups');
+  if(null !== $prestationGroups)
+    foreach ($prestationGroups as $key => $prestationGroup) {
+      $prestationGroup['id_presstationGroup']=$key;
+      if(false ==(isset($prestationGroup['isActiv'])))
+        $prestationGroup['isActiv']=0;
+      $this->prestation_model->updateGroup($prestationGroup);
+    }
+  ////$this->output->enable_profiler(true);
+  redirect('admin');
+}
+//===========end===========================================
+
+//===========Prestation====================================
+function prest_add(){
+  $addedPrestDescr = $this->input->post('addedPrestDescr');
+  $addedPrestGrp = $this->input->post('addedPrestGrp');
+  if(null !== $addedPrestGrp)
+    if(null !== $addedPrestDescr)
+      if("Nouvelle prestation" !=$addedPrestDescr)
+        if('' !=$addedPrestDescr)
+          $this->prestation_model->addPrest($addedPrestGrp,$addedPrestDescr);
+
+  ////$this->output->enable_profiler(true);
+  redirect('admin');
+}
+function prest_edit(){
+  $prestations = $this->input->post('prestations');
+  if(null !== $prestations)
+    foreach ($prestations as $key => $prestation) {
+      $prestation['id_prestation']=$key;
+      if(false ==(isset($prestation['isActiv'])))
+        $prestation['isActiv']=0;
+      $this->prestation_model->updatePrest($prestation);
+    }
+  ////$this->output->enable_profiler(true);
+  redirect('admin');
+}
+//===========end===========================================
 
 //===========cities========================================
   function cities_GroupEdit(){

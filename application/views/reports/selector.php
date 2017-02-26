@@ -4,6 +4,14 @@
 
 <div class="container">
  	<h2>Selectionner le rapport</h2>
+    <div class="col-xs-12">
+      <?php
+        echo anchor(
+          "reports/updateCubes",
+          'Regénérer les cubes',
+          "class='btn btn-warning col-xs-12'");
+      ?>
+    </div>
    <?php	echo form_open('reports/');?>
    		<br/>
    		<div class="form-group row">

@@ -147,5 +147,6 @@ $autoload['model'] = array(
   'places_model',
   'places/placekinds_model',
   'indirect/prestation_model',
-  'indirect/indirect_model'
+  'indirect/indirect_model',
+  'reports_model'
     );
