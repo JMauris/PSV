@@ -95,6 +95,8 @@ class Thematics_Model extends CI_Model
     }
     if($themaRow['position']<1)
       $themaRow['position']=1;
+    if($themaRow['id_thematic']==$themaRow['$themaRow'])
+      $themaRow['$themaRow']=0;
     $this->db->where('id_thematic', $themaRow['id_thematic']);
     $this->db->update(self::TABLE_NAME, $themaRow);
     if(isset($element['children']))
