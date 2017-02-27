@@ -178,22 +178,23 @@ function thematics_add(){
   redirect('admin');
 }
 function thematics_edit(){
-  $themaTree = $this->input->post('$themaTree');
+  $themaTree = $this->input->post('themaTree');
   if(null !== $themaTree)
-    foreach ($themaTree as $topKey => $topLvlThema) {
+    foreach ($themaTree['children'] as $topKey => $topLvlThema) {
       if(false ==(isset($topLvlThema['isActiv']))){
-        $themaTree[$topKey]['isActiv']=0;
-        foreach ($topLvlThema as $lowKey => $lowLvlThema)
-          $themaTree[$topKey]['children'][$lowKey]['isActiv']=0;
+        $themaTree['children'][$topKey]['isActiv']=0;
+        foreach ($topLvlThema['children'] as $lowKey => $lowLvlThema)
+          $themaTree['children'][$topKey]['children'][$lowKey]['isActiv']=0;
       }else {
-        foreach ($topLvlThema as $key => $lowLvlThema)
+        foreach ($topLvlThema['children'] as $lowKey => $lowLvlThema)
           if(false ==(isset($lowLvlThema['isActiv'])))
-            $themaTree[$topKey]['children'][$lowKey]['isActiv']=0;
+            $themaTree['children'][$topKey]['children'][$lowKey]['isActiv']=0;
       }
     }
-
-  $this->Thematics_Model->updateTree($themaTree);
+  //var_dump($themaTree);
+  $this->thematics_model->updateTree($themaTree);
   ////$this->output->enable_profiler(true);
+  //redirect('admin');
   redirect('admin');
 }
 //===========end===========================================

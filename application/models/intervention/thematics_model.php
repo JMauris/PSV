@@ -72,7 +72,33 @@ class Thematics_Model extends CI_Model
       );
    $this->db->insert(self::TABLE_NAME,$row);
   }
-  function updateTree($root){
 
+
+  function updateTree($tree){
+    foreach ($tree['children'] as $value)
+      $this->updateElement($value);
+
+  }
+  function updateElement($element){
+    $this->db->select('*');
+    $this->db->from(self::TABLE_NAME);
+    $this->db->where('id_thematic', $element['id_thematic']);
+    $query =$this->db->get();
+
+    if ($query->num_rows() != 1)
+        return;
+
+    $themaRow = $query->result_array()[0];
+    foreach($themaRow as $key => $value){
+      if(true ==isset($element[$key]))
+            $themaRow[$key]=$element[$key];
+    }
+    if($themaRow['position']<1)
+      $themaRow['position']=1;
+    $this->db->where('id_thematic', $themaRow['id_thematic']);
+    $this->db->update(self::TABLE_NAME, $themaRow);
+    if(isset($element['children']))
+      foreach ($element['children'] as $value)
+        $this->updateElement($value);
   }
 }

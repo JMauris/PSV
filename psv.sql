@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Dim 26 Février 2017 à 22:18
+-- Généré le :  Lun 27 Février 2017 à 12:52
 -- Version du serveur :  10.1.16-MariaDB
 -- Version de PHP :  5.6.24
 
@@ -52,40 +52,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `direct_update_Report` ()  BEGIN
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_calledForIndirect` (IN `indirectId` INTEGER)  BEGIN
-	select user.id as user_id, user.username
-    from user, indirect_has_called link
-    where link.user_id = user.id
-    and link.indirect_id = indirectId;
-    
-
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_getFutur` ()  BEGIN
-SELECT * FROM psv.indirect
-	where date >= CURRENT_DATE();
-
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_getFuturByOwner` (IN `ownerId` INTEGER)  BEGIN
-	SELECT * FROM psv.indirect
-	where date >= CURRENT_DATE()
-    and owner = ownerId;
-
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_getOld` ()  BEGIN
-SELECT * FROM psv.indirect
-	where date < CURRENT_DATE();
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_getOldByOwner` (IN `ownerId` INTEGER)  BEGIN
-SELECT * FROM psv.indirect
-	where date < CURRENT_DATE()
-    and owner = ownerId;
-
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect_update_Report` ()  BEGIN
 delete from ola_indirect;
 
@@ -127,26 +93,6 @@ insert into ola_indirect
 			on `prestation-group`.id_presstationGroup = prestation.prestation_group;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect__calledForIndirect` (IN `indirectId` INTEGER)  BEGIN
-	select user.id as user_id, user.username
-    from user, indirect_has_called link
-    where link.user_id = user.id
-    and link.indirect_id = indirectId;
-    
-
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `indirect__prestationsForIndirect` (IN `indirectId` INTEGER)  BEGIN
-	select prestation.id_prestation as prest_id ,prestation.prestation_descr  as descr, link.duration
-		from indirect_has_prestations link , prestation
-		where link.prestation_id = prestation.id_prestation
-		and link.indirect_id = indirectId;
-
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `interventions_updateChildDate` (IN `id` INT)  BEGIN
-	update intreventions set date = (select date from intreventions where id_intrevention = id) where parent = id;
-END$$
 
 DELIMITER ;
 
@@ -181,13 +127,7 @@ CREATE TABLE `age_groups` (
 --
 
 INSERT INTO `age_groups` (`id_ages_goup`, `name`, `activated`, `position`) VALUES
-(0, 'Groupe d''age', 1, 0),
-(1, 'mineurs', 1, 1),
-(2, '18-25', 1, 2),
-(3, '26-35', 1, 3),
-(4, '36-50', 1, 4),
-(5, '51-65', 1, 5),
-(6, '66+', 1, 6);
+(0, 'Groupe d''age', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -748,12 +688,7 @@ CREATE TABLE `genders` (
 --
 
 INSERT INTO `genders` (`id_gender`, `name`, `activated`, `position`) VALUES
-(0, 'Genre', 1, 0),
-(1, 'ne se reconait dans aucun genre', 1, 1),
-(2, 'homme', 1, 2),
-(3, 'femme', 1, 3),
-(4, 'homme >> femme', 1, 4),
-(5, 'femme >> hommme', 1, 5);
+(0, 'Genre', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -770,14 +705,6 @@ CREATE TABLE `indirect` (
   `distance` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `indirect`
---
-
-INSERT INTO `indirect` (`id_indirect`, `date`, `place`, `owner`, `extraCost`, `distance`) VALUES
-(1, '2017-02-26', 0, 2, 0, 0),
-(2, '2017-02-26', 0, 2, 0, 0),
-(3, '2017-02-15', 0, 2, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -790,12 +717,6 @@ CREATE TABLE `indirect_has_called` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `indirect_has_called`
---
-
-INSERT INTO `indirect_has_called` (`indirect_id`, `user_id`) VALUES
-(1, 1);
 
 -- --------------------------------------------------------
 
@@ -809,20 +730,6 @@ CREATE TABLE `indirect_has_prestations` (
   `duration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `indirect_has_prestations`
---
-
-INSERT INTO `indirect_has_prestations` (`indirect_id`, `prestation_id`, `duration`) VALUES
-(1, 1, 10),
-(1, 2, 10),
-(1, 3, 5),
-(1, 6, 30),
-(2, 1, 10),
-(2, 3, 15),
-(3, 1, 10),
-(3, 3, 15),
-(3, 5, 50);
 
 -- --------------------------------------------------------
 
@@ -835,17 +742,6 @@ CREATE TABLE `intervention_has_persons` (
   `person_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `intervention_has_persons`
---
-
-INSERT INTO `intervention_has_persons` (`intervention_id`, `person_id`) VALUES
-(2, 51),
-(2, 52),
-(8, 54),
-(8, 55),
-(11, 56),
-(11, 57);
 
 -- --------------------------------------------------------
 
@@ -877,21 +773,6 @@ CREATE TABLE `intreventions` (
   `person_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `intreventions`
---
-
-INSERT INTO `intreventions` (`id_intrevention`, `intervenant_id`, `date`, `place_id`, `duration`, `extraCost`, `distance`, `kind_id`, `parent`, `person_id`) VALUES
-(1, 3, '2017-01-11', 0, 40, 0, 0, 1, NULL, NULL),
-(2, 2, '2017-01-11', 0, 20, 0, 0, 4, NULL, NULL),
-(3, 2, '2017-01-11', 0, 20, 0, 0, 3, 2, 51),
-(4, 2, '2017-02-01', 0, 15, 0, 0, 1, NULL, NULL),
-(6, 2, '2017-02-15', 0, 15, 0, 0, 1, NULL, NULL),
-(7, 2, '2017-02-25', 0, 20, 0, 0, 1, NULL, 53),
-(8, 2, '2017-02-26', 0, 15, 0, 0, 4, NULL, NULL),
-(9, 2, '2017-02-26', 0, 20, 0, 0, 3, 8, 54),
-(10, 2, '2017-02-26', 0, 30, 0, 0, 1, NULL, 53),
-(11, 2, '2017-02-26', 0, 0, 0, 0, 4, NULL, NULL);
 
 --
 -- Déclencheurs `intreventions`
@@ -963,18 +844,10 @@ CREATE TABLE `login_attempts` (
 CREATE TABLE `materials` (
   `id_material` int(11) NOT NULL,
   `descr` varchar(45) NOT NULL,
-  `actived` tinyint(1) NOT NULL DEFAULT '1'
+  `actived` tinyint(1) NOT NULL DEFAULT '1',
+  `position` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `materials`
---
-
-INSERT INTO `materials` (`id_material`, `descr`, `actived`) VALUES
-(1, 'preservatifs', 1),
-(2, 'preservatifs feminins', 1),
-(3, 'flyers', 1),
-(4, 'Cartes de visite', 1);
 
 -- --------------------------------------------------------
 
@@ -990,21 +863,6 @@ CREATE TABLE `ola_direct` (
   `intervenant_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `ola_direct`
---
-
-INSERT INTO `ola_direct` (`id_intrevention`, `date`, `duration`, `annonyme`, `intervenant_id`) VALUES
-(1, '2017-01-11', 40, 1, 3),
-(2, '2017-01-11', 20, 1, 2),
-(3, '2017-01-11', 20, 1, 2),
-(4, '2017-02-01', 15, 1, 2),
-(6, '2017-02-15', 15, 1, 2),
-(7, '2017-02-25', 20, 0, 2),
-(8, '2017-02-26', 15, 1, 2),
-(9, '2017-02-26', 20, 1, 2),
-(10, '2017-02-26', 30, 0, 2),
-(11, '2017-02-26', 0, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -1020,25 +878,6 @@ CREATE TABLE `ola_indirect` (
   `prest_id` int(11) NOT NULL,
   `duration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `ola_indirect`
---
-
-INSERT INTO `ola_indirect` (`indirect_id`, `user_id`, `date`, `prestGrp`, `prest_id`, `duration`) VALUES
-(1, 1, '2017-02-26', 1, 1, 10),
-(1, 1, '2017-02-26', 1, 2, 10),
-(1, 1, '2017-02-26', 1, 3, 5),
-(1, 1, '2017-02-26', 2, 6, 30),
-(1, 2, '2017-02-26', 1, 1, 10),
-(1, 2, '2017-02-26', 1, 2, 10),
-(1, 2, '2017-02-26', 1, 3, 5),
-(1, 2, '2017-02-26', 2, 6, 30),
-(2, 2, '2017-02-26', 1, 1, 10),
-(2, 2, '2017-02-26', 1, 3, 15),
-(3, 2, '2017-02-15', 1, 1, 10),
-(3, 2, '2017-02-15', 1, 3, 15),
-(3, 2, '2017-02-15', 2, 5, 50);
 
 -- --------------------------------------------------------
 
@@ -1084,23 +923,6 @@ CREATE TABLE `persons` (
   `sexuality_id` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `persons`
---
-
-INSERT INTO `persons` (`id_Person`, `name`, `declared_origine_id`, `age_group_id`, `gender_id`, `sexuality_id`) VALUES
-(46, '', 11, 1, 1, 2),
-(47, '', 0, 0, 0, 0),
-(48, '', 0, 0, 0, 0),
-(49, '', 0, 0, 0, 0),
-(50, 'client', 0, 0, 0, 0),
-(51, '', 0, 0, 0, 0),
-(52, '', 0, 0, 0, 0),
-(53, 'jean', 0, 0, 0, 0),
-(54, '', 0, 0, 0, 0),
-(55, '', 0, 0, 0, 0),
-(56, '', 0, 0, 0, 0),
-(57, '', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1118,11 +940,6 @@ CREATE TABLE `place` (
 --
 -- Contenu de la table `place`
 --
-
-INSERT INTO `place` (`id_lieu`, `Name`, `kind`, `actived`) VALUES
-(1, '-Non précisé', 2, 1),
-(2, 'Cher moi', 3, 1),
-(3, 'test2', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -1142,11 +959,7 @@ CREATE TABLE `place_kind` (
 --
 
 INSERT INTO `place_kind` (`id_kind`, `descr`, `kind_actived`, `position`) VALUES
-(0, 'Autres', 1, 0),
-(1, 'Aire d''autoroute', 1, 1),
-(2, 'Salon', 0, 2),
-(3, 'Associations', 1, 3),
-(4, 'Nouveau ty', 1, 4);
+(0, 'Autres', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1167,14 +980,13 @@ CREATE TABLE `prestation` (
 --
 
 INSERT INTO `prestation` (`id_prestation`, `prestation_group`, `prestation_descr`, `isActiv`, `position`) VALUES
-(1, 1, 'contacts avec les médias et les journalistes ;', 1, 1),
-(2, 1, 'interviews accordées (journaux, radio, TV) ;', 1, 1),
+(1, 1, 'contacts avec les médias et les journalistes ;', 1, 3),
+(2, 1, 'interviews accordées (journaux, radio, TV) ;', 1, 2),
 (3, 1, 'publication d’articles (en dehors de la revue / du site internet propres à l’organisation) ;', 1, 1),
-(4, 1, 'conférences, exposés ;', 1, 1),
-(5, 2, 'revues de l’organisation (publications périodiques) ou collaboration à une revue publiée en ', 1, 1),
-(6, 2, 'circulaires paraissant périodiquement ;', 1, 1),
-(7, 2, 'brochures d’information ;', 1, 1),
-(8, 2, 'prestotqewdfnaésdméad v', 0, 14);
+(4, 1, 'conférences, exposés ;', 1, 4),
+(5, 3, 'revues de l’organisation (publications périodiques) ou collaboration à une revue publiée en ', 1, 3),
+(6, 2, 'circulaires paraissant périodiquement ;', 1, 2),
+(7, 2, 'brochures d’information ;', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1195,8 +1007,7 @@ CREATE TABLE `prestation-group` (
 
 INSERT INTO `prestation-group` (`id_presstationGroup`, `presstationGroup_descr`, `isActiv`, `position`) VALUES
 (1, '9.1 Information générale des médias et du public', 1, 1),
-(2, '9.2 Médias et publications accessibles au public appartenant au mandataire', 1, 2),
-(3, 'fdagy', 1, 2);
+(2, '9.2 Médias et publications accessibles au public appartenant au mandataire', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -1216,9 +1027,7 @@ CREATE TABLE `sexuality` (
 --
 
 INSERT INTO `sexuality` (`id_sexuality`, `name`, `activated`, `position`) VALUES
-(0, 'Sexualité', 1, 0),
-(1, 'hétérosexuel', 1, 2),
-(2, 'homosexuel', 1, 1);
+(0, 'Sexualité', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1229,36 +1038,17 @@ INSERT INTO `sexuality` (`id_sexuality`, `name`, `activated`, `position`) VALUES
 CREATE TABLE `thematics` (
   `id_thematic` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
-  `parent_id` int(11) DEFAULT NULL
+  `parent_id` int(11) DEFAULT '0',
+  `position` int(11) NOT NULL DEFAULT '1',
+  `isActiv` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `thematics`
 --
 
-INSERT INTO `thematics` (`id_thematic`, `name`, `parent_id`) VALUES
-(0, 'thematics', NULL),
-(2, 'HIV', 0),
-(3, 'IST', 0),
-(4, 'Vie', 0),
-(5, 'autre', 0),
-(6, 'Safer sex', 2),
-(7, 'Risques', 2),
-(8, 'Dépistage', 2),
-(9, 'Traitement', 2),
-(10, 'Safer sex', 3),
-(11, 'Risques', 3),
-(12, 'Dépistage', 3),
-(13, 'Traitement', 3),
-(14, 'Sociale', 4),
-(15, 'Professionnelle', 4),
-(16, 'Affective', 4),
-(17, 'Familiale', 4),
-(18, 'Pr. juridiques', 5),
-(19, 'Pr. financiers', 5),
-(20, 'Addictions', 5),
-(21, 'Santé Physique', 5),
-(22, 'Santé Psychique (dépression, suicide)', 5);
+INSERT INTO `thematics` (`id_thematic`, `name`, `parent_id`, `position`, `isActiv`) VALUES
+(0, 'thematics', NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1290,9 +1080,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `group_id`) VALUES
-(1, 'toto', '$2a$08$QZw5jt/wAhQCj8MapvDx7.ggCNTHifI0fhZJm/fX5NFbBOZNvBrTG', 'toto@toto.toto', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-02-24 13:41:37', '2016-11-29 17:54:13', '2017-02-24 12:41:37', 300),
-(2, 'tata', '$2a$08$MUAWTWCOMJzOAo3B24lpju3RvdwWncNgXr.0gkT3zUzVj0mf4J8b.', 'tata@tata.tata', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-02-26 09:13:48', '2016-11-29 19:32:15', '2017-02-26 08:13:48', 500),
-(3, 'titota', '$2a$08$iBHekq9MdoJOGJEI04xaMeYcEzbvcz5OS8caVDsIZGJDPxJcRPgVi', 'titi@titi.titi', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-01-03 11:49:52', '2016-12-01 14:02:43', '2017-01-06 18:01:00', 300);
+(0, 'Admin', '$2a$08$eCSY6umGzkYK8ecWGRlxTu949NjHh9bqbQL0gC2PiO56snhICfpUS', 'Admin@Admin.AdminAdmin', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2017-02-27 12:52:29', '2017-02-27 12:51:09', '2017-02-27 11:52:29', 500);
 
 -- --------------------------------------------------------
 
@@ -1326,9 +1114,7 @@ CREATE TABLE `user_profiles` (
 --
 
 INSERT INTO `user_profiles` (`id`, `user_id`, `country`, `website`) VALUES
-(1, 1, NULL, NULL),
-(2, 2, NULL, NULL),
-(3, 3, NULL, NULL);
+(0, 0, NULL, NULL);
 
 --
 -- Index pour les tables exportées
@@ -1554,12 +1340,12 @@ ALTER TABLE `genders`
 -- AUTO_INCREMENT pour la table `indirect`
 --
 ALTER TABLE `indirect`
-  MODIFY `id_indirect` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_indirect` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT pour la table `intreventions`
 --
 ALTER TABLE `intreventions`
-  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_intrevention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT pour la table `intrevention_kinds`
 --
@@ -1574,7 +1360,7 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT pour la table `materials`
 --
 ALTER TABLE `materials`
-  MODIFY `id_material` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_material` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `origines`
 --
@@ -1584,7 +1370,7 @@ ALTER TABLE `origines`
 -- AUTO_INCREMENT pour la table `persons`
 --
 ALTER TABLE `persons`
-  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id_Person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 --
 -- AUTO_INCREMENT pour la table `place`
 --
@@ -1614,17 +1400,17 @@ ALTER TABLE `sexuality`
 -- AUTO_INCREMENT pour la table `thematics`
 --
 ALTER TABLE `thematics`
-  MODIFY `id_thematic` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_thematic` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `user_profiles`
 --
 ALTER TABLE `user_profiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Contraintes pour les tables exportées
 --

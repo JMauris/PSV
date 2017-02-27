@@ -386,50 +386,94 @@ foreach ($intervenants as $key => $value) {
           ?>
         </div>
         <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer un nouveau materiel',"class='btn btn-lg btn-primary btn-block'"); ?>
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau thème',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
   </div>
-  <div id="material_edit">
-    <?php echo form_open('/admin/material_edit/');?>
+  <div id="thematics_edit">
+    <?php echo form_open('/admin/thematics_edit/');?>
       <div class="row">
         <table class="table table-hover">
           <thead>
             <tr>
-              <th>Description</th>
-              <th>Position</th>
-              <th>Actif</th>
+              <th colspan="2">Parent</th>
+              <th colspan="2">Description</th>
+              <th colspan="2">Position</th>
+              <th colspan="2">Actif</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($materials as $key => $value): ?>
-              <tr class="<?php if($value['actived']==0):?>active<?php else:?>info<?php endif?>">
-                <td>
+            <?php foreach ($thematicsTree['children'] as $topLvlId => $topLvlThema):?>
+              <tr class="<?php if($topLvlThema['isActiv']==0):?>active<?php else:?>info<?php endif?>">
+                <td colspan="2">
                   <?php
-                    echo form_hidden('$materials['.$value['id_material'].'][id_material]',$value['id_material']);
+                    echo form_hidden('themaTree[children]['.$topLvlId.'][id_thematic]',$topLvlId);
+                    echo form_dropdown('themaTree[children]['.$topLvlId.'][parent_id]',$parentSelector,$thematicsTree['id_thematic']);
+                  ?>
+                </td>
+                <td colspan="2">
+                  <?php
                     $input= array(
-                      'id' 		=> 'materials['.$value['id_material'].'][descr]',
-                      'name'	=> 'materials['.$value['id_material'].'][descr]',
+                      'id' 		=> 'themaTree[children]['.$topLvlId.'][name]',
+                      'name'	=> 'themaTree[children]['.$topLvlId.'][name]',
                       'class'	=> 'form-control',
-                      'value' => $value['descr']);
+                      'value' => $topLvlThema['name']);
                       echo form_input($input);
                   ?>
                 </td>
-                <td>
+                <td colspan="2">
                   <?php
                     $input= array(
-                      'id' 		=> 'materials['.$value['id_material'].'][position]',
-                      'name'	=> 'materials['.$value['id_material'].'][position]',
+                      'id' 		=> 'themaTree[children]['.$topLvlId.'][position]',
+                      'name'	=> 'themaTree[children]['.$topLvlId.'][position]',
                       'class'	=> 'form-control',
-                      'value' => $value['position']);
+                      'value' => $topLvlThema['position']);
                       echo form_input($input);
                   ?>
                 </td>
-                <td>
-                  <?php echo form_checkbox('materials['.$value['id_material'].'][actived]',1,$value['actived']);?>
+                <td colspan="2">
+                  <?php echo form_checkbox('themaTree[children]['.$topLvlId.'][isActiv]',1,$topLvlThema['isActiv']);?>
                 </td>
+                <td/>
               </tr>
+              <?php if (isset($topLvlThema['children'])): ?>
+                <?php foreach ($topLvlThema['children'] as $lowLvlThemaId => $lowLvlThema): ?>
+                    <tr class="<?php if($lowLvlThema['isActiv']==0):?>active<?php else:?>info<?php endif?>">
+                      <td/>
+                      <td colspan="2">
+                        <?php
+                          echo form_hidden('themaTree[children]['.$topLvlId.'][children]['.$lowLvlThemaId.'][id_thematic]',$lowLvlThemaId);
+                          echo form_dropdown('themaTree[children]['.$topLvlId.'][children]['.$lowLvlThemaId.'][parent_id]',$parentSelector,$topLvlId);
+                        ?>
+                      </td>
+                      <td colspan="2">
+                        <?php
+                          $input= array(
+                            'id' 		=> 'themaTree[children]['.$topLvlId.'][children]['.$lowLvlThemaId.'][name]',
+                            'name'	=> 'themaTree[children]['.$topLvlId.'][children]['.$lowLvlThemaId.'][name]',
+                            'class'	=> 'form-control',
+                            'value' => $lowLvlThema['name']);
+                            echo form_input($input);
+                        ?>
+                      </td>
+                      <td colspan="2">
+                        <?php
+                          $input= array(
+                            'id' 		=> 'themaTree[children]['.$topLvlId.'][children]['.$lowLvlThemaId.'][position]',
+                            'name'	=> 'themaTree[children]['.$topLvlId.'][children]['.$lowLvlThemaId.'][position]',
+                            'class'	=> 'form-control',
+                            'value' => $lowLvlThema['position']);
+                            echo form_input($input);
+                        ?>
+                      </td>
+                      <td colspan="2">
+                        <?php echo form_checkbox('themaTree[children]['.$topLvlId.'][children]['.$lowLvlThemaId.'][isActiv]',1,$lowLvlThema['isActiv']);?>
+                      </td>
+                  </tr>
+                <?php endforeach; ?>
+              <?php endif; ?>
             <?php endforeach; ?>
           </tbody>
         </table>

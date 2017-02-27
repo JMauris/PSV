@@ -29,7 +29,7 @@ class Welcome extends CI_Controller
 	      'past' => $past
 	     );
 			 //var_dump($data);
-	    $this->load->view('dashBoard/general',$data);
+	    $this->load->view('welcome_message',$data);
 
 /*
 		$user_id	= $this->tank_auth->get_user_id();
