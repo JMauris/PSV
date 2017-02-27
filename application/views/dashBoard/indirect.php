@@ -1,5 +1,5 @@
 <?php //setup
-	$this->output->enable_profiler(true);
+	//$this->output->enable_profiler(true);
 ?>
 <body class="indirectContener">
 <div class="container">
@@ -57,7 +57,7 @@
 		$divClass ="col-sm-3 col-xs-6";
 	$allIndirect = array(
 		'A venir' => $futurs,
-		//'Les entretients passés' => $past
+		'Les entretients passés' => $past
 	 );
 	 foreach ($allIndirect as $title => $indirects) {?>
 		 <div class="conatiner">

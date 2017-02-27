@@ -149,6 +149,7 @@ class Indirect_Model extends CI_Model
 
     $raw = $query->result_array();
     $indirectRow = $raw[0];
+    $indirect['called'][$indirectRow['owner']]="fuck this shit";
     foreach ($indirectRow as $fieldName => $fieldValue) {
       if(true ==isset($indirect[$fieldName]))
         $indirectRow[$fieldName]=$indirect[$fieldName];
@@ -156,8 +157,9 @@ class Indirect_Model extends CI_Model
     $this->db->where('id_indirect', $id);
     $this->db->update(self::indirect_Table, $indirectRow);
 
-    if(true == isset($indirect['called']))
-      $this->_updateCalled( $id,$indirect['called']);
+    unset($indirect['called'][$indirectRow['owner']]);
+    $this->_updateCalled($id,$indirect['called']);
+
     if(true == isset($indirect['prestations']))
       $this->_updatePrestations($id,$indirect['prestations']);
 

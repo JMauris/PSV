@@ -53,10 +53,10 @@
 								echo form_label('Responsable');
 								echo "<br/>";
 								if($this->session->userdata['groupId']==500){
-										echo form_dropdown('indirect[ownerId]', $ownerDropDown, $indirect['owner']['id']);
+										echo form_dropdown('indirect[owner]', $ownerDropDown, $indirect['owner']['id']);
 								}else{
 									echo form_label($indirect['owner']['username']);
-									echo form_hidden('indirect[ownerId]', $indirect['owner']['id']);
+									echo form_hidden('indirect[owner]', $indirect['owner']['id']);
 								}
 							?>
 						</div>
@@ -119,7 +119,7 @@
 											$cheked=true;
 							$data = array(
 										'name'          => 'indirect[called]['.$id.']',
-										'id'            => 'called'.$key,
+										'id'            => 'called'.$id,
 										'value'         => $intervenants[$id],
 										'checked'       => $cheked,
 										'style'         => 'margin:10px'

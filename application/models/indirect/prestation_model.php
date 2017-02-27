@@ -74,6 +74,7 @@ order by parent_position , position";
 
   function _populateTree(&$group){
     $this->db->select('*');
+    $this->db->order_by("position", "asc");
     $this->db->from(self::prestation_Table);
     $this->db->where('prestation_group', $group['id_presstationGroup']);
     $this->db->where('isActiv', 1);
@@ -88,6 +89,7 @@ order by parent_position , position";
   }
   function fullPopulate(&$group){
     $this->db->select('*');
+    $this->db->order_by("position", "asc");
     $this->db->from(self::prestation_Table);
     $this->db->where('prestation_group', $group['id_presstationGroup']);
     $query =$this->db->get();

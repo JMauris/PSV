@@ -76,8 +76,64 @@ select {
   margin-bottom: 10px;
 }
 
+.prospreh-report .table > thead:first-child > tr:first-child > th:first-child {
+    position: absolute;
+    display: inline-block;
+    background-color: #99CCFF;
+    width:690px;
+}
+
+.prospreh-report .table > tbody > tr > td:first-child {
+    position: absolute;
+    display: inline-block;
+    background-color: #FFFF99;
+    width:690px;
+}
 
 
+.prospreh-report .table > thead:first-child > tr:first-child > th:nth-child(2) {
+    padding-left: 700px;
+}
+
+.prospreh-report .table > tbody > tr > td:nth-child(2) {
+    padding-left: 700px ;
+}
+.prospreh-report .row{
+  overflow-x:auto;
+  height: 100%;
+}
+.prospreh-report .table td{
+  line-height: 1;
+  border-top: none;
+}
+.prospreh-report .table th{
+  line-height: 1;
+  border-top: none;
+  border-bottom: none;
+}
+
+
+
+
+.prospreh-report .groupRow{
+  background-color: silver;
+}
+.prospreh-report .prestRow-odd{
+  background-color: #FFFFBB;
+}
+.prospreh-report .prestRow-even{
+  background-color: #FFFF99;
+}
+
+.prospreh-report thead{
+  background-color: #99CCFF;
+}
+.prospreh-report .trim{
+  width: 100px;
+}
+.prospreh-report .day{
+  width: 60px;
+}
 .report-direct{
   background: #FFCC99;
 }
@@ -89,17 +145,4 @@ select {
 }
 .report-direct-data_cell{
   background: #ffffff;
-}
-
-.undirect-Table .groupRow{
-  background-color: silver;
-}
-.undirect-Table .prestRow-even {
-  background-color: #FFFF99;
-}
-.undirect-Table .prestRow-odd {
-  background-color: #FFFFBB;
-}
-.undirect-Table thead{
-  background-color: #99CCFF;
 }
