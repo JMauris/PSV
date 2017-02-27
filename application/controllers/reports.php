@@ -111,7 +111,7 @@ class Reports extends CI_Controller
                   = $value;
 
         // determine trimestre
-        $trim =  floor(intval($expDate[1])/4)+1;
+        $trim =  floor(intval($expDate[1])/3)+1;
 
         // if tminestr for prestation already set, need addition
         $summedValue =0;
