@@ -168,29 +168,31 @@ echo form_open('meeting/edit/'. $intervention['id_intrevention']);
 						Dossier
 					</button>
 				</div>
-				<div class="col-sm-3 col-xs-6">
-					<?php
-						//echo form_label('Origine');
-						echo form_dropdown('intervention[person][origine_id]', 	$origins, $intervention['person']['origine_id']);
-						?>
-				</div>
-				<div class="col-sm-3 col-xs-6">
-					<?php
-						//echo form_label('Genre');
-						echo form_dropdown('intervention[person][gender_id]', $genders, $intervention['person']['gender_id']);
-						?>
-				</div>
-				<div class="col-sm-3 col-xs-6">
-					<?php
-						//echo form_label('Orinentation');
-						echo form_dropdown('intervention[person][sexuality_id]', 	$sexuality, $intervention['person']['sexuality_id']);
-						?>
-				</div>
-				<div class="col-sm-3 col-xs-6">
-					<?php
-						//echo form_label("Groupe d'age");
-						echo form_dropdown('intervention[person][ageGroup_id]', $ageGroups, $intervention['person']['ageGroup_id']);
-						?>
+				<div class="row">
+					<div class="col-sm-3 col-xs-6">
+						<?php
+							//echo form_label('Origine');
+							echo form_dropdown('intervention[person][origine_id]', 	$origins, $intervention['person']['origine_id']);
+							?>
+					</div>
+					<div class="col-sm-3 col-xs-6">
+						<?php
+							//echo form_label('Genre');
+							echo form_dropdown('intervention[person][gender_id]', $genders, $intervention['person']['gender_id']);
+							?>
+					</div>
+					<div class="col-sm-3 col-xs-6">
+						<?php
+							//echo form_label('Orinentation');
+							echo form_dropdown('intervention[person][sexuality_id]', 	$sexuality, $intervention['person']['sexuality_id']);
+							?>
+					</div>
+					<div class="col-sm-3 col-xs-6">
+						<?php
+							//echo form_label("Groupe d'age");
+							echo form_dropdown('intervention[person][ageGroup_id]', $ageGroups, $intervention['person']['ageGroup_id']);
+							?>
+					</div>
 				</div>
 			</div>
 			<div id="<?php echo  $namedDivId?>" <?php if ($isAnnonim):?>style="display:none;"<?php endif; ?>>
