@@ -22,7 +22,17 @@ function myFunction(val) {
 
 <h2>Management</h2>
 <div>
-  <a class="btn btn-info" href="#placeKind">Les Types de lieux<a>
+  <ul class="nav nav-stacked">
+    <li><a href="#rac_genders">Sexe</a></li>
+    <li><a href="#rac_sexualitys">Sexualité</a></li>
+    <li><a href="#rac_ageGroup_add">Groupe d'âges</a></li>
+    <li><a href="#rac_thematics_Sct">Thématiques</a></li>
+    <li><a href="#rac_Material_Sct">Matériel</a></li>
+    <li><a href="#rac_placeKind">Types de lieux</a></li>
+    <li><a href="#rac_prestGrp">PROSPREH - Catégories</a></li>
+    <li><a href="#rac_prestations">PROSPREH - Prestations</a></li>
+  </ul>
+
 </div>
 <h3>Intervenants</h3>
 
@@ -81,9 +91,9 @@ foreach ($intervenants as $key => $value) {
 
 </form>
 </div>
-	<div style="height: 60px;"> </div>
+	<div id="rac_genders" style="height: 60px;"> </div>
 <!-- =====================genders================================================================================ -->
-  <div class="container">
+  <div id="genders" class="container">
     <h3>Sexe</h3>
     <div id="gender_add">
       <?php echo form_open('/admin/gender_add');?>
@@ -174,9 +184,9 @@ foreach ($intervenants as $key => $value) {
       <?php echo form_close(); ?>
     </div>
   </div>
-  <div style="height: 60px;"> </div>
+  <div id="rac_sexualitys" style="height: 60px;"> </div>
 <!-- =====================sexualitys================================================================================ -->
-<div class="container">
+<div id="sexualitys" class="container">
   <h3>Sexualité</h3>
   <div id="sexuality_add">
     <?php echo form_open('/admin/sexuality_add');?>
@@ -266,11 +276,11 @@ foreach ($intervenants as $key => $value) {
     <?php echo form_close(); ?>
   </div>
 </div>
-<div style="height: 60px;"> </div>
-<!-- =====================age group================================================================================= -->
-<div class="container">
+<div id="rac_ageGroup_add" style="height: 60px;"> </div>
+<!-- =====================ageGroup_add================================================================================= -->
+<div id="ageGroup_add" class="container">
   <h3>Groupe d'âge</h3>
-  <div id="gender_add">
+  <div id="ageGroup_add">
     <?php echo form_open('/admin/ageGroup_add');?>
       <div class="row">
         <div  class="col-xs-8">
@@ -359,7 +369,7 @@ foreach ($intervenants as $key => $value) {
     <?php echo form_close(); ?>
   </div>
 </div>
-<div style="height: 60px;"> </div>
+<div id="rac_thematics_Sct" style="height: 60px;"> </div>
 
 <!-- =====================thematics_Sct============================================================================ -->
 <?php
@@ -367,8 +377,8 @@ foreach ($intervenants as $key => $value) {
   foreach ($thematicsTree['children'] as $topLvlThema)
     $parentSelector[$topLvlThema['id_thematic']]=$topLvlThema['name'];
  ?>
-<div class="container">
-  <h3>Thèmes abordables</h3>
+<div id="thematics_Sct" class="container">
+  <h3>Thématiques</h3>
   <div id="thematics_add">
     <?php echo form_open('/admin/thematics_add');?>
       <div class="row">
@@ -485,14 +495,14 @@ foreach ($intervenants as $key => $value) {
     <?php echo form_close(); ?>
   </div>
 </div>
-<div style="height: 60px;"> </div>
+<div id="rac_Material_Sct" style="height: 60px;"> </div>
 
 
 
 
 <!-- =====================Material_Sct============================================================================ -->
-<div class="container">
-  <h3>Materiel Distribuable</h3>
+<div id="Material_Sct" class="container">
+  <h3>Matériel</h3>
   <div id="material_add">
     <?php echo form_open('/admin/material_add');?>
       <div class="row">
@@ -560,14 +570,14 @@ foreach ($intervenants as $key => $value) {
     <?php echo form_close(); ?>
   </div>
 </div>
-<div style="height: 60px;"> </div>
+<div id="rac_placeKind" style="height: 60px;"> </div>
 
 
 
 
 <!-- =====================place kind============================================================================ -->
 <div id="placeKind" class="container">
-  <h3>Type de lieu</h3>
+  <h3>Types de lieux</h3>
   <div id="placeKind_add">
     <?php echo form_open('/admin/placeKind_add');?>
       <div class="row">
@@ -657,12 +667,12 @@ foreach ($intervenants as $key => $value) {
     <?php echo form_close(); ?>
   </div>
 </div>
-<div style="height: 60px;"> </div>
+<div id="rac_prestGrp" style="height: 60px;"> </div>
 
 
 <!-- =====================prestGrp============================================================================ -->
-<div class="container">
-  <h3>Groupe de perstations</h3>
+<div id="prestGrp" class="container">
+  <h3>PROSPREH - Catégories</h3>
   <div id="prestGrp_add">
     <?php echo form_open('/admin/prestGrp_add');?>
       <div class="row">
@@ -730,11 +740,11 @@ foreach ($intervenants as $key => $value) {
     <?php echo form_close(); ?>
   </div>
 </div>
-<div style="height: 60px;"> </div>
+<div id="rac_prestations" style="height: 60px;"> </div>
 
 <!-- =====================prestations============================================================================ -->
-<div class="container">
-  <h3>Prestations</h3>
+<div id="prestations" class="container">
+  <h3>PROSPREH - Prestations</h3>
   <div id="prest_add">
     <?php echo form_open('/admin/prest_add');?>
       <div class="row">
