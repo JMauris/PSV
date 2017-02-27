@@ -71,7 +71,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<h1>Bienvenue PSV</h1>
 
 	<div id="body">
-		<p>Nous attendons vos attente en matière de page d'acceuil. Un guide? la liste des évenements à venir? tout est possible.</p>
+		<p>Nous attendons vos attentes en matière de page d'accueil. Un guide? La liste des évenements à venir? Tout est possible.</p>
 	</div>
 </div>
 

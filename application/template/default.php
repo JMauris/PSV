@@ -62,7 +62,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <ul class="nav navbar-nav navbar-right">
                 <?php if ($groupId==500): ?>
                   <li <?php if ($class == 'reports'): ?>class="active"<?php endif; ?>>
-                    <a href=<?php echo base_url(). index_page(). '/' . 'reports/';?>>Raports</a>
+                    <a href=<?php echo base_url(). index_page(). '/' . 'reports/';?>>Rapports</a>
                   </li>
                   <li <?php if ($class == 'admin'): ?>class="active"<?php endif; ?>>
                     <a href=<?php echo base_url(). index_page(). '/' . 'admin/';?>>Administration</a>
