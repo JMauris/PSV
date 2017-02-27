@@ -21,7 +21,7 @@ function myFunction(val) {
 </script>
 
 <h2>Management</h2>
-<h3>Internvenants</h3>
+<h3>Intervenants</h3>
 
 <?php
   echo anchor('/auth/register/', 'Créer un nouvel intervenant',"class='btn btn-lg btn-primary btn-block'");
@@ -73,7 +73,7 @@ foreach ($intervenants as $key => $value) {
 </tbody>
 </table>
   <?php
-      echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");
+      echo form_submit('submit_Profil', 'Modifier',"class='btn btn-lg btn-primary btn-block'");
    ?>
 
 </form>

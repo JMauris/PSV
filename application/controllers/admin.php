@@ -25,6 +25,7 @@ class Admin extends CI_Controller
   function index(){
     $user = $this->tank_auth->get_user_id();
     $intervenants= $this->intervenant_model->getAllFullIntervenant();
+    unset($intervenants[0]);
     $genres= $this->gender_model->getAllFullGender();
     $sexualitys= $this->sexuality_model->getAllFullSexuality();
     $ageGroups= $this->agegroup_model->getAllFullAgeGroup();
