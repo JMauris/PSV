@@ -6,8 +6,7 @@
 class Admin extends CI_Controller
 {
 
-  function __construct()
-  {
+  function __construct(){
     parent::__construct();
 
     $this->load->helper(array('form', 'url'));
@@ -23,16 +22,19 @@ class Admin extends CI_Controller
   }
 
 
-  function index()
-  {
+  function index(){
     $user = $this->tank_auth->get_user_id();
     $intervenants= $this->intervenant_model->getAllFullIntervenant();
     $genres= $this->gender_model->getAllFullGender();
     $sexualitys= $this->sexuality_model->getAllFullSexuality();
     $ageGroups= $this->agegroup_model->getAllFullAgeGroup();
+    $materials =  $this->material_model->getAllForAdmin();
     $placeKinds = $this->placekinds_model->getAllFullKinds();
     $prestationGroups = $this->prestation_model->getGroups();
     $prestations = $this->prestation_model->getPrestations();
+    $thematicsTree = $this->thematics_model->getAdminTree();
+
+
 
     $roles = array(
       '300' => 'user' ,
@@ -46,9 +48,11 @@ class Admin extends CI_Controller
       'sexualitys'=>$sexualitys,
       'ageGroups'=>$ageGroups,
       'roles' => $roles,
+      'materials' => $materials,
       'placeKinds'=>$placeKinds,
       'prestationGroups'=>$prestationGroups,
       'prestations'=>$prestations,
+      'thematicsTree' => $thematicsTree,
       'cities'=> $cities
      );
      //var_dump($data);
@@ -162,7 +166,63 @@ class Admin extends CI_Controller
   }
 //===========end===========================================
 
+//===========thematics_Sct==================================
+function thematics_add(){
+  $addedthema = $this->input->post('addedthema');
+  if(null !== $addedthema)
+    if("Nouvelle catégorie" !=$addedthema['name'])
+      if('' !=$addedthema['name'])
+        $this->thematics_model->insert($addedthema['parent'],$addedthema['name']);
 
+  ////$this->output->enable_profiler(true);
+  redirect('admin');
+}
+function thematics_edit(){
+  $themaTree = $this->input->post('$themaTree');
+  if(null !== $themaTree)
+    foreach ($themaTree as $topKey => $topLvlThema) {
+      if(false ==(isset($topLvlThema['isActiv']))){
+        $themaTree[$topKey]['isActiv']=0;
+        foreach ($topLvlThema as $lowKey => $lowLvlThema)
+          $themaTree[$topKey]['children'][$lowKey]['isActiv']=0;
+      }else {
+        foreach ($topLvlThema as $key => $lowLvlThema)
+          if(false ==(isset($lowLvlThema['isActiv'])))
+            $themaTree[$topKey]['children'][$lowKey]['isActiv']=0;
+      }
+    }
+
+  $this->Thematics_Model->updateTree($themaTree);
+  ////$this->output->enable_profiler(true);
+  redirect('admin');
+}
+//===========end===========================================
+
+//===========Material_Sct==================================
+function material_add(){
+  $addedMatterial = $this->input->post('addedMatterial');
+  $addedMatterial = $this->input->post('addedMatterial');
+  if(null !== $addedMatterial)
+    if("Nouveau materiel" !=$addedMatterial)
+      if('' !=$addedMatterial)
+        $this->material_model->insert($addedMatterial);
+
+  ////$this->output->enable_profiler(true);
+  redirect('admin');
+}
+function material_edit(){
+  $materials = $this->input->post('materials');
+  if(null !== $materials)
+    foreach ($materials as $key => $material) {
+      $material['id_material']=$key;
+      if(false ==(isset($material['actived'])))
+        $material['actived']=0;
+      $this->material_model->update($material);
+    }
+  ////$this->output->enable_profiler(true);
+  redirect('admin');
+}
+//===========end===========================================
 
 //===========PlaceKind=====================================
 function placeKind_add(){
@@ -195,7 +255,7 @@ function placeKind_edit(){
 }
 //===========end===========================================
 
-//===========Prestation group==============================
+//===========prestGrp======================================
 function prestGrp_add(){
   $addedPrestGrp = $this->input->post('addedPrestGrp');
   if(null !== $addedPrestGrp)

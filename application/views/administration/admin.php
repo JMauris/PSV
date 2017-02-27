@@ -357,6 +357,167 @@ foreach ($intervenants as $key => $value) {
   </div>
 </div>
 <div style="height: 60px;"> </div>
+
+<!-- =====================thematics_Sct============================================================================ -->
+<?php
+  $parentSelector = array('0'=> "racine");
+  foreach ($thematicsTree['children'] as $topLvlThema)
+    $parentSelector[$topLvlThema['id_thematic']]=$topLvlThema['name'];
+ ?>
+<div class="container">
+  <h3>Thèmes abordables</h3>
+  <div id="thematics_add">
+    <?php echo form_open('/admin/thematics_add');?>
+      <div class="row">
+        <div  class="col-xs-4">
+          <?php
+            echo form_dropdown('addedthema[parent]',$parentSelector);
+          ?>
+        </div>
+        <div  class="col-xs-4">
+          <?php
+          $input= array(
+            'id' 		=> 'addedthema[name]',
+            'name'	=> 'addedthema[name]',
+            'class'	=> 'form-control',
+            'value' => "Nouvelle catégorie"
+          );
+            echo form_input($input);
+          ?>
+        </div>
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau materiel',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
+      </div>
+    <?php echo form_close(); ?>
+  </div>
+  <div id="material_edit">
+    <?php echo form_open('/admin/material_edit/');?>
+      <div class="row">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Position</th>
+              <th>Actif</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($materials as $key => $value): ?>
+              <tr class="<?php if($value['actived']==0):?>active<?php else:?>info<?php endif?>">
+                <td>
+                  <?php
+                    echo form_hidden('$materials['.$value['id_material'].'][id_material]',$value['id_material']);
+                    $input= array(
+                      'id' 		=> 'materials['.$value['id_material'].'][descr]',
+                      'name'	=> 'materials['.$value['id_material'].'][descr]',
+                      'class'	=> 'form-control',
+                      'value' => $value['descr']);
+                      echo form_input($input);
+                  ?>
+                </td>
+                <td>
+                  <?php
+                    $input= array(
+                      'id' 		=> 'materials['.$value['id_material'].'][position]',
+                      'name'	=> 'materials['.$value['id_material'].'][position]',
+                      'class'	=> 'form-control',
+                      'value' => $value['position']);
+                      echo form_input($input);
+                  ?>
+                </td>
+                <td>
+                  <?php echo form_checkbox('materials['.$value['id_material'].'][actived]',1,$value['actived']);?>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+      <?php	echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");?>
+    <?php echo form_close(); ?>
+  </div>
+</div>
+<div style="height: 60px;"> </div>
+
+
+
+
+<!-- =====================Material_Sct============================================================================ -->
+<div class="container">
+  <h3>Materiel Distribuable</h3>
+  <div id="material_add">
+    <?php echo form_open('/admin/material_add');?>
+      <div class="row">
+        <div  class="col-xs-8">
+          <?php
+            $input= array(
+              'id' 		=> 'addedMatterial',
+              'name'	=> 'addedMatterial',
+              'class'	=> 'form-control',
+              'value' => "Nouveau materiel"
+            );
+              echo form_input($input);
+          ?>
+        </div>
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau materiel',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
+      </div>
+    <?php echo form_close(); ?>
+  </div>
+  <div id="material_edit">
+    <?php echo form_open('/admin/material_edit/');?>
+      <div class="row">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Position</th>
+              <th>Actif</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($materials as $key => $value): ?>
+              <tr class="<?php if($value['actived']==0):?>active<?php else:?>info<?php endif?>">
+                <td>
+                  <?php
+                    echo form_hidden('$materials['.$value['id_material'].'][id_material]',$value['id_material']);
+                    $input= array(
+                      'id' 		=> 'materials['.$value['id_material'].'][descr]',
+                      'name'	=> 'materials['.$value['id_material'].'][descr]',
+                      'class'	=> 'form-control',
+                      'value' => $value['descr']);
+                      echo form_input($input);
+                  ?>
+                </td>
+                <td>
+                  <?php
+                    $input= array(
+                      'id' 		=> 'materials['.$value['id_material'].'][position]',
+                      'name'	=> 'materials['.$value['id_material'].'][position]',
+                      'class'	=> 'form-control',
+                      'value' => $value['position']);
+                      echo form_input($input);
+                  ?>
+                </td>
+                <td>
+                  <?php echo form_checkbox('materials['.$value['id_material'].'][actived]',1,$value['actived']);?>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+      <?php	echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");?>
+    <?php echo form_close(); ?>
+  </div>
+</div>
+<div style="height: 60px;"> </div>
+
+
+
+
 <!-- =====================place kind============================================================================ -->
 <div class="container">
   <h3>Type de lieu</h3>

@@ -2,8 +2,8 @@
 
 class Thematics_Model extends CI_Model
 {
-  function __construct()
-  {
+  const  TABLE_NAME = 'thematics';
+  function __construct() {
     parent::__construct();
   }
 
@@ -15,10 +15,19 @@ class Thematics_Model extends CI_Model
 
     return $respons;
   }
+  function getAdminTree(){
 
+    $respons = array('id_thematic' => 0,
+                  'name' => 'racine');
+    $this->populateAdmin($respons);
+
+    return $respons;
+  }
 
   function populate(&$daddy){
+    $this->db->order_by("position", "asc");
     $this->db->where('parent_id', $daddy['id']);
+    $this->db->where('isActiv', 1);
     $query = $this->db->get('thematics');
     if ($query->num_rows() == 0)
       return NULL;
@@ -33,7 +42,37 @@ class Thematics_Model extends CI_Model
       array_push($children , $temp);
     }
 
+
     $daddy['children']=$children;
 
-}
+  }
+  function populateAdmin(&$daddy){
+    $this->db->order_by("position", "asc");
+    $this->db->where('parent_id', $daddy['id_thematic']);
+    $query = $this->db->get(self::TABLE_NAME);
+    if ($query->num_rows() == 0)
+      return NULL;
+
+    $rows = $query->result_array();
+
+    $children = array();
+    foreach ($rows as $row) {
+      $this->populateAdmin($row);
+      $children[$row['id_thematic']]=$row;
+    }
+
+
+    $daddy['children']=$children;
+
+  }
+  function insert($parentId, $name){
+    $row = array(
+      'name' => $name,
+      'parent_id' => $parentId
+      );
+   $this->db->insert(self::TABLE_NAME,$row);
+  }
+  function updateTree($root){
+
+  }
 }
