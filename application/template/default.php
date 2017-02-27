@@ -42,12 +42,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $method = $this->router->fetch_method();
             ?>
             <?php if ($is_logged): ?>
-              <li <?php if ($class == 'demarche'): ?>class="active"<?php endif; ?>>
-                <a href=<?php echo base_url(). index_page(). '/' . 'demarche/';?>>Collectif</a>
-              </li>
-              <li <?php if ($class == 'meeting'): ?>class="active"<?php endif; ?>>
-                <a href=<?php echo base_url(). index_page(). '/' . 'meeting/';?>>Individuel</a>
-              </li>
+              <li class="dropdown<?php if ($class == 'demarche' || $class == 'meeting'): ?> active<?php endif; ?>">
+                <a class="dropdown-toggle" data-toggle="dropdown">Direct
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="<?php echo base_url(). index_page(). '/' . 'demarche/';?>">Collectif</a></li>
+                    <li><a href="<?php echo base_url(). index_page(). '/' . 'meeting/';?>">Individuel</a></li>
+                  </ul>
               <li <?php if ($class == 'indirect'): ?>class="active"<?php endif; ?>>
                 <a href=<?php echo base_url(). index_page(). '/' . 'indirect/';?>>Indirect</a>
               </li>
