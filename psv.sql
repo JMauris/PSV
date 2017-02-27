@@ -984,7 +984,6 @@ INSERT INTO `prestation` (`id_prestation`, `prestation_group`, `prestation_descr
 (2, 1, 'interviews accordées (journaux, radio, TV) ;', 1, 2),
 (3, 1, 'publication d’articles (en dehors de la revue / du site internet propres à l’organisation) ;', 1, 1),
 (4, 1, 'conférences, exposés ;', 1, 4),
-(5, 3, 'revues de l’organisation (publications périodiques) ou collaboration à une revue publiée en ', 1, 3),
 (6, 2, 'circulaires paraissant périodiquement ;', 1, 2),
 (7, 2, 'brochures d’information ;', 1, 1);
 

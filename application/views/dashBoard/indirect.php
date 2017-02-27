@@ -16,7 +16,6 @@
             <div class="<?php echo($divClass); ?>">
               <?php
       					echo form_label('Intervenant');
-      					array_unshift($intervenants,'');
       					echo form_dropdown('added[owner]', $intervenants,$user);
       				?>
       			</div>
