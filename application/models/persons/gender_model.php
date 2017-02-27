@@ -80,13 +80,16 @@ class Gender_Model extends CI_Model
   }
   //====================Update====================================
   function update($gender){
-    $oldGender = $this->getById($gender['id_gender']);
-    $genderRow = array(
-      'id_gender'=>$oldGender['id_gender'],
-      'name'=>$oldGender['name'],
-      'position'=>$oldGender['position'],
-      'activated'=>$oldGender['activated']
-    );
+
+    $this->db->select('*');
+    $this->db->from(self::TABLE_NAME);
+    $this->db->where('id_gender', $material['id_gender']);
+    $query =$this->db->get();
+
+    if ($query->num_rows() != 1)
+        return;
+
+    $genderRow = $query->result_array()[0];
 
     foreach($genderRow as $key => $value){
       if(true == isset($gender[$key]))

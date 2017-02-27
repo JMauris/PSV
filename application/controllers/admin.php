@@ -80,7 +80,7 @@ class Admin extends CI_Controller
   function gender_add(){
     $addedGender = $this->input->post('addedGender');
     if(null != $addedGender)
-      if('Nouveau Genre' !=$addedGender)
+      if('Nouveau Sexe' !=$addedGender)
         if('' !=$addedGender)
           $this->gender_model->insert_gender($addedGender);
     redirect('admin');
@@ -141,7 +141,7 @@ class Admin extends CI_Controller
   function ageGroup_add(){
     $addedAgeGroup = $this->input->post('addedAgeGroup');
     if(null !== $addedAgeGroup)
-      if("Nouveau groupe d'age" !=$addedAgeGroup)
+      if("Nouveau groupe d'âge" !=$addedAgeGroup)
         if('' !=$addedAgeGroup)
           $this->agegroup_model->insert_AgeGroup($addedAgeGroup);
 

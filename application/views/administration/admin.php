@@ -79,9 +79,9 @@ foreach ($intervenants as $key => $value) {
 </form>
 </div>
 	<div style="height: 60px;"> </div>
-<!-- =====================gender================================================================================ -->
+<!-- =====================genders================================================================================ -->
   <div class="container">
-    <h3>Genre</h3>
+    <h3>Sexe</h3>
     <div id="gender_add">
       <?php echo form_open('/admin/gender_add');?>
         <div class="row">
@@ -91,13 +91,13 @@ foreach ($intervenants as $key => $value) {
                 'id' 		=> 'addedGender',
                 'name'	=> 'addedGender',
                 'class'	=> 'form-control',
-                'value' => 'Nouveau Genre'
+                'value' => 'Nouveau Sexe'
               );
                 echo form_input($input);
             ?>
           </div>
           <div class="col-xs-4">
-            <?php	echo form_submit('submit_Profil', 'Créer un nouveau genre',"class='btn btn-lg btn-primary btn-block'"); ?>
+            <?php	echo form_submit('submit_Profil', 'Créer un nouveau sexe',"class='btn btn-lg btn-primary btn-block'"); ?>
           </div>
         </div>
       <?php echo form_close(); ?>
@@ -264,9 +264,9 @@ foreach ($intervenants as $key => $value) {
   </div>
 </div>
 <div style="height: 60px;"> </div>
-<!-- =====================Age group================================================================================= -->
+<!-- =====================age group================================================================================= -->
 <div class="container">
-  <h3>Groupe d'age</h3>
+  <h3>Groupe d'âge</h3>
   <div id="gender_add">
     <?php echo form_open('/admin/ageGroup_add');?>
       <div class="row">
@@ -276,7 +276,7 @@ foreach ($intervenants as $key => $value) {
               'id' 		=> 'addedAgeGroup',
               'name'	=> 'addedAgeGroup',
               'class'	=> 'form-control',
-              'value' => "Nouveau groupe d'age"
+              'value' => "Nouveau groupe d'âge"
             );
               echo form_input($input);
           ?>
