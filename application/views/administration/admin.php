@@ -21,6 +21,9 @@ function myFunction(val) {
 </script>
 
 <h2>Management</h2>
+<div>
+  <a class="btn btn-info" href="#placeKind">Les Types de lieux<a>
+</div>
 <h3>Intervenants</h3>
 
 <?php
@@ -563,7 +566,7 @@ foreach ($intervenants as $key => $value) {
 
 
 <!-- =====================place kind============================================================================ -->
-<div class="container">
+<div id="placeKind" class="container">
   <h3>Type de lieu</h3>
   <div id="placeKind_add">
     <?php echo form_open('/admin/placeKind_add');?>

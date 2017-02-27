@@ -214,32 +214,28 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 
 
 		<div class="row text-center">
-			<h2>presonnes rencontrées</h2>
+			<h2>personnes rencontrées</h2>
 		</div>
 		<div class="form-group row">
 			<div class="col-sm-1">
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				<?php
-				echo form_label('Origine');
 				echo form_dropdown('intervention[persons][added][origine_id]', $origins, 0);
 				 ?>
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				 <?php
-				echo form_label('Genre');
 				echo form_dropdown('intervention[persons][added][gender_id]', $genders, 0);
 				 ?>
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				 <?php
-				echo form_label('Orinentation');
 				echo form_dropdown('intervention[persons][added][sexuality_id]', $sexuality, 0);
 				 ?>
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				 <?php
-				echo form_label("Groupe d'age");
 				echo form_dropdown('intervention[persons][added][ageGroup_id]', $ageGroups, 0);
 				 ?>
 			</div>
@@ -286,10 +282,10 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 					<div class="in-intervention-meeting" id="<?php echo($personDivId); ?>" data-toggle="modal" data-target="#editModal_<?php echo($personId);?>">
 						<div class="form-group row">
 							<div class="col-sm-8 col-xs-6">
-								<h4>Persone n°<?php echo($key+1); ?> #<?php echo($personId); ?></h4>
+								<h4>Personne n°<?php echo($key+1); ?> #<?php echo($personId); ?></h4>
 							</div>
 							<div class="col-sm-4 col-xs-6">
-								<h5 id="<?php echo $infoId; ?>"><?php if ($hasInerMeeting): ?>A Beneficié d'un entretient personnel<?php endif; ?></h5>
+								<h5 id="<?php echo $infoId; ?>"><?php if ($hasInerMeeting): ?>A Beneficié d'un entretien personnel<?php endif; ?></h5>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -352,7 +348,6 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 													$script="var yourSelect = document.getElementById('$dropDownId' );
 														$('#".$key."_Origine').html(yourSelect.options[ yourSelect.selectedIndex ].innerHTML);
 													 document.getElementById('$quickActionName').value = 'update';";
-													echo form_label('Origine');
 													echo form_dropdown(
 														$dropDownId,
 														$choices['origins'],
@@ -367,7 +362,6 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 													$script="var yourSelect = document.getElementById('$dropDownId' );
 														$('#".$key."_Genre').html(yourSelect.options[ yourSelect.selectedIndex ].innerHTML);
 														document.getElementById('$quickActionName').value = 'update';";
-														echo form_label('Genre');
 														echo form_dropdown(
 															$dropDownId,
 															$choices['genders'],
@@ -382,7 +376,6 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 													$script="var yourSelect = document.getElementById('$dropDownId' );
 														$('#".$key."_Sexualité').html(yourSelect.options[ yourSelect.selectedIndex ].innerHTML);
 														document.getElementById('$quickActionName').value = 'update';";
-													echo form_label('Orinentation');
 													echo form_dropdown(
 														$dropDownId,
 														$choices['sexuality'],
@@ -397,7 +390,6 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 													$script="var yourSelect = document.getElementById('$dropDownId' );
 														$('#".$key."_Age').html(yourSelect.options[ yourSelect.selectedIndex ].innerHTML);
 														document.getElementById('$quickActionName').value = 'update';";
-													echo form_label("Groupe d'age");
 													echo form_dropdown(
 														$dropDownId,
 														$choices['ageGroups'],
@@ -542,7 +534,7 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 														";
 												 ?>
 												<button type="button" class="btn btn-info btn-lg btn-block" onclick="<?php echo($script);?>">
-													Ajouter un entretient
+													Ajouter un entretien
 												</button>
 											</div>
 										</div>
