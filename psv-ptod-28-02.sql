@@ -1,9 +1,9 @@
-﻿-- phpMyAdmin SQL Dump
+-- phpMyAdmin SQL Dump
 -- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 28 Février 2017 à 18:24
+-- Généré le :  Mar 28 Février 2017 à 18:39
 -- Version du serveur :  10.1.19-MariaDB
 -- Version de PHP :  5.6.28
 
