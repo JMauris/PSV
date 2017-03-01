@@ -221,30 +221,30 @@ echo form_open('demarche/edit/'. $intervention['id_intrevention']);
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				<?php
-				echo form_dropdown('intervention[persons][added][origine_id]', $origins, 0);
+				echo form_dropdown('intervention[addedPersons][origine_id]', $origins, 0);
 				 ?>
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				 <?php
-				echo form_dropdown('intervention[persons][added][gender_id]', $genders, 0);
+				echo form_dropdown('intervention[addedPersons][gender_id]', $genders, 0);
 				 ?>
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				 <?php
-				echo form_dropdown('intervention[persons][added][sexuality_id]', $sexuality, 0);
+				echo form_dropdown('intervention[addedPersons][sexuality_id]', $sexuality, 0);
 				 ?>
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				 <?php
-				echo form_dropdown('intervention[persons][added][ageGroup_id]', $ageGroups, 0);
+				echo form_dropdown('intervention[addedPersons][ageGroup_id]', $ageGroups, 0);
 				 ?>
 			</div>
 			<div class="col-sm-2 col-xs-6">
 				 <?php
 
 				 $quantityInput= array(
-					 'id' 		=> 'intervention[persons][added][quantity]',
-					 'name'	=> 'intervention[persons][added][quantity]',
+					 'id' 		=> 'intervention[addedPersons][quantity]',
+					 'name'	=> 'intervention[addedPersons][quantity]',
 					 'class'	=> 'form-control',
 					 'type'  => 'number',
 					 'value' => 0);

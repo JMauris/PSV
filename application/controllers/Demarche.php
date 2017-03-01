@@ -57,25 +57,20 @@ class Demarche extends CI_Controller
             return;
           }
 
-
-        $potentialyAdded = $intervention['persons']['added'];
-        unset($intervention['persons']['added']);
-        if(  ( 0 >= $potentialyAdded['origine_id'])
-          && ( 0 >= $potentialyAdded['gender_id'])
-          && ( 0 >= $potentialyAdded['sexuality_id'])
-          && ( 0 >= $potentialyAdded['ageGroup_id'])
-          )
-          for ($i=0; $i < $potentialyAdded['quantity'] ; $i++) {
+          $addedPersons = $intervention['addedPersons'];
+          for ($i=0; $i < $addedPersons['quantity'] ; $i++) {
             $inserted = $this->person_model->getById(
               $this->person_model->insertPerson(
                 "",
-                $potentialyAdded['origine_id'],
-                $potentialyAdded['ageGroup_id'],
-                $potentialyAdded['gender_id'],
-                $potentialyAdded['sexuality_id']
+                $addedPersons['origine_id'],
+                $addedPersons['ageGroup_id'],
+                $addedPersons['gender_id'],
+                $addedPersons['sexuality_id']
               )
             );
             $inserted['quickAction']= 'added';
+            if(false== isset($intervention['persons']))
+              $intervention['persons'] = array();
             array_push($intervention['persons'],$inserted);
           }
 
