@@ -170,18 +170,6 @@ CREATE TABLE `ola_criad` (
   `duration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Structure de la table `ola_indirect`
---
-
-CREATE TABLE `ola_indirect` (
-  `indirect_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `date` date NOT NULL,
-  `prestGrp` int(11) NOT NULL,
-  `prest_id` int(11) NOT NULL,
-  `duration` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Structure de la table `ola_prospreh`
