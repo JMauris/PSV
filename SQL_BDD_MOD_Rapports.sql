@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 01 Mars 2017 à 01:55
+-- Généré le :  Mer 01 Mars 2017 à 02:12
 -- Version du serveur :  10.1.16-MariaDB
 -- Version de PHP :  5.6.24
 
@@ -146,7 +146,6 @@ insert into ola_prospreh
 END$$
 
 DELIMITER ;
-
 --
 -- Structure de la table `ola_compta`
 --
@@ -172,17 +171,30 @@ CREATE TABLE `ola_criad` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Structure de la table `ola_direct`
+-- Structure de la table `ola_indirect`
 --
 
-CREATE TABLE `ola_direct` (
-  `id_intrevention` int(11) NOT NULL,
+CREATE TABLE `ola_indirect` (
+  `indirect_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `date` date NOT NULL,
-  `duration` int(11) NOT NULL,
-  `annonyme` tinyint(1) NOT NULL,
-  `intervenant_id` int(11) NOT NULL
+  `prestGrp` int(11) NOT NULL,
+  `prest_id` int(11) NOT NULL,
+  `duration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Structure de la table `ola_prospreh`
+--
+
+CREATE TABLE `ola_prospreh` (
+  `user` varchar(50) NOT NULL,
+  `year` int(11) NOT NULL,
+  `month` int(11) NOT NULL,
+  `prestGroupId` int(11) NOT NULL,
+  `prest` int(11) NOT NULL,
+  `duration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
