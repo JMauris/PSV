@@ -21,49 +21,25 @@ class Reports extends CI_Controller
     }
 
   }
-  //===========Direct=========================================
 
   function updateCubes(){
     $this->reports_model->updateCubes();
     redirect('reports');
   }
   function index(){
-    $intervenants = $this->intervenant_model->getAllIntervenant();
-    $selctData = array(
-      'intervenants' => $intervenants,
-      'reportTypes' => self::reportTypes
-    );
-    $this->load->view('reports/selector',$selctData);
+    $this->reports_model->updateCubes();
+    $compta   = $this->reports_model->getCompta(2017);
+    $criad    = $this->reports_model->getCriad(2017);
+    $prospreh = array();
+    $prospreh['trim'] = $this->reports_model->getProspreh(2017);
+    $this->_addProspretMeta($prospreh);
+    $data = array(
+      'compta' =>$compta ,
+      'criad' => $criad,
+      'prospreh' => $prospreh
+      );
 
-    $selected = $this->input->post('select');
-    if(null !== $selected){
-      $meta = array(
-        'year'      => $selected['year'],
-        'userId'    => $selected['userId'],
-        'userName'  => $intervenants[$selected['userId']],
-        'kind'      => $selected['kind'],
-        'kindName'  => self::reportTypes[$selected['kind']]
-        );
-
-      $this->load->view('reports/reportHeader',$meta);
-      switch ($meta['kind']) {
-        case 1:
-            $report = $this->_getDirectReport($meta['year'], $meta['userId']);
-            $this->load->view('reports/direct',$data = array('report' => $report));
-          break;
-      case 2:
-          $report = $this->_getUnirectReport($meta['year'], $meta['userId']);
-          $this->_addProspretMeta($report);
-          $this->load->view('reports/prospreh',$data = array('report' => $report));
-
-        //  $this->load->view('reports/direct',$data = array('report' => $report));
-        break;
-        default:
-          # code...
-          break;
-      }
-
-    }
+    $this->load->view('reports', $data);
   }
 
   function _getDirectReport($year, $user){
@@ -72,8 +48,8 @@ class Reports extends CI_Controller
     foreach ($raw as $eventDay) {// reakdown
       //getting type, value depend of type too
       if( $eventDay['annonyme']==0){
-        $type = "named";
-        $value = round ( $eventDay['duration']/30);
+        $type = "unNamed";
+        $value = round ( $eventDay['duration']/15);
       }
       else{
         $type = "unNamed";
@@ -102,14 +78,14 @@ class Reports extends CI_Controller
 
       //constructing indexed table
       $expDate = explode('-',$eventDay['date']); //[0>>day - 1>>month - 2>>year]
-      $report
+      /*$report
         ['day']                           // report section
           [intval ($expDate[1])]          // month
             [intval ($expDate[0])]        // day
               [$eventDay['prestGrp']]     // prestation group
                 [$eventDay['prest_id']]   // prestation
                   = $value;
-
+*/
         // determine trimestre
         $trim =  floor((intval($expDate[1])-1)/3)+1;
 
@@ -147,7 +123,7 @@ class Reports extends CI_Controller
         $prestationsTree[$presGrpId]['isUsed']=true;
         foreach ($preslist as $presId => $unsuedVariable)
           $prestationsTree[$presGrpId]['prestations'][$presId]['isUsed']=true;
-      }
+    }
     // remove all unused
     foreach ($prestationsTree as $keyPrestationsTree => $unsuedVariable)
       if(false == $prestationsTree[$keyPrestationsTree]['isUsed'])

@@ -4,51 +4,32 @@
 ?>
   <div id="report" class="container-fluid prospreh-report">
     <div class="row">
+      <h3>PROSPREJ</h3>
       <table class="table">
         <thead>
           <tr>
             <th>Prestation</th>
-            <?php foreach ($report['trim'] as $trimNumber => $unUsedVariable): ?>
-              <th class="trim">Trimestre&nbsp<?php echo $trimNumber; ?></th>
-            <?php ++$datacolunCount; endforeach; ?>
-            <th/>
-            <?php foreach ($report['day'] as $monthNumber => $month): ?>
-              <?php foreach ($month as $daynumber => $unUsedVariable): ?>
-                <th class="day">
-                  <?php $Mcom=""; if($monthNumber<10)$Mcom='0'; $Dcom=""; if($daynumber<10)$Dcom='0'; echo $Dcom.$daynumber.'-'.$Mcom. $monthNumber; ?></th>
-              <?php ++$datacolunCount; endforeach; ?>
-            <?php endforeach; ?>
+              <th class="trim">1er trimestre</th>
+              <th class="trim">2eme trimestre</th>
+              <th class="trim">3eme trimestre</th>
+              <th class="trim">4eme trimestre</th>
           </tr>
         </thead>
         <tbody>
           <?php foreach ($report['meta'] as $groupId => $group): ?>
             <tr class="groupRow">
-              <td style="background-color: silver;"><?php echo $group['presstationGroup_descr']; ?></td>
-              <?php for ($column=0; $column <=$datacolunCount; $column++) : ?>
-                <td>&nbsp</td>
-              <?php endfor; ?>
+              <td colspan="5"><?php echo $group['presstationGroup_descr']; ?></td>
               <?php $linbr=0; foreach ($group['prestations'] as $prestId => $prest): ?>
                 <tr class="prestRow-<?php ++$linbr; if($linbr%2==0):?>odd<?php else:?>even<?php endif?>">
                   <td><?php echo $prest['descr']; ?></td>
-                  <?php foreach ($report['trim'] as $trimNumber => $trimContent): ?>
+                  <?php for ($trimnum=1; $trimnum <=4 ; $trimnum++): ?>
                     <td>
                       <?php
-                      if(isset($trimContent[$groupId][$prestId]))
-                        echo round($trimContent[$groupId][$prestId],2);
+                      if(isset($report['trim'][$trimnum][$groupId][$prestId]))
+                        echo round($report['trim'][$trimnum][$groupId][$prestId],2);
                       ?>
                     </td>
-                  <?php endforeach; ?>
-                  <td/>
-                  <?php foreach ($report['day'] as $monthNumber => $month): ?>
-                    <?php foreach ($month as $daynumber => $dayContent): ?>
-                      <td>
-                        <?php
-                          if(isset($dayContent[$groupId][$prestId]))
-                            echo round($dayContent[$groupId][$prestId],2);
-                        ?>
-                      </td>
-                    <?php endforeach; ?>
-                  <?php endforeach; ?>
+                  <?php endfor; ?>
                 </tr>
               <?php endforeach; ?>
             </tr>

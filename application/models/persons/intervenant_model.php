@@ -11,6 +11,8 @@ class Intervenant_Model extends CI_Model
   function getSelector(){
     $this->db->where('activated', 1);
     //$this->db->where('group_id', 300);
+
+    $this->db->where('id', '>0');
     $query =$this->db->get('users');
 
     $intervenants = array();
@@ -24,6 +26,8 @@ class Intervenant_Model extends CI_Model
 
 		$this->db->where('activated', 1);
     //$this->db->where('group_id', 300);
+
+    $this->db->where('id >', 0);
     $query =$this->db->get('users');
 
     $intervenants = array();
@@ -35,7 +39,8 @@ class Intervenant_Model extends CI_Model
   }
 
     function getAllFullIntervenant(){
-        $query =$this->db->get('users');
+      $this->db->where('id >', 0);
+      $query =$this->db->get('users');
 
       $intervenants = array();
       $rows = $query->result_array();
@@ -53,7 +58,7 @@ class Intervenant_Model extends CI_Model
     }
   function getIntervenantById($id){
 
-    $this->db->where('id', $id);
+    $this->db->where('id >', 0);
     $query =$this->db->get('users');
 
     if ($query->num_rows() != 1){
