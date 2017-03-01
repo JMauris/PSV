@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="<?php echo base_url(); ?>">PSV</a>
+          <a class="navbar-brand" href="<?php echo base_url(); ?>">PSV<?php if ($is_logged): echo " - ".$username; endif; ?></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -70,10 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   </li>
                 <?php endif; ?>
                 <li>
-                  <a class="dropdown-toggle" data-toggle="dropdown"><?php echo $username; ?>&nbsp<span class="glyphicon glyphicon-cog"/></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="<?php echo base_url() . index_page(). '/' . 'auth/logout'; ?>">Deconnection</a></li>
-                    </ul>
+                  <a href=<?php echo base_url() . index_page(). '/' . 'auth/logout'; ?>>Se déconnecter</a>
                 </li>
             </ul>
           <?php endif; ?>
