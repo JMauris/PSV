@@ -98,6 +98,9 @@ foreach ($intervenants as $key => $value) {
     <div id="gender_add">
       <?php echo form_open('/admin/gender_add');?>
         <div class="row">
+          <div class="col-xs-4">
+            <?php	echo form_submit('submit_Profil', 'Créer un nouveau sexe',"class='btn btn-lg btn-primary btn-block'"); ?>
+          </div>
           <div  class="col-xs-8">
             <?php
               $input= array(
@@ -109,9 +112,6 @@ foreach ($intervenants as $key => $value) {
                 echo form_input($input);
             ?>
           </div>
-          <div class="col-xs-4">
-            <?php	echo form_submit('submit_Profil', 'Créer un nouveau sexe',"class='btn btn-lg btn-primary btn-block'"); ?>
-          </div>
         </div>
       <?php echo form_close(); ?>
     </div>
@@ -119,6 +119,9 @@ foreach ($intervenants as $key => $value) {
       <h4>Description - Valeur par défaut</h4>
       <?php echo form_open('/admin/gender_defaultEdit');?>
         <div class="row">
+          <div class="col-xs-4">
+            <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+          </div>
           <div  class="col-xs-8">
             <?php
               $input= array(
@@ -129,9 +132,6 @@ foreach ($intervenants as $key => $value) {
               );
                 echo form_input($input);
             ?>
-          </div>
-          <div class="col-xs-4">
-            <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
           </div>
         </div>
       <?php echo form_close(); ?>
@@ -191,6 +191,9 @@ foreach ($intervenants as $key => $value) {
   <div id="sexuality_add">
     <?php echo form_open('/admin/sexuality_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer une nouvelle sexualité',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -202,9 +205,6 @@ foreach ($intervenants as $key => $value) {
               echo form_input($input);
           ?>
         </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer une nouvelle sexualité',"class='btn btn-lg btn-primary btn-block'"); ?>
-        </div>
       </div>
     <?php echo form_close(); ?>
   </div>
@@ -212,6 +212,9 @@ foreach ($intervenants as $key => $value) {
     <h4>Description - Valeur par défaut</h4>
     <?php echo form_open('/admin/sexuality_defaultEdit');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -222,9 +225,6 @@ foreach ($intervenants as $key => $value) {
             );
               echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -283,6 +283,9 @@ foreach ($intervenants as $key => $value) {
   <div id="ageGroup_add">
     <?php echo form_open('/admin/ageGroup_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau groupe',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -294,9 +297,6 @@ foreach ($intervenants as $key => $value) {
               echo form_input($input);
           ?>
         </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer un nouveau groupe',"class='btn btn-lg btn-primary btn-block'"); ?>
-        </div>
       </div>
     <?php echo form_close(); ?>
   </div>
@@ -304,6 +304,9 @@ foreach ($intervenants as $key => $value) {
     <h4>Description - Valeur par défaut</h4>
     <?php echo form_open('/admin/ageGroup_defaultEdit');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -314,9 +317,6 @@ foreach ($intervenants as $key => $value) {
             );
               echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -382,6 +382,9 @@ foreach ($intervenants as $key => $value) {
   <div id="thematics_add">
     <?php echo form_open('/admin/thematics_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau thème',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-4">
           <?php
             echo form_dropdown('addedthema[parent]',$parentSelector);
@@ -397,9 +400,6 @@ foreach ($intervenants as $key => $value) {
           );
             echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer un nouveau thème',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -506,6 +506,9 @@ foreach ($intervenants as $key => $value) {
   <div id="material_add">
     <?php echo form_open('/admin/material_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau materiel',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -516,9 +519,6 @@ foreach ($intervenants as $key => $value) {
             );
               echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer un nouveau materiel',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -581,6 +581,9 @@ foreach ($intervenants as $key => $value) {
   <div id="placeKind_add">
     <?php echo form_open('/admin/placeKind_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau type',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -592,9 +595,6 @@ foreach ($intervenants as $key => $value) {
               echo form_input($input);
           ?>
         </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer un nouveau type',"class='btn btn-lg btn-primary btn-block'"); ?>
-        </div>
       </div>
     <?php echo form_close(); ?>
   </div>
@@ -602,6 +602,9 @@ foreach ($intervenants as $key => $value) {
     <h4>Description - Valeur par défaut</h4>
     <?php echo form_open('/admin/placeKind_defaultEdit');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -612,9 +615,6 @@ foreach ($intervenants as $key => $value) {
             );
               echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -676,6 +676,9 @@ foreach ($intervenants as $key => $value) {
   <div id="prestGrp_add">
     <?php echo form_open('/admin/prestGrp_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau groupe',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -686,9 +689,6 @@ foreach ($intervenants as $key => $value) {
             );
               echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer un nouveau groupe',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -748,12 +748,15 @@ foreach ($intervenants as $key => $value) {
   <div id="prest_add">
     <?php echo form_open('/admin/prest_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer une nouvelle prestation',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-4">
           <?php
             echo form_dropdown('addedPrestGrp',$prestGrpSelector);
           ?>
         </div>
-        <div  class="col-xs-4">
+          <div  class="col-xs-4">
           <?php
             $input= array(
               'id' 		=> 'addedPrestDescr',
@@ -764,9 +767,7 @@ foreach ($intervenants as $key => $value) {
               echo form_input($input);
           ?>
         </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer une nouvelle prestation',"class='btn btn-lg btn-primary btn-block'"); ?>
-        </div>
+
       </div>
     <?php echo form_close(); ?>
   </div>
@@ -833,6 +834,9 @@ foreach ($intervenants as $key => $value) {
   	<div id="cities_activByNPA">
       <?php echo form_open('/admin/cities_activByNPA');?>
         <div class="row">
+          <div class="col-xs-4">
+  					<?php	echo form_submit('submit_Profil', 'activer par npa',"class='btn btn-lg btn-primary btn-block'"); ?>
+  				</div>
   				<div  class="col-xs-8">
   					<?php
   						$input= array(
@@ -844,15 +848,15 @@ foreach ($intervenants as $key => $value) {
   							echo form_input($input);
   					?>
   				</div>
-  				<div class="col-xs-4">
-  					<?php	echo form_submit('submit_Profil', 'activer par npa',"class='btn btn-lg btn-primary btn-block'"); ?>
-  				</div>
   			</div>
   		<?php echo form_close(); ?>
   	</div>
     <div id="cities_activByName">
       <?php echo form_open('/admin/cities_activByName');?>
         <div class="row">
+          <div class="col-xs-4">
+            <?php	echo form_submit('submit_Profil', 'activer par nom',"class='btn btn-lg btn-primary btn-block'"); ?>
+          </div>
           <div  class="col-xs-8">
             <?php
               $input= array(
@@ -863,9 +867,6 @@ foreach ($intervenants as $key => $value) {
               );
                 echo form_input($input);
             ?>
-          </div>
-          <div class="col-xs-4">
-            <?php	echo form_submit('submit_Profil', 'activer par nom',"class='btn btn-lg btn-primary btn-block'"); ?>
           </div>
         </div>
       <?php echo form_close(); ?>
