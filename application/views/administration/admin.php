@@ -825,8 +825,117 @@ foreach ($intervenants as $key => $value) {
 </div>
 <div style="height: 60px;"> </div>
 
+<!-- =====================Origines================================================================================ -->
 
+<div id="origines_Sct" class="container">
+  <h3>Origines</h3>
+  <div id="origines_add">
+    <?php echo form_open('admin/origines_add');?>
+    <div class="row">
+      <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer une nouvelle origine',"class='btn btn-lg btn-primary btn-block'"); ?>
+      </div>
+      <div  class="col-xs-4">
+        <?php
+          echo form_dropdown('addOrigine[parent]',$origineSelector);
+        ?>
+      </div>
+      <div  class="col-xs-4">
+        <?php
+        $input= array(
+          'id' 		=> 'addOrigine[name]',
+          'name'	=> 'addOrigine[name]',
+          'class'	=> 'form-control',
+          'value' => "Nouvelle origine"
+        );
+          echo form_input($input);
+        ?>
+      </div>
+    </div>
+  <?php echo form_close(); ?>
+</div>
+<div id="origines_edit">
+  <?php echo form_open('/admin/origines_edit/');?>
+    <div class="row">
+      <?php
+        var_dump($origines);
+        $maxDepth=0;
+        foreach ($origines as $origine)
+          if($origine['depth'] > $maxDepth)
+            $maxDepth = $origine ['depth'];
+       ?>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th colspan="<?php echo $maxDepth;?>">Parent</th>
+            <th colspan="<?php echo $maxDepth;?>">Nom</th>
+            <th colspan="<?php echo $maxDepth;?>">Position</th>
+            <th colspan="<?php echo $maxDepth;?>">Actif</th>
+            <th colspan="<?php echo $maxDepth-1;?>"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($origines as $origine):?>
+            <tr>
+              <?php for($marge = 1; $marge < $origine['depth']; $marge++): ?>
+                <td/>
+              <?php endfor; ?>
+              <td colspan="<?php echo $maxDepth;?>">
+                <?php
+                    echo form_hidden('origines['.$origine['id_origine'].'][id_origine]',$origine['id_origine']);
+                    $selector=$origineSelector;
+var_dump($selector);
+                    //if(false==isset($selector[$origine['id_origine']]))
+                    //  array_unshift($selector, $vars...)
+                  $input= array(
+                    'class'	=> 'form-control',
+                    'value' => $origine['parent_id']);
+                    echo form_input($input);
+                ?>
 
+                <?php //echo  $origine['parent_id']; ?>
+              </td>
+              <td colspan="<?php echo $maxDepth;?>">
+                <?php
+                  $input= array(
+                    'id' 		=> 'origines['.$origine['id_origine'].'][name]',
+                    'name'	=> 'origines['.$origine['id_origine'].'][name]',
+                    'class'	=> 'form-control',
+                    'value' => $origine['name']);
+                    echo form_input($input);
+                ?>
+              </td>
+              <td colspan="<?php echo $maxDepth;?>">
+                <?php
+                $input= array(
+                  'id' 		=> 'origines['.$origine['id_origine'].'][position]',
+                  'name'	=> 'origines['.$origine['id_origine'].'][position]',
+                  'class'	=> 'form-control',
+                  'value' =>$origine['position']);
+                  echo form_input($input);
+                ?>
+              </td>
+              <td colspan="<?php echo $maxDepth;?>">
+                <?php
+                $input= array(
+                  'id' 		=> 'origines['.$origine['id_origine'].'][actived]',
+                  'name'	=> 'origines['.$origine['id_origine'].'][actived]',
+                  'class'	=> 'form-control',
+                  'value' => $origine['actived']);
+                  echo form_input($input);
+                ?>
+              </td>
+              <?php for($marge = $origine['depth']; $marge < $maxDepth; $marge++): ?>
+                <td/>
+              <?php endfor; ?>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+    <?php	echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");?>
+  <?php echo form_close(); ?>
+</div>
 
 <!-- =====================cities================================================================================ -->
   <div class="container">

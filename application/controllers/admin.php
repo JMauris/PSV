@@ -34,7 +34,8 @@ class Admin extends CI_Controller
     $prestationGroups = $this->prestation_model->getGroups();
     $prestations = $this->prestation_model->getPrestations();
     $thematicsTree = $this->thematics_model->getAdminTree();
-
+    $origines = $this->origines_model->getAdminTree();
+    $origineSelector = $this->origines_model->getFlatTree();
 
 
     $roles = array(
@@ -54,9 +55,12 @@ class Admin extends CI_Controller
       'prestationGroups'=>$prestationGroups,
       'prestations'=>$prestations,
       'thematicsTree' => $thematicsTree,
+      'origines' =>   $origines,
+      'origineSelector' => $origineSelector,
       'cities'=> $cities
      );
-     //var_dump($data);
+
+
     $this->load->view('administration/admin',$data);
 
   }
@@ -333,6 +337,46 @@ function prest_edit(){
     ////$this->output->enable_profiler(true);
     redirect('admin');
   }
+//============end===========================================
+
+//==========Origines========================================
+function origines_add(){
+  $addOrigine = $this->input->post('addOrigine');
+  if(null !== $addOrigine){
+       if("Nouvelle origine" !=$addedthema['name']){
+         if(''!=$addOrigine['name']){
+           $this->origines_model->insert($addOrigine['parent'],$addOrigine['name']);
+         }
+       }
+    }
+    redirect('admin');
+}
+
+function origines_edit(){
+  $origineTree = $this->input->post('origineTree');
+  if(null !== $origineTree){
+    foreach ($origineTree['children'] as $topKey => $topLvlOrigine) {
+      if(false ==(isset($topLvlOrigine['actived']))){
+        $origineTree['children'][$topKey]['actived']=0;
+        foreach ($topLvlOrigine as $lowkey => $lowlvlOrigin) {
+          $origineTree['children'][$topKey]['children'][$lowkey]['actived']=0;
+        }
+      }else {
+        foreach ($topLvlOrigine['children'] as $lowKey => $lowlvlOrigin) {
+          if(false ==(isset($lowlvlOrigin['actived'])))
+          {
+            $origineTree['children'][$topKey]['children'][$lowKey]['actived']=0;
+          }
+        }
+      }
+    }
+  }
+  var_dump($origineTree);
+   $this->origines_model->updateTree($origineTree);
+  //  redirect('admin');
+}
+
+//============end===========================================
 
 
 }
