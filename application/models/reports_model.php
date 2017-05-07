@@ -85,7 +85,7 @@ class reports_model extends CI_Model
       $trim =  floor(($row['month']-1)/3)+1;
       if(false == isset($report[$row['user']]))
         $report[$row['user']]=$this->_getCriadUser();
-      $report[$row['user']][$trim] += $row['duration'];
+      $report[$row['user']][$trim] += ceil($row['duration']/4);
     }
     return $report;
   }
