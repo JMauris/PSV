@@ -33,7 +33,7 @@ function myFunction(val) {
     <li><a href="#rac_prestGrp">PROSPREH - Catégories</a></li>
     <li><a href="#rac_prestations">PROSPREH - Prestations</a></li>
     <li><a href="#rac_origines">Origines</a></li>
-    
+
   </ul>
 
 </div>
@@ -847,7 +847,7 @@ foreach ($intervenants as $key => $value) {
     if($origine['actived']==0){
       $parentSelector[$origine['id_origine']]=$parentSelector[$origine['id_origine']].' (inactif)';
     }
-
+    unset($origines['0']);
   }
    ?>
   <div id="origines_add">
