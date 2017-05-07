@@ -18,17 +18,28 @@ class Origines_Model extends CI_Model
 
   function getAdminTree(){
 
+    $this->db->where('id_origine',0);
+    $query = $this->db->get(self::TABLE_NAME);
+    if ($query->num_rows() == 0)
+      return NULL;
+    $rows = $query->result_array();
+    $rows[0]['depth']= 0;
     $respons = array();
+    array_push($respons, $rows[0]);
     $this->populateAdmin($respons, 0 , 1);
 
     return $respons;
   }
 
   function getFlatTree(){
-    $mock = array('id' => 0,
-                  'text' => 'Origine');
+    $this->db->where('id_origine',0);
+    $query = $this->db->get(self::TABLE_NAME);
+    if ($query->num_rows() == 0)
+      return NULL;
+    $rows = $query->result_array();
+
     $respons = array();
-    $respons['0']="Originie non déclarée";
+    $respons['0']=$rows['0']['name'];
     $this->populateFlat($respons,$mock,'');
 
     return $respons;
@@ -117,7 +128,7 @@ class Origines_Model extends CI_Model
 
   }
   function updateElement($element){
-    var_dump($element);
+  //  var_dump($element);
     $this->db->select('*');
     $this->db->from(self::TABLE_NAME);
     $this->db->where('id_origine', $element['id_origine']);
@@ -140,6 +151,11 @@ class Origines_Model extends CI_Model
     if(isset($element['children']))
       foreach ($element['children'] as $value)
         $this->updateElement($value);
+  }
+  function setDefaultName($name){
+    $set = array('name' => $name);
+    $this->db->where('id_origine', 0);
+    $this->db->update(self::TABLE_NAME, $set);
   }
 
 }

@@ -6,7 +6,8 @@
   $ageGroupDefault = $ageGroups['0']['name'];
   unset($ageGroups['0']);
   $placeKindDefault = $placeKinds['0']['descr'];
-  unset($placeKinds['0']);
+  unset($ageGroups['0']);
+  $origineDefault = $origines['0']['name'];
   $prestGrpSelector = array();
   foreach ($prestationGroups as $key => $value)
     $prestGrpSelector[$value['id_presstationGroup']]=$value['presstationGroup_descr'];
@@ -829,6 +830,23 @@ foreach ($intervenants as $key => $value) {
 
 <div id="origines_Sct" class="container">
   <h3>Origines</h3>
+  <?php
+  $maxDepth=0;
+  $parentSelector = array();
+  foreach ($origines as $origine){
+    if($origine['depth'] > $maxDepth)
+      $maxDepth = $origine ['depth'];
+    $parentSelector[$origine['id_origine']]='';
+    for ($cpt=0; $cpt <$origine['depth'] ; $cpt++) {
+      $parentSelector[$origine['id_origine']]='-'.$parentSelector[$origine['id_origine']];
+      }
+    $parentSelector[$origine['id_origine']]=$parentSelector[$origine['id_origine']].' '.$origine['name'];
+    if($origine['actived']==0){
+      $parentSelector[$origine['id_origine']]=$parentSelector[$origine['id_origine']].' (inactif)';
+    }
+
+  }
+   ?>
   <div id="origines_add">
     <?php echo form_open('admin/origines_add');?>
     <div class="row">
@@ -837,7 +855,7 @@ foreach ($intervenants as $key => $value) {
       </div>
       <div  class="col-xs-4">
         <?php
-          echo form_dropdown('addOrigine[parent]',$origineSelector);
+          echo form_dropdown('addOrigine[parent]',$parentSelector);
         ?>
       </div>
       <div  class="col-xs-4">
@@ -854,21 +872,36 @@ foreach ($intervenants as $key => $value) {
     </div>
   <?php echo form_close(); ?>
 </div>
+<div id="origine_defaultEdit">
+  <h4>Description - Valeur par défaut</h4>
+  <?php echo form_open('/admin/origine_defaultEdit');?>
+    <div class="row">
+      <div class="col-xs-4">
+        <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+      </div>
+      <div  class="col-xs-8">
+        <?php
+          $input= array(
+            'id' 		=> 'origineDefault',
+            'name'	=> 'origineDefault',
+            'class'	=> 'form-control',
+            'value' => $origineDefault
+          );
+            echo form_input($input);
+        ?>
+      </div>
+    </div>
+  <?php echo form_close(); ?>
+</div>
 <div id="origines_edit">
   <?php echo form_open('/admin/origines_edit/');?>
     <div class="row">
-      <?php
-        var_dump($origines);
-        $maxDepth=0;
-        foreach ($origines as $origine)
-          if($origine['depth'] > $maxDepth)
-            $maxDepth = $origine ['depth'];
-       ?>
+
       <table class="table table-hover">
         <thead>
           <tr>
             <th colspan="<?php echo $maxDepth;?>">Parent</th>
-            <th colspan="<?php echo $maxDepth;?>">Nom</th>
+            <th style="min-width: 250px" colspan="<?php echo ($maxDepth+2);?>">Nom</th>
             <th colspan="<?php echo $maxDepth;?>">Position</th>
             <th colspan="<?php echo $maxDepth;?>">Actif</th>
             <th colspan="<?php echo $maxDepth-1;?>"></th>
@@ -883,19 +916,12 @@ foreach ($intervenants as $key => $value) {
               <td colspan="<?php echo $maxDepth;?>">
                 <?php
                     echo form_hidden('origines['.$origine['id_origine'].'][id_origine]',$origine['id_origine']);
-                    $selector=$origineSelector;
-var_dump($selector);
-                    //if(false==isset($selector[$origine['id_origine']]))
-                    //  array_unshift($selector, $vars...)
-                  $input= array(
-                    'class'	=> 'form-control',
-                    'value' => $origine['parent_id']);
-                    echo form_input($input);
-                ?>
 
-                <?php //echo  $origine['parent_id']; ?>
+                    echo form_dropdown('origines['.$origine['id_origine'].'][parent_id]',$parentSelector,$origine['parent_id']);
+
+                ?>
               </td>
-              <td colspan="<?php echo $maxDepth;?>">
+              <td style="min-width: 250px" colspan="<?php echo ($maxDepth+2);?>">
                 <?php
                   $input= array(
                     'id' 		=> 'origines['.$origine['id_origine'].'][name]',
@@ -917,13 +943,7 @@ var_dump($selector);
               </td>
               <td colspan="<?php echo $maxDepth;?>">
                 <?php
-                $input= array(
-                  'id' 		=> 'origines['.$origine['id_origine'].'][actived]',
-                  'name'	=> 'origines['.$origine['id_origine'].'][actived]',
-                  'class'	=> 'form-control',
-                  'value' => $origine['actived']);
-                  echo form_input($input);
-                ?>
+                echo form_checkbox('origines['.$origine['id_origine'].'][actived]',1,$origine['actived']);  ?>
               </td>
               <?php for($marge = $origine['depth']; $marge < $maxDepth; $marge++): ?>
                 <td/>

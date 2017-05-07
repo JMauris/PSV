@@ -60,7 +60,6 @@ class Admin extends CI_Controller
       'cities'=> $cities
      );
 
-
     $this->load->view('administration/admin',$data);
 
   }
@@ -196,7 +195,7 @@ function thematics_edit(){
             $themaTree['children'][$topKey]['children'][$lowKey]['isActiv']=0;
       }
     }
-  //var_dump($themaTree);
+
   $this->thematics_model->updateTree($themaTree);
   ////$this->output->enable_profiler(true);
   //redirect('admin');
@@ -352,28 +351,21 @@ function origines_add(){
     redirect('admin');
 }
 
+function origine_defaultEdit(){
+  $origineDefault=$this->input->post('origineDefault');
+  if(null!=$origineDefault)
+    $this->origines_model->setDefaultName($origineDefault);
+  redirect('admin');
+}
 function origines_edit(){
-  $origineTree = $this->input->post('origineTree');
-  if(null !== $origineTree){
-    foreach ($origineTree['children'] as $topKey => $topLvlOrigine) {
-      if(false ==(isset($topLvlOrigine['actived']))){
-        $origineTree['children'][$topKey]['actived']=0;
-        foreach ($topLvlOrigine as $lowkey => $lowlvlOrigin) {
-          $origineTree['children'][$topKey]['children'][$lowkey]['actived']=0;
-        }
-      }else {
-        foreach ($topLvlOrigine['children'] as $lowKey => $lowlvlOrigin) {
-          if(false ==(isset($lowlvlOrigin['actived'])))
-          {
-            $origineTree['children'][$topKey]['children'][$lowKey]['actived']=0;
-          }
-        }
-      }
+  $origines = $this->input->post('origines');
+  if(null !== $origines)
+    foreach ($origines as $key => $origine) {
+      if(false==isset($origine['actived']))
+        $origine['actived']=0;
+      $this->origines_model->updateElement($origine);
     }
-  }
-  var_dump($origineTree);
-   $this->origines_model->updateTree($origineTree);
-  //  redirect('admin');
+      redirect('admin');
 }
 
 //============end===========================================
