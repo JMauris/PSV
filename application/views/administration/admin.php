@@ -32,6 +32,8 @@ function myFunction(val) {
     <li><a href="#rac_placeKind">Types de lieux</a></li>
     <li><a href="#rac_prestGrp">PROSPREH - Catégories</a></li>
     <li><a href="#rac_prestations">PROSPREH - Prestations</a></li>
+    <li><a href="#rac_origines">Origines</a></li>
+    
   </ul>
 
 </div>
@@ -826,6 +828,7 @@ foreach ($intervenants as $key => $value) {
 </div>
 <div style="height: 60px;"> </div>
 
+	<div id="rac_origines" style="height: 60px;"> </div>
 <!-- =====================Origines================================================================================ -->
 
 <div id="origines_Sct" class="container">
@@ -955,87 +958,4 @@ foreach ($intervenants as $key => $value) {
     </div>
     <?php	echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");?>
   <?php echo form_close(); ?>
-</div>
-
-<!-- =====================cities================================================================================ -->
-  <div class="container">
-  	<h3>Villes</h3>
-  	<div id="cities_activByNPA">
-      <?php echo form_open('/admin/cities_activByNPA');?>
-        <div class="row">
-          <div class="col-xs-4">
-  					<?php	echo form_submit('submit_Profil', 'activer par npa',"class='btn btn-lg btn-primary btn-block'"); ?>
-  				</div>
-  				<div  class="col-xs-8">
-  					<?php
-  						$input= array(
-  							'id' 		=> 'activatedNPA',
-  							'name'	=> 'activatedNPA',
-  							'class'	=> 'form-control',
-                'value' => 'NPA'
-              );
-  							echo form_input($input);
-  					?>
-  				</div>
-  			</div>
-  		<?php echo form_close(); ?>
-  	</div>
-    <div id="cities_activByName">
-      <?php echo form_open('/admin/cities_activByName');?>
-        <div class="row">
-          <div class="col-xs-4">
-            <?php	echo form_submit('submit_Profil', 'activer par nom',"class='btn btn-lg btn-primary btn-block'"); ?>
-          </div>
-          <div  class="col-xs-8">
-            <?php
-              $input= array(
-                'id' 		=> 'activatedName',
-                'name'	=> 'activatedName',
-                'class'	=> 'form-control',
-                'value' => 'nom'
-              );
-                echo form_input($input);
-            ?>
-          </div>
-        </div>
-      <?php echo form_close(); ?>
-    </div>
-  	<div id="cities_GroupEdit">
-  		<?php echo form_open('/admin/cities_GroupEdit/');?>
-  			<div class="row">
-  				<table class="table table-hover">
-  					<thead>
-  						<tr>
-                <th>NPA</th>
-  							<th>Nom</th>
-  							<th>Actif</th>
-  						</tr>
-  					</thead>
-  					<tbody>
-  						<?php
-  						foreach ($cities as $city) {
-                $id= $city['id_city'];
-  							?>
-  								<tr>
-                    <td>
-                      <input type="hidden" name="cities[<?php echo($id); ?>][id_city]" value="<?php echo($id); ?>" />
-                      <label><?php echo $city['npa'];?></label>
-  									</td>
-                    <td><?php echo $city['name']; ?></td>
-  									<td>
-                      <select name="cities[<?php echo($id); ?>][action]">
-                        <option value="none" selected="selected"></option>
-                        <option value="unactiv">Désactiver</option>
-                      </select>
-  									</td>
-  								</tr>
-  							<?php
-  						}
-  						?>
-  					</tbody>
-  				</table>
-  			</div>
-  			<?php	echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");?>
-  		<?php echo form_close(); ?>
-  	</div>
 </div>
