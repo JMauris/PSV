@@ -34,7 +34,8 @@ class Admin extends CI_Controller
     $prestationGroups = $this->prestation_model->getGroups();
     $prestations = $this->prestation_model->getPrestations();
     $thematicsTree = $this->thematics_model->getAdminTree();
-
+    $origines = $this->origines_model->getAdminTree();
+    $origineSelector = $this->origines_model->getFlatTree();
 
 
     $roles = array(
@@ -54,9 +55,11 @@ class Admin extends CI_Controller
       'prestationGroups'=>$prestationGroups,
       'prestations'=>$prestations,
       'thematicsTree' => $thematicsTree,
+      'origines' =>   $origines,
+      'origineSelector' => $origineSelector,
       'cities'=> $cities
      );
-     //var_dump($data);
+
     $this->load->view('administration/admin',$data);
 
   }
@@ -192,7 +195,7 @@ function thematics_edit(){
             $themaTree['children'][$topKey]['children'][$lowKey]['isActiv']=0;
       }
     }
-  //var_dump($themaTree);
+
   $this->thematics_model->updateTree($themaTree);
   ////$this->output->enable_profiler(true);
   //redirect('admin');
@@ -333,6 +336,39 @@ function prest_edit(){
     ////$this->output->enable_profiler(true);
     redirect('admin');
   }
+//============end===========================================
+
+//==========Origines========================================
+function origines_add(){
+  $addOrigine = $this->input->post('addOrigine');
+  if(null !== $addOrigine){
+       if("Nouvelle origine" !=$addedthema['name']){
+         if(''!=$addOrigine['name']){
+           $this->origines_model->insert($addOrigine['parent'],$addOrigine['name']);
+         }
+       }
+    }
+    redirect('admin');
+}
+
+function origine_defaultEdit(){
+  $origineDefault=$this->input->post('origineDefault');
+  if(null!=$origineDefault)
+    $this->origines_model->setDefaultName($origineDefault);
+  redirect('admin');
+}
+function origines_edit(){
+  $origines = $this->input->post('origines');
+  if(null !== $origines)
+    foreach ($origines as $key => $origine) {
+      if(false==isset($origine['actived']))
+        $origine['actived']=0;
+      $this->origines_model->updateElement($origine);
+    }
+      redirect('admin');
+}
+
+//============end===========================================
 
 
 }

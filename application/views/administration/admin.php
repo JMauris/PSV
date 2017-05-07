@@ -6,7 +6,8 @@
   $ageGroupDefault = $ageGroups['0']['name'];
   unset($ageGroups['0']);
   $placeKindDefault = $placeKinds['0']['descr'];
-  unset($placeKinds['0']);
+  unset($ageGroups['0']);
+  $origineDefault = $origines['0']['name'];
   $prestGrpSelector = array();
   foreach ($prestationGroups as $key => $value)
     $prestGrpSelector[$value['id_presstationGroup']]=$value['presstationGroup_descr'];
@@ -31,6 +32,8 @@ function myFunction(val) {
     <li><a href="#rac_placeKind">Types de lieux</a></li>
     <li><a href="#rac_prestGrp">PROSPREH - Catégories</a></li>
     <li><a href="#rac_prestations">PROSPREH - Prestations</a></li>
+    <li><a href="#rac_origines">Origines</a></li>
+    
   </ul>
 
 </div>
@@ -98,6 +101,9 @@ foreach ($intervenants as $key => $value) {
     <div id="gender_add">
       <?php echo form_open('/admin/gender_add');?>
         <div class="row">
+          <div class="col-xs-4">
+            <?php	echo form_submit('submit_Profil', 'Créer un nouveau sexe',"class='btn btn-lg btn-primary btn-block'"); ?>
+          </div>
           <div  class="col-xs-8">
             <?php
               $input= array(
@@ -109,9 +115,6 @@ foreach ($intervenants as $key => $value) {
                 echo form_input($input);
             ?>
           </div>
-          <div class="col-xs-4">
-            <?php	echo form_submit('submit_Profil', 'Créer un nouveau sexe',"class='btn btn-lg btn-primary btn-block'"); ?>
-          </div>
         </div>
       <?php echo form_close(); ?>
     </div>
@@ -119,6 +122,9 @@ foreach ($intervenants as $key => $value) {
       <h4>Description - Valeur par défaut</h4>
       <?php echo form_open('/admin/gender_defaultEdit');?>
         <div class="row">
+          <div class="col-xs-4">
+            <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+          </div>
           <div  class="col-xs-8">
             <?php
               $input= array(
@@ -129,9 +135,6 @@ foreach ($intervenants as $key => $value) {
               );
                 echo form_input($input);
             ?>
-          </div>
-          <div class="col-xs-4">
-            <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
           </div>
         </div>
       <?php echo form_close(); ?>
@@ -191,6 +194,9 @@ foreach ($intervenants as $key => $value) {
   <div id="sexuality_add">
     <?php echo form_open('/admin/sexuality_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer une nouvelle sexualité',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -202,9 +208,6 @@ foreach ($intervenants as $key => $value) {
               echo form_input($input);
           ?>
         </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer une nouvelle sexualité',"class='btn btn-lg btn-primary btn-block'"); ?>
-        </div>
       </div>
     <?php echo form_close(); ?>
   </div>
@@ -212,6 +215,9 @@ foreach ($intervenants as $key => $value) {
     <h4>Description - Valeur par défaut</h4>
     <?php echo form_open('/admin/sexuality_defaultEdit');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -222,9 +228,6 @@ foreach ($intervenants as $key => $value) {
             );
               echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -283,6 +286,9 @@ foreach ($intervenants as $key => $value) {
   <div id="ageGroup_add">
     <?php echo form_open('/admin/ageGroup_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau groupe',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -294,9 +300,6 @@ foreach ($intervenants as $key => $value) {
               echo form_input($input);
           ?>
         </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer un nouveau groupe',"class='btn btn-lg btn-primary btn-block'"); ?>
-        </div>
       </div>
     <?php echo form_close(); ?>
   </div>
@@ -304,6 +307,9 @@ foreach ($intervenants as $key => $value) {
     <h4>Description - Valeur par défaut</h4>
     <?php echo form_open('/admin/ageGroup_defaultEdit');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -314,9 +320,6 @@ foreach ($intervenants as $key => $value) {
             );
               echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -382,6 +385,9 @@ foreach ($intervenants as $key => $value) {
   <div id="thematics_add">
     <?php echo form_open('/admin/thematics_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau thème',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-4">
           <?php
             echo form_dropdown('addedthema[parent]',$parentSelector);
@@ -397,9 +403,6 @@ foreach ($intervenants as $key => $value) {
           );
             echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer un nouveau thème',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -506,6 +509,9 @@ foreach ($intervenants as $key => $value) {
   <div id="material_add">
     <?php echo form_open('/admin/material_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau materiel',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -516,9 +522,6 @@ foreach ($intervenants as $key => $value) {
             );
               echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer un nouveau materiel',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -581,6 +584,9 @@ foreach ($intervenants as $key => $value) {
   <div id="placeKind_add">
     <?php echo form_open('/admin/placeKind_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau type',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -592,9 +598,6 @@ foreach ($intervenants as $key => $value) {
               echo form_input($input);
           ?>
         </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer un nouveau type',"class='btn btn-lg btn-primary btn-block'"); ?>
-        </div>
       </div>
     <?php echo form_close(); ?>
   </div>
@@ -602,6 +605,9 @@ foreach ($intervenants as $key => $value) {
     <h4>Description - Valeur par défaut</h4>
     <?php echo form_open('/admin/placeKind_defaultEdit');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -612,9 +618,6 @@ foreach ($intervenants as $key => $value) {
             );
               echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -676,6 +679,9 @@ foreach ($intervenants as $key => $value) {
   <div id="prestGrp_add">
     <?php echo form_open('/admin/prestGrp_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer un nouveau groupe',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-8">
           <?php
             $input= array(
@@ -686,9 +692,6 @@ foreach ($intervenants as $key => $value) {
             );
               echo form_input($input);
           ?>
-        </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer un nouveau groupe',"class='btn btn-lg btn-primary btn-block'"); ?>
         </div>
       </div>
     <?php echo form_close(); ?>
@@ -748,12 +751,15 @@ foreach ($intervenants as $key => $value) {
   <div id="prest_add">
     <?php echo form_open('/admin/prest_add');?>
       <div class="row">
+        <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer une nouvelle prestation',"class='btn btn-lg btn-primary btn-block'"); ?>
+        </div>
         <div  class="col-xs-4">
           <?php
             echo form_dropdown('addedPrestGrp',$prestGrpSelector);
           ?>
         </div>
-        <div  class="col-xs-4">
+          <div  class="col-xs-4">
           <?php
             $input= array(
               'id' 		=> 'addedPrestDescr',
@@ -764,9 +770,7 @@ foreach ($intervenants as $key => $value) {
               echo form_input($input);
           ?>
         </div>
-        <div class="col-xs-4">
-          <?php	echo form_submit('submit_Profil', 'Créer une nouvelle prestation',"class='btn btn-lg btn-primary btn-block'"); ?>
-        </div>
+
       </div>
     <?php echo form_close(); ?>
   </div>
@@ -824,88 +828,134 @@ foreach ($intervenants as $key => $value) {
 </div>
 <div style="height: 60px;"> </div>
 
+	<div id="rac_origines" style="height: 60px;"> </div>
+<!-- =====================Origines================================================================================ -->
 
+<div id="origines_Sct" class="container">
+  <h3>Origines</h3>
+  <?php
+  $maxDepth=0;
+  $parentSelector = array();
+  foreach ($origines as $origine){
+    if($origine['depth'] > $maxDepth)
+      $maxDepth = $origine ['depth'];
+    $parentSelector[$origine['id_origine']]='';
+    for ($cpt=0; $cpt <$origine['depth'] ; $cpt++) {
+      $parentSelector[$origine['id_origine']]='-'.$parentSelector[$origine['id_origine']];
+      }
+    $parentSelector[$origine['id_origine']]=$parentSelector[$origine['id_origine']].' '.$origine['name'];
+    if($origine['actived']==0){
+      $parentSelector[$origine['id_origine']]=$parentSelector[$origine['id_origine']].' (inactif)';
+    }
 
-
-<!-- =====================cities================================================================================ -->
-  <div class="container">
-  	<h3>Villes</h3>
-  	<div id="cities_activByNPA">
-      <?php echo form_open('/admin/cities_activByNPA');?>
-        <div class="row">
-  				<div  class="col-xs-8">
-  					<?php
-  						$input= array(
-  							'id' 		=> 'activatedNPA',
-  							'name'	=> 'activatedNPA',
-  							'class'	=> 'form-control',
-                'value' => 'NPA'
-              );
-  							echo form_input($input);
-  					?>
-  				</div>
-  				<div class="col-xs-4">
-  					<?php	echo form_submit('submit_Profil', 'activer par npa',"class='btn btn-lg btn-primary btn-block'"); ?>
-  				</div>
-  			</div>
-  		<?php echo form_close(); ?>
-  	</div>
-    <div id="cities_activByName">
-      <?php echo form_open('/admin/cities_activByName');?>
-        <div class="row">
-          <div  class="col-xs-8">
-            <?php
-              $input= array(
-                'id' 		=> 'activatedName',
-                'name'	=> 'activatedName',
-                'class'	=> 'form-control',
-                'value' => 'nom'
-              );
-                echo form_input($input);
-            ?>
-          </div>
-          <div class="col-xs-4">
-            <?php	echo form_submit('submit_Profil', 'activer par nom',"class='btn btn-lg btn-primary btn-block'"); ?>
-          </div>
-        </div>
-      <?php echo form_close(); ?>
+  }
+   ?>
+  <div id="origines_add">
+    <?php echo form_open('admin/origines_add');?>
+    <div class="row">
+      <div class="col-xs-4">
+          <?php	echo form_submit('submit_Profil', 'Créer une nouvelle origine',"class='btn btn-lg btn-primary btn-block'"); ?>
+      </div>
+      <div  class="col-xs-4">
+        <?php
+          echo form_dropdown('addOrigine[parent]',$parentSelector);
+        ?>
+      </div>
+      <div  class="col-xs-4">
+        <?php
+        $input= array(
+          'id' 		=> 'addOrigine[name]',
+          'name'	=> 'addOrigine[name]',
+          'class'	=> 'form-control',
+          'value' => "Nouvelle origine"
+        );
+          echo form_input($input);
+        ?>
+      </div>
     </div>
-  	<div id="cities_GroupEdit">
-  		<?php echo form_open('/admin/cities_GroupEdit/');?>
-  			<div class="row">
-  				<table class="table table-hover">
-  					<thead>
-  						<tr>
-                <th>NPA</th>
-  							<th>Nom</th>
-  							<th>Actif</th>
-  						</tr>
-  					</thead>
-  					<tbody>
-  						<?php
-  						foreach ($cities as $city) {
-                $id= $city['id_city'];
-  							?>
-  								<tr>
-                    <td>
-                      <input type="hidden" name="cities[<?php echo($id); ?>][id_city]" value="<?php echo($id); ?>" />
-                      <label><?php echo $city['npa'];?></label>
-  									</td>
-                    <td><?php echo $city['name']; ?></td>
-  									<td>
-                      <select name="cities[<?php echo($id); ?>][action]">
-                        <option value="none" selected="selected"></option>
-                        <option value="unactiv">Désactiver</option>
-                      </select>
-  									</td>
-  								</tr>
-  							<?php
-  						}
-  						?>
-  					</tbody>
-  				</table>
-  			</div>
-  			<?php	echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");?>
-  		<?php echo form_close(); ?>
-  	</div>
+  <?php echo form_close(); ?>
+</div>
+<div id="origine_defaultEdit">
+  <h4>Description - Valeur par défaut</h4>
+  <?php echo form_open('/admin/origine_defaultEdit');?>
+    <div class="row">
+      <div class="col-xs-4">
+        <?php	echo form_submit('submit_Profil', 'Définir la valeur par défaut',"class='btn btn-lg btn-primary btn-block'"); ?>
+      </div>
+      <div  class="col-xs-8">
+        <?php
+          $input= array(
+            'id' 		=> 'origineDefault',
+            'name'	=> 'origineDefault',
+            'class'	=> 'form-control',
+            'value' => $origineDefault
+          );
+            echo form_input($input);
+        ?>
+      </div>
+    </div>
+  <?php echo form_close(); ?>
+</div>
+<div id="origines_edit">
+  <?php echo form_open('/admin/origines_edit/');?>
+    <div class="row">
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th colspan="<?php echo $maxDepth;?>">Parent</th>
+            <th style="min-width: 250px" colspan="<?php echo ($maxDepth+2);?>">Nom</th>
+            <th colspan="<?php echo $maxDepth;?>">Position</th>
+            <th colspan="<?php echo $maxDepth;?>">Actif</th>
+            <th colspan="<?php echo $maxDepth-1;?>"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($origines as $origine):?>
+            <tr>
+              <?php for($marge = 1; $marge < $origine['depth']; $marge++): ?>
+                <td/>
+              <?php endfor; ?>
+              <td colspan="<?php echo $maxDepth;?>">
+                <?php
+                    echo form_hidden('origines['.$origine['id_origine'].'][id_origine]',$origine['id_origine']);
+
+                    echo form_dropdown('origines['.$origine['id_origine'].'][parent_id]',$parentSelector,$origine['parent_id']);
+
+                ?>
+              </td>
+              <td style="min-width: 250px" colspan="<?php echo ($maxDepth+2);?>">
+                <?php
+                  $input= array(
+                    'id' 		=> 'origines['.$origine['id_origine'].'][name]',
+                    'name'	=> 'origines['.$origine['id_origine'].'][name]',
+                    'class'	=> 'form-control',
+                    'value' => $origine['name']);
+                    echo form_input($input);
+                ?>
+              </td>
+              <td colspan="<?php echo $maxDepth;?>">
+                <?php
+                $input= array(
+                  'id' 		=> 'origines['.$origine['id_origine'].'][position]',
+                  'name'	=> 'origines['.$origine['id_origine'].'][position]',
+                  'class'	=> 'form-control',
+                  'value' =>$origine['position']);
+                  echo form_input($input);
+                ?>
+              </td>
+              <td colspan="<?php echo $maxDepth;?>">
+                <?php
+                echo form_checkbox('origines['.$origine['id_origine'].'][actived]',1,$origine['actived']);  ?>
+              </td>
+              <?php for($marge = $origine['depth']; $marge < $maxDepth; $marge++): ?>
+                <td/>
+              <?php endfor; ?>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+    <?php	echo form_submit('submit_Profil', 'Modifer',"class='btn btn-lg btn-primary btn-block'");?>
+  <?php echo form_close(); ?>
 </div>
