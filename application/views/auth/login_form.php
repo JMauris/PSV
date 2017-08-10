@@ -62,7 +62,7 @@ $captcha = array(
 		<?php echo form_checkbox($remember); ?>
 		<?php echo form_label('Se rappeler de moi', $remember['id']); ?>
 		<?php echo '<br/><br/>'; ?>
-		<?php echo anchor('/auth/forgot_password/', 'Mot de passe oublié', "class='btn btn-default'"); ?>
+	<!--	<?php /*echo anchor('/auth/forgot_password/', 'Mot de passe oublié', "class='btn btn-default'"); */?>-->
 		<?php echo '&nbsp'; ?>
 		<?php if ($this->config->item('allow_registration', 'tank_auth')) echo anchor('/auth/register/', 'S\'enregistrer', "class='btn btn-default'"); ?>
 	</div>
